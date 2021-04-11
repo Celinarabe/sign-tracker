@@ -19,5 +19,4 @@ class FirebaseApp {
     this.app = app;
   }
 }
-
 export default FirebaseApp;
