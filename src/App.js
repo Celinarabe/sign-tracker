@@ -17,6 +17,7 @@ function App() {
   return (
     <div>
       <h1>Campaigns:</h1>
+      <p>{campaigns[0]}</p>
 
     </div>
   );
