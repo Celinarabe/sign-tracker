@@ -5,36 +5,48 @@ import "./App.css";
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
+let didMountCampaigns = false;
+
+const generateCampaigns = (arr) => {
+  didMountCampaigns = true;
+  return arr.map((value, idx) => {
+    return (
+      <li key={idx}>
+        <h1>{value.title}</h1>
+        <p>{value.signs}</p>
+      </li>
+    );
+  });
+};
 
 function App() {
   const [campaigns, setCampaigns] = useState([]);
-  const didMountCampaigns = useRef(false);
+  //const didMountCampaigns = useRef(false); //reference hook
 
   //fetching campaigns
   useEffect(() => {
     //defining async function
     const fetchCampaigns = async () => {
-      const campaigns = await db.getCampaigns();
-      setCampaigns(campaigns);
-      console.log("in fetch: ", campaigns);
-      didMountCampaigns.current = true;
+      const camps = await db.getCampaigns();
+      await setCampaigns(camps);
     };
     fetchCampaigns();
   }, []);
 
-  console.log("after use effect");
-
   //mimics component did update
   useEffect(() => {
     if (didMountCampaigns.current) {
-      console.log(campaigns[0].title);
+      console.log("did mount", campaigns);
     }
   });
 
   return (
     <div>
-      {/* not working */}
-      {/* <h1>Campaigns: {campaigns[0].title}</h1> */}
+      {didMountCampaigns ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>{generateCampaigns(campaigns)}</ul>
+      )}
     </div>
   );
 }
