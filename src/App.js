@@ -34,7 +34,7 @@ function App() {
   return (
     <div>
       {/* not working */}
-      <h1>Campaigns: {campaigns[0].title}</h1>
+      {/* <h1>Campaigns: {campaigns[0].title}</h1> */}
     </div>
   );
 }
