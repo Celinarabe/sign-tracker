@@ -10,20 +10,19 @@ function App() {
   const [campaigns, setCampaigns] = useState([]);
   const didMountCampaigns = useRef(false);
 
-
   //fetching campaigns
   useEffect(() => {
     //defining async function
     const fetchCampaigns = async () => {
       const campaigns = await db.getCampaigns();
-     setCampaigns(campaigns);
-       console.log('in fetch: ',campaigns)
+      setCampaigns(campaigns);
+      console.log("in fetch: ", campaigns);
       didMountCampaigns.current = true;
     };
     fetchCampaigns();
   }, []);
 
-  console.log('after use effect')
+  console.log("after use effect");
 
   //mimics component did update
   useEffect(() => {
@@ -34,8 +33,8 @@ function App() {
 
   return (
     <div>
-      <h1>Campaigns:</h1>
-      <p></p>
+      {/* not working */}
+      <h1>Campaigns: {campaigns[0].title}</h1>
     </div>
   );
 }
