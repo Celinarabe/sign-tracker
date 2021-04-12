@@ -5,10 +5,9 @@ import "./App.css";
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
-let didMountCampaigns = false;
+
 
 const generateCampaigns = (arr) => {
-  didMountCampaigns = true;
   return arr.map((value, idx) => {
     return (
       <li key={idx}>
@@ -21,7 +20,7 @@ const generateCampaigns = (arr) => {
 
 function App() {
   const [campaigns, setCampaigns] = useState([]);
-  //const didMountCampaigns = useRef(false); //reference hook
+  const didMountCampaigns = useRef(false); //reference hook
 
   //fetching campaigns
   useEffect(() => {
@@ -29,6 +28,7 @@ function App() {
     const fetchCampaigns = async () => {
       const camps = await db.getCampaigns();
       await setCampaigns(camps);
+      didMountCampaigns.current = true;
     };
     fetchCampaigns();
   }, []);
@@ -42,7 +42,7 @@ function App() {
 
   return (
     <div>
-      {didMountCampaigns ? (
+      {didMountCampaigns.current ? (
         <p>Loading...</p>
       ) : (
         <ul>{generateCampaigns(campaigns)}</ul>
