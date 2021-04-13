@@ -1,13 +1,12 @@
 import { FirebaseApp, FirebaseDb } from "./firebase";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
 
-
-const generateCampaigns = (arr) => {
+const displayCampaigns = (arr) => {
   return arr.map((value, idx) => {
     return (
       <li key={idx}>
@@ -19,34 +18,24 @@ const generateCampaigns = (arr) => {
 };
 
 function App() {
-  const [campaigns, setCampaigns] = useState([]);
-  const didMountCampaigns = useRef(false); //reference hook
+  const [campaigns, setCampaigns] = useState([]); //data state
+  const [isLoading, setIsLoading] = useState(); //loading state
 
   //fetching campaigns
   useEffect(() => {
-    //defining async function
+    //define async function
     const fetchCampaigns = async () => {
-      const camps = await db.getCampaigns();
-      await setCampaigns(camps);
-      didMountCampaigns.current = true;
+      setIsLoading(true); //trigger loading state
+      const camps = await db.getCampaigns(); //async function returns promise
+      setCampaigns(camps); //resolve the promise by setting data state to this response
+      setIsLoading(false); //set loading state to false
     };
-    fetchCampaigns();
+    fetchCampaigns(); //when the component mounts, run fetchCampaigns
   }, []);
-
-  //mimics component did update
-  useEffect(() => {
-    if (didMountCampaigns.current) {
-      console.log("did mount", campaigns);
-    }
-  });
 
   return (
     <div>
-      {didMountCampaigns.current ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>{generateCampaigns(campaigns)}</ul>
-      )}
+      {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
     </div>
   );
 }
