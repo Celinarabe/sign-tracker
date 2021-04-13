@@ -1,19 +1,43 @@
-import Firebase from "./Firebase";
+import { FirebaseApp, FirebaseDb } from "./firebase";
 import React, { useState, useEffect } from "react";
-import firebase from "firebase";
 import "./App.css";
 
-const firebaseApp = new Firebase().app;
-const db = firebaseApp.firestore();
+//TO DO: remove this when we get to production
+const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
+const db = new FirebaseDb(firebaseApp);
+
+const displayCampaigns = (arr) => {
+  return arr.map((value, idx) => {
+    return (
+      <li key={idx}>
+        <h1>{value.title}</h1>
+        <p>{value.signs}</p>
+      </li>
+    );
+  });
+};
 
 function App() {
-  useEffect(() => {
-    db.collection("campaign").doc().collection("signs").add({
-      notes: "great sign location",
-    });
-  });
+  const [campaigns, setCampaigns] = useState([]); //data state
+  const [isLoading, setIsLoading] = useState(true); //loading state
 
-  return <div></div>;
+  //fetching campaigns
+  useEffect(() => {
+    //define async function
+    const fetchCampaigns = async () => {
+      setIsLoading(true); //trigger loading state
+      const camps = await db.getCampaigns(); //async function returns promise
+      setCampaigns(camps); //resolve the promise by setting data state to this response
+      setIsLoading(false); //set loading state to false
+    };
+    fetchCampaigns(); //when the component mounts, run fetchCampaigns
+  }, []);
+
+  return (
+    <div>
+      {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
+    </div>
+  );
 }
 
 export default App;

@@ -1,4 +1,4 @@
-
+//codeshare example
 const db = new Firebase().app
 
 class FirebaseDB {
