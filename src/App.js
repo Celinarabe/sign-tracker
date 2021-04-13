@@ -19,7 +19,7 @@ const displayCampaigns = (arr) => {
 
 function App() {
   const [campaigns, setCampaigns] = useState([]); //data state
-  const [isLoading, setIsLoading] = useState(); //loading state
+  const [isLoading, setIsLoading] = useState(true); //loading state
 
   //fetching campaigns
   useEffect(() => {
