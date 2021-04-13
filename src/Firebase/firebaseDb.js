@@ -7,10 +7,10 @@ class FirebaseDb {
 
   //async function returns a promise
   getCampaigns = async () => {
-    const querySnapshot = await this.db
+    const querySnapshot = await this.db //wait until this is done to move onto next line
       .collection("campaign")
       .withConverter(campaignConverter)
-      .get(); //wait until this is done to move onto next line
+      .get(); 
     return querySnapshot.docs.map((doc) => doc.data());
   };
 }
