@@ -1,10 +1,15 @@
 class Campaign {
-  constructor(title, signs) {
+  constructor(id, title) {
+    this.id = id;
     this.title = title;
-    this.signs = signs;
+    this.signs = [];
   }
   toString() {
     return this.title + this.signs;
+  }
+
+  setSigns(signList) {
+    this.signs = signList;
   }
 }
 
@@ -13,12 +18,12 @@ var campaignConverter = {
   toFirestore: function (campaign) {
     return {
       title: campaign.title,
-      signs: campaign.signs,
     };
   },
   fromFirestore: function (snapshot, options) {
+    const { id } = snapshot;
     const data = snapshot.data(options);
-    return new Campaign(data.title, data.signs);
+    return new Campaign(id, data.title);
   },
 };
 

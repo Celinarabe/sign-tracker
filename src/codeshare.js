@@ -52,3 +52,6 @@ class Campaign {
 }
 
 db.collection("campaign").add(new Campaign("President", "Gerard"));
+
+
+this.db.collection("campaign").doc("DOC_ID").collection('signs').get()
