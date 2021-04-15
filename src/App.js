@@ -11,7 +11,9 @@ const displayCampaigns = (arr) => {
     return (
       <li key={idx}>
         <h1>{value.title}</h1>
-        <p>first sign ID: {value.signs[0].id}</p>
+        {value.signs.map((sign) => (
+          <p>sign ID: {sign.id}</p>
+        ))}
       </li>
     );
   });
