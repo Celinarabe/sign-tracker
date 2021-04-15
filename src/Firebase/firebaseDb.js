@@ -32,6 +32,7 @@ class FirebaseDb {
       .collection("signs")
       .withConverter(signConverter)
       .get();
+      
     return signList.docs.map((doc) => doc.data());
   };
 }
