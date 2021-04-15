@@ -21,10 +21,6 @@ class FirebaseDb {
       campaign.setSigns(signList);
     }
 
-    //   campaigns.forEach(async (campaign) => {
-    //     const signList = await this.getSigns(campaign.id);
-    //     campaign.setSigns(signList);
-    //   });
     return campaigns;
   };
 
