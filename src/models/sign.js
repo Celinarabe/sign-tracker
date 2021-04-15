@@ -1,5 +1,6 @@
 class Sign {
-  constructor(image, latitude, longitude, notes, postedTime) {
+  constructor(id, image, latitude, longitude, notes, postedTime) {
+    this.id = id;
     this.image = image;
     this.latitude = latitude;
     this.longitude = longitude;
@@ -25,8 +26,10 @@ var signConverter = {
     };
   },
   fromFirestore: function (snapshot, options) {
+    const { id } = snapshot;
     const data = snapshot.data(options);
     return new Sign(
+      id,
       data.image,
       data.latitude,
       data.longitude,
