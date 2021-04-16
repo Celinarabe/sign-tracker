@@ -11,7 +11,9 @@ const displayCampaigns = (arr) => {
     return (
       <li key={idx}>
         <h1>{value.title}</h1>
-        <p>{value.signs}</p>
+        {value.signs.map((sign) => (
+          <p>sign ID: {sign.id}</p>
+        ))}
       </li>
     );
   });
@@ -27,11 +29,15 @@ function App() {
     const fetchCampaigns = async () => {
       setIsLoading(true); //trigger loading state
       const camps = await db.getCampaigns(); //async function returns promise
-      setCampaigns(camps); //resolve the promise by setting data state to this response
+      setCampaigns(camps); //resolve the promise by setting state to this response
       setIsLoading(false); //set loading state to false
     };
     fetchCampaigns(); //when the component mounts, run fetchCampaigns
   }, []);
+
+  useEffect(() => {
+    console.log(campaigns);
+  }, [campaigns]);
 
   return (
     <div>
