@@ -12,7 +12,10 @@ const displayCampaigns = (arr) => {
       <li key={idx}>
         <h1>{value.title}</h1>
         {value.signs.map((sign) => (
+          <div>
           <p>sign ID: {sign.id}</p>
+          <p>Posted? {sign.posted ? "yes":"no"}</p>
+          </div>
         ))}
       </li>
     );
