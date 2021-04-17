@@ -1,6 +1,7 @@
 import { FirebaseApp, FirebaseDb } from "./firebase";
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import CreateCampaign from "./components/CreateCampaign"
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
@@ -45,6 +46,7 @@ function App() {
   return (
     <div>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
+      <CreateCampaign />
     </div>
   );
 }
