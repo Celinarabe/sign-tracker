@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Campaign } from "../models/campaign";
+import { FirebaseApp, FirebaseDb } from "../firebase";
 
-const CreateCampaign = () => {
+const CampaignForm = (props) => {
   const [newCampaign, setNewCampaign] = useState({
     title: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
-  //updating object and saving it back to state
+  //updating input box and saving it back to state
   const handleTitleInputChange = (event) => {
     event.persist();
     setNewCampaign((newCampaign) => ({
@@ -17,14 +18,15 @@ const CreateCampaign = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  //on submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (newCampaign.title) {
       setIsValid(true);
     }
     setSubmitted(true);
-    //how to generate an id?
-    let newCamp = new Campaign(newCampaign.title, []) 
+    let newCamp = new Campaign(null, newCampaign.title, []);
+    await props.database.createCampaign(newCamp);
   };
 
   return (
@@ -57,4 +59,4 @@ const CreateCampaign = () => {
   );
 };
 
-export default CreateCampaign;
+export default CampaignForm;

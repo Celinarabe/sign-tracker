@@ -10,7 +10,12 @@ class Sign {
   }
   toString() {
     return (
-      this.image + this.latitude + this.longitude + this.notes + this.posted + this.postedTime
+      this.image +
+      this.latitude +
+      this.longitude +
+      this.notes +
+      this.posted +
+      this.postedTime
     );
   }
 }
