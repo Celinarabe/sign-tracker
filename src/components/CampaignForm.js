@@ -3,30 +3,28 @@ import { Campaign } from "../models/campaign";
 import { FirebaseApp, FirebaseDb } from "../firebase";
 
 const CampaignForm = (props) => {
-  const [newCampaign, setNewCampaign] = useState({
-    title: "",
-  });
+  const [title, setTitle] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [isValid, setIsValid] = useState(false);
+  const [saveSuccessful, setSaveSuccessful] = useState("");
 
   //updating input box and saving it back to state
   const handleTitleInputChange = (event) => {
     event.persist();
-    setNewCampaign((newCampaign) => ({
-      ...newCampaign, //copying old values using spread operator
-      title: event.target.value, //adding new value
-    }));
+    setTitle(
+      event.target.value //adding new value
+    );
   };
 
   //on submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newCampaign.title) {
-      setIsValid(true);
-    }
     setSubmitted(true);
-    let newCamp = new Campaign(null, newCampaign.title, []);
-    await props.database.createCampaign(newCamp);
+    if (title) {
+      let newCamp = new Campaign(null, title, []);
+      const status = await props.database.writeCampaign(newCamp);
+      console.log(status);
+      status ? setSaveSuccessful(true) : setSaveSuccessful(false);
+    }
   };
 
   return (
@@ -39,10 +37,10 @@ const CampaignForm = (props) => {
           type="text"
           placeholder="Campaign Title"
           name="title"
-          value={newCampaign.title}
+          value={title}
           onChange={handleTitleInputChange}
         />
-        {submitted && !newCampaign.title ? (
+        {submitted && !title ? (
           <span id="title-error">Please enter a title</span>
         ) : (
           ""
@@ -50,7 +48,7 @@ const CampaignForm = (props) => {
         <button type="submit">Create Campaign</button>
       </form>
 
-      {submitted && isValid ? (
+      {submitted && saveSuccessful ? (
         <div class="success-message">Success! New campign created.</div>
       ) : (
         ""

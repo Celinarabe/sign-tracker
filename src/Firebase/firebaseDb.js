@@ -24,9 +24,14 @@ class FirebaseDb {
     return campaigns;
   };
 
+  writeCampaign = (campaignObj) => {
+    return this.createCampaign(campaignObj).catch((err) => false);
+  };
+
   //write new campaign to firestore
   createCampaign = async (campaignObj) => {
-    this.db
+    //returns new doc
+    return await this.db
       .collection("campaign")
       .withConverter(campaignConverter)
       .add(campaignObj);
