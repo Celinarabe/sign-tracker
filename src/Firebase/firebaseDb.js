@@ -25,7 +25,9 @@ class FirebaseDb {
   };
 
   writeCampaign = (campaignObj) => {
-    return this.createCampaign(campaignObj).catch((err) => false);
+    this.createCampaign(campaignObj)
+      .then(() => true)
+      .catch((err) => false);
   };
 
   //write new campaign to firestore
