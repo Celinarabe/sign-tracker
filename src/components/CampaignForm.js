@@ -5,11 +5,13 @@ import { FirebaseApp, FirebaseDb } from "../firebase";
 const CampaignForm = (props) => {
   const [title, setTitle] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [saveSuccessful, setSaveSuccessful] = useState("");
+  const [saveSuccessful, setSaveSuccessful] = useState(false);
+
+  const successMsg = "Success! New Campaign Created.";
+  const errorMsg = "Uh oh! There was an issue creating the campaign :(";
 
   //updating input box and saving it back to state
   const handleTitleInputChange = (event) => {
-    event.persist();
     setTitle(
       event.target.value //adding new value
     );
@@ -22,18 +24,23 @@ const CampaignForm = (props) => {
     if (title) {
       let newCamp = new Campaign(null, title, []);
       const status = await props.database.writeCampaign(newCamp);
-      console.log(status);
-      status ? setSaveSuccessful(true) : setSaveSuccessful(false);
+      console.log("db status", status);
+      //status ? setSaveSuccessful(true) : setSaveSuccessful(false);
+      setSaveSuccessful(status);
+      console.log("react state", saveSuccessful);
+      if (status) {
+        //setTitle("");
+        //setSubmitted(false);
+      }
     }
   };
 
   return (
     <div>
       <h2>Create New Campaign</h2>
-      <form class="new-campaign-form" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input
           id="title"
-          class="form-field"
           type="text"
           placeholder="Campaign Title"
           name="title"
@@ -47,12 +54,10 @@ const CampaignForm = (props) => {
         )}
         <button type="submit">Create Campaign</button>
       </form>
-
-      {submitted && saveSuccessful ? (
-        <div class="success-message">Success! New campign created.</div>
-      ) : (
-        ""
-      )}
+      {/* need to add timer to show success message for 5 seconds after submit  */}
+      {submitted && title ? (
+        <div> {saveSuccessful ? successMsg : errorMsg}</div>
+      ) : null}
     </div>
   );
 };

@@ -8,12 +8,12 @@ const firebaseApp = new FirebaseApp().app; //creating new firebase app object an
 const db = new FirebaseDb(firebaseApp);
 
 const displayCampaigns = (arr) => {
-  return arr.map((value, idx) => {
+  return arr.map((campaign, idx) => {
     return (
-      <li key={idx}>
-        <h1>{value.title}</h1>
-        {value.signs.map((sign) => (
-          <div>
+      <li key={campaign.id}>
+        <h1>{campaign.title}</h1>
+        {campaign.signs.map((sign) => (
+          <div key={sign.id}>
             <p>sign ID: {sign.id}</p>
             <p>Posted? {sign.posted ? "yes" : "no"}</p>
           </div>
