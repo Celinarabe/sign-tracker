@@ -5,13 +5,14 @@ import * as exifr from "exifr";
 const UploadPhoto = (props) => {
   const [photoList, setPhotoList] = useState([]);
 
+
   //create specific callbacks for this component (progress, error)
 
   // Handles file upload event
   const handleUpload = async (e) => {
     extractData(Array.from(e.target.files)).then((convertedFiles) => {
       setPhotoList(convertedFiles);
-    });
+    }).catch(console.log('error setting data'));
   };
 
   //can't use await if its not directly inside an async function.

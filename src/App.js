@@ -48,8 +48,8 @@ function App() {
   return (
     <div>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
-      <UploadPhoto storage={storage} />
       <CampaignForm database={db} />
+      <UploadPhoto storage={storage} />
     </div>
   );
 }
