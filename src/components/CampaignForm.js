@@ -31,7 +31,7 @@ const CampaignForm = (props) => {
     setSaveSuccessful(status);
     setSubmitted(true);
     if (status) {
-      setInterval(() => {
+      setTimeout(() => {
         setTitle("");
         setSubmitted(false);
         setSaveSuccessful(false);
