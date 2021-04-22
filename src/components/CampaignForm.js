@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Campaign } from "../models/campaign";
-import { FirebaseApp, FirebaseDb } from "../firebase";
+import { useForm } from "react-hook-form";
 
 const CampaignForm = (props) => {
   const [title, setTitle] = useState("");
@@ -10,6 +10,13 @@ const CampaignForm = (props) => {
   const successMsg = "Success! New Campaign Created.";
   const errorMsg = "Uh oh! There was an issue creating the campaign :(";
 
+  //form validation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   //updating input box and saving it back to state
   const handleTitleInputChange = (event) => {
     setTitle(
@@ -18,28 +25,26 @@ const CampaignForm = (props) => {
   };
 
   //on submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (e) => {
+    let newCamp = new Campaign(null, title, []);
+    const status = await props.database.writeCampaign(newCamp);
+    setSaveSuccessful(status);
     setSubmitted(true);
-    if (title) {
-      let newCamp = new Campaign(null, title, []);
-      const status = await props.database.writeCampaign(newCamp);
-      console.log("db status", status);
-      //status ? setSaveSuccessful(true) : setSaveSuccessful(false);
-      setSaveSuccessful(status);
-      console.log("react state", saveSuccessful);
-      if (status) {
-        //setTitle("");
-        //setSubmitted(false);
-      }
+    if (status) {
+      setInterval(() => {
+        setTitle("");
+        setSubmitted(false);
+        setSaveSuccessful(false);
+      }, 5000);
     }
   };
 
   return (
     <div>
       <h2>Create New Campaign</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
+          {...register("title", { required: true })}
           id="title"
           type="text"
           placeholder="Campaign Title"
@@ -47,14 +52,9 @@ const CampaignForm = (props) => {
           value={title}
           onChange={handleTitleInputChange}
         />
-        {submitted && !title ? (
-          <span id="title-error">Please enter a title</span>
-        ) : (
-          ""
-        )}
+        {errors.title && <p>Title is required.</p>}
         <button type="submit">Create Campaign</button>
       </form>
-      {/* need to add timer to show success message for 5 seconds after submit  */}
       {submitted && title ? (
         <div> {saveSuccessful ? successMsg : errorMsg}</div>
       ) : null}
