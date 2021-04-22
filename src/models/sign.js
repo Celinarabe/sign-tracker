@@ -1,15 +1,21 @@
 class Sign {
-  constructor(id, image, latitude, longitude, notes, postedTime) {
+  constructor(id, image, latitude, longitude, notes, posted, postedTime) {
     this.id = id;
     this.image = image;
     this.latitude = latitude;
     this.longitude = longitude;
     this.notes = notes;
+    this.posted = posted;
     this.postedTime = postedTime;
   }
   toString() {
     return (
-      this.image + this.latitude + this.longitude + this.notes + this.postedTime
+      this.image +
+      this.latitude +
+      this.longitude +
+      this.notes +
+      this.posted +
+      this.postedTime
     );
   }
 }
@@ -22,6 +28,7 @@ var signConverter = {
       latitude: sign.latitude,
       longitude: sign.longitude,
       notes: sign.notes,
+      posted: sign.posted,
       postedTime: sign.postedTime,
     };
   },
@@ -34,6 +41,7 @@ var signConverter = {
       data.latitude,
       data.longitude,
       data.notes,
+      data.posted,
       data.postedTime
     );
   },

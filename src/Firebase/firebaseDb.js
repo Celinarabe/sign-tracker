@@ -24,6 +24,24 @@ class FirebaseDb {
     return campaigns;
   };
 
+  writeCampaign = async (campaignObj) => {
+    try {
+      await this.createCampaign(campaignObj);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  //write new campaign to firestore
+  createCampaign = async (campaignObj) => {
+    //returns new doc
+    return await this.db
+      .collection("campaign")
+      .withConverter(campaignConverter)
+      .add(campaignObj);
+  };
+
   //query firestore for sign subcollection based on campaignID
   getSigns = async (campaignID) => {
     const signList = await this.db

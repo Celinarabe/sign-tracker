@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Campaign } from "../models/campaign";
-
 import { useForm } from "react-hook-form";
 
 const CampaignForm = (props) => {
@@ -32,7 +31,7 @@ const CampaignForm = (props) => {
     setSaveSuccessful(status);
     setSubmitted(true);
     if (status) {
-      setInterval(() => {
+      setTimeout(() => {
         setTitle("");
         setSubmitted(false);
         setSaveSuccessful(false);

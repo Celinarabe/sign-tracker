@@ -27,4 +27,4 @@ var campaignConverter = {
   },
 };
 
-export { campaignConverter };
+export { campaignConverter, Campaign };
