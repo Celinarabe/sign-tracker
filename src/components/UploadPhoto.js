@@ -1,47 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import * as exifr from "exifr";
 
 const UploadPhoto = (props) => {
-  const [photos, setPhotos] = useState([]);
+  const [photoList, setPhotoList] = useState([]);
 
   //create specific callbacks for this component (progress, error)
 
-
-  // Handles file upload event and updates state
-  const handleUpload = (event) => {
-    //extractData(event.target.files);
-    let task = props.storage.signsRef
-      .child('12345')
-      .child("sign1")
-      .put(event.target.files[0]);
-    // Register three observers:
-    // 1. 'state_changed' observer, called any time the state changes
-    // 2. Error observer, called on failure
-    // 3. Completion observer, called on successful completion
-    task.on(
-      "state_changed",
-      (snapshot) => {
-        // Observe state change events such as progress, pause, and resume
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-      },
-      (error) => {
-        console.log(error);
-        // Handle unsuccessful uploads
-      },
-      () => {
-        // Handle successful uploads on complete
-        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-          console.log("File available at", downloadURL);
-        });
-      }
-    );
+  // Handles file upload event
+  const handleUpload = async (e) => {
+    extractData(Array.from(e.target.files)).then((convertedFiles) => {
+      setPhotoList(convertedFiles);
+    });
   };
 
-  const extractData = async (files) => {};
+  //can't use await if its not directly inside an async function.
+  const extractData = (files) => {
+    const promises = files.map(async (file) => {
+      const { latitude, longitude } = await exifr.gps(file);
+      const fileAsURL = URL.createObjectURL(file);
+      return { latitude, longitude, file: fileAsURL };
+    });
+    return Promise.all(promises);
+  };
+
+  //photoList test
+  useEffect(() => {
+    console.log(photoList);
+  }, [photoList]);
 
   // const displayPhotoData = (arr) => {
   //   console.log(arr);
