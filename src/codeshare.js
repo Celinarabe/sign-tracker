@@ -55,3 +55,28 @@ db.collection("campaign").add(new Campaign("President", "Gerard"));
 
 
 this.db.collection("campaign").doc("DOC_ID").collection('signs').get()
+
+
+
+handleUpload = (e) => {
+  extractData(e.target.files).then(convertedFiles => {
+    setFiles(convertedFiles);
+  })
+};
+
+extractData = async (files) => {
+  return files.map(file => {
+    const {latitude, longitude } = await exifr.gps(file);
+    const fileAsURL = URL.createObjectURL(file);
+    return {latitude, longitude, file: fileAsURL};
+  });
+}
+
+uploadSign(campaignId, img, progressCallback, onCompleteCallback, errorCallback) {
+  const task = storage.ref().child("signs").child(campaignId).child(...).put(img)
+  
+  task.on("state_changed", 
+  	(snapshot) => progressCallback(snapshot), 
+    (error) => errorCallback(error), 
+    () => onCompleteCallback(task));
+}

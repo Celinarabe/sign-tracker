@@ -1,4 +1,4 @@
-import { FirebaseApp, FirebaseDb } from "./firebase";
+import { FirebaseApp, FirebaseDb, FirebaseStorage } from "./firebase";
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import UploadPhoto from "./components/UploadPhoto";
@@ -6,6 +6,7 @@ import UploadPhoto from "./components/UploadPhoto";
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
+const storage = new FirebaseStorage(firebaseApp);
 
 const displayCampaigns = (arr) => {
   return arr.map((value, idx) => {
@@ -43,7 +44,7 @@ function App() {
   return (
     <div>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
-      <UploadPhoto />
+      <UploadPhoto storage={storage} />
     </div>
   );
 }
