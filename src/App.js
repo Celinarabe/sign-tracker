@@ -1,18 +1,22 @@
 import { FirebaseApp, FirebaseDb } from "./firebase";
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import CampaignForm from "./components/CampaignForm";
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
 
 const displayCampaigns = (arr) => {
-  return arr.map((value, idx) => {
+  return arr.map((campaign, idx) => {
     return (
-      <li key={idx}>
-        <h1>{value.title}</h1>
-        {value.signs.map((sign) => (
-          <p>sign ID: {sign.id}</p>
+      <li key={campaign.id}>
+        <h1>{campaign.title}</h1>
+        {campaign.signs.map((sign) => (
+          <div key={sign.id}>
+            <p>sign ID: {sign.id}</p>
+            <p>Posted? {sign.posted ? "yes" : "no"}</p>
+          </div>
         ))}
       </li>
     );
@@ -42,6 +46,7 @@ function App() {
   return (
     <div>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
+      <CampaignForm database={db} />
     </div>
   );
 }
