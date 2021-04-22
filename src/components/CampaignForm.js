@@ -55,7 +55,7 @@ const CampaignForm = (props) => {
         {errors.title && <p>Title is required.</p>}
         <button type="submit">Create Campaign</button>
       </form>
-      {submitted && title ? (
+      {submitted ? (
         <div> {saveSuccessful ? successMsg : errorMsg}</div>
       ) : null}
     </div>
