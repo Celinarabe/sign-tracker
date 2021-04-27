@@ -52,6 +52,18 @@ class FirebaseDb {
       .get();
     return signList.docs.map((doc) => doc.data());
   };
+
+  // upload sign function
+  //write new sign to firestore
+  createSign = async (signObj, campaignID) => {
+    //returns new doc
+    return await this.db
+      .collection("campaign")
+      .doc(campaignID)
+      .collection("signs")
+      .withConverter(signConverter)
+      .add(signObj);
+  };
 }
 
 export default FirebaseDb;
