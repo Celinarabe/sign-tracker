@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import * as exifr from "exifr";
 import { Sign } from "../models/sign";
+import { ProgressBar } from "./ProgressBar";
 
 const PhotoForm = (props) => {
   const [photoList, setPhotoList] = useState([]);
+  const [inProgress, setInProgress] = useState(false);
 
   const successMsg = "Image uploaded successfully";
   const errorMsg = "Unable to upload image";
@@ -40,8 +42,9 @@ const PhotoForm = (props) => {
         longitude,
         file,
         fileAsURL,
-        submitted: false,
+        completed: false,
         saveSuccessful: false,
+        progress: 0,
       }; //will this become the storage URL?
     });
     return Promise.all(promises);
@@ -53,7 +56,8 @@ const PhotoForm = (props) => {
       return (
         <div>
           <img src={file.fileAsURL} alt="sign to be submitted"></img>
-          {file.submitted ? (
+          {inProgress ? <ProgressBar percentage={file.progress} /> : ""}
+          {file.completed ? (
             <div> {file.saveSuccessful ? successMsg : errorMsg}</div>
           ) : null}
         </div>
@@ -63,39 +67,55 @@ const PhotoForm = (props) => {
 
   //uploading each file object to storage
   const uploadPhotos = () => {
+    setInProgress(true);
     photoList.forEach((obj) => {
-      obj.submitted = true;
       props.storage.uploadSign(
         "Gij7b83mMQsIiXWapL9A",
         obj,
-        () => {},
+        progressCallback,
         errorCallback,
         successCallback
       );
     });
   };
 
+  const progressCallback = (progress, fileObj) => {
+    console.log("Upload is " + progress + "% done");
+    fileObj.progress = progress;
+    let newArr = [...photoList];
+    newArr[fileObj.key] = fileObj;
+    setPhotoList(newArr);
+  };
+
   //create sign object and write to firestore
   const successCallback = (task, fileObj) => {
+    fileObj.completed = true;
     fileObj.saveSuccessful = true;
-
-    task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      console.log("File available at", downloadURL);
-      let newSign = new Sign(
-        null,
-        downloadURL,
-        fileObj.latitude,
-        fileObj.longitude
-      );
-      props.database
-        .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
-        .then(() => console.log("uploaded successfully"));
-    });
+    setInProgress(false);
+    //set state here
+    let newArr = [...photoList];
+    newArr[fileObj.key] = fileObj;
+    setPhotoList(newArr);
+    // //writing to firestore
+    // task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+    //   console.log("File available at", downloadURL);
+    //   let newSign = new Sign(
+    //     null,
+    //     downloadURL,
+    //     fileObj.latitude,
+    //     fileObj.longitude
+    //   );
+    //   props.database
+    //     .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
+    //     .then(() => console.log("uploaded successfully"));
+    // });
   };
 
   const errorCallback = (error, fileObj) => {
     console.log(error);
+    fileObj.completed = true;
     fileObj.saveSuccessful = false;
+    setInProgress(false);
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
     setPhotoList(newArr);

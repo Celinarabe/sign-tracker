@@ -1,6 +1,6 @@
 import { FirebaseApp, FirebaseDb, FirebaseStorage } from "./firebase";
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import "./stylesheets/App.css";
 import PhotoForm from "./components/PhotoForm";
 import CampaignForm from "./components/CampaignForm";
 

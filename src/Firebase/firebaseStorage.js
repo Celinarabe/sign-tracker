@@ -5,8 +5,13 @@ class FirebaseStorage {
   }
 
   //this method stores the photo in storage
-  uploadSign = (campaignID, fileObj, progressCallback, errorCallback, successCallback) => {
-    
+  uploadSign = (
+    campaignID,
+    fileObj,
+    progressCallback,
+    errorCallback,
+    successCallback
+  ) => {
     const { file } = fileObj;
 
     let task = this.signsRef
@@ -24,18 +29,20 @@ class FirebaseStorage {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
+
+        progressCallback(progress, fileObj);
       },
       (error) => {
         errorCallback(error, fileObj);
         // Handle unsuccessful uploads
       },
-      () => { // firebase callback (gets called when upload is complete)
-        successCallback(task, fileObj) // our custom callback that takes in the completed task
+      () => {
+        // firebase callback (gets called when upload is complete)
+        successCallback(task, fileObj); // our custom callback that takes in the completed task
       }
     );
-    console.log('returning from', file.name)
-  }
+    console.log("returning from", file.name);
+  };
 }
 
 export default FirebaseStorage;
