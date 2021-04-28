@@ -96,19 +96,19 @@ const PhotoForm = (props) => {
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
     setPhotoList(newArr);
-    // //writing to firestore
-    // task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-    //   console.log("File available at", downloadURL);
-    //   let newSign = new Sign(
-    //     null,
-    //     downloadURL,
-    //     fileObj.latitude,
-    //     fileObj.longitude
-    //   );
-    //   props.database
-    //     .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
-    //     .then(() => console.log("uploaded successfully"));
-    // });
+    //writing to firestore
+    task.snapshot.ref.getDownloadURL().then((downloadURL) => {
+      console.log("File available at", downloadURL);
+      let newSign = new Sign(
+        null,
+        downloadURL,
+        fileObj.latitude,
+        fileObj.longitude
+      );
+      props.database
+        .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
+        .then(() => console.log("uploaded successfully"));
+    });
   };
 
   const errorCallback = (error, fileObj) => {
