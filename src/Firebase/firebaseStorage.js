@@ -41,7 +41,6 @@ class FirebaseStorage {
         successCallback(task, fileObj); // our custom callback that takes in the completed task
       }
     );
-    console.log("returning from", file.name);
   };
 }
 

@@ -2,26 +2,27 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import * as exifr from "exifr";
 import { Sign } from "../models/sign";
-import { ProgressBar } from "./ProgressBar";
+import { PhotoPreview } from "./PhotoPreview";
 
 const PhotoForm = (props) => {
   const [photoList, setPhotoList] = useState([]);
   const [inProgress, setInProgress] = useState(false);
 
-  const successMsg = "Image uploaded successfully";
-  const errorMsg = "Unable to upload image";
+  const revokeUrls = () => {
+    //if photo list isn't empty, revoke url space in memory
+    if (photoList.length !== 0) {
+      photoList.forEach((obj) => {
+        URL.revokeObjectURL(obj.fileAsURL);
+      });
+    }
+  };
 
   //this function calls extract data and sets state
   const handleChange = async (e) => {
     if (e.target.files) {
       extractData(Array.from(e.target.files))
         .then((convertedFiles) => {
-          //if photo list isn't empty, revoke url space in memory
-          if (photoList.length !== 0) {
-            photoList.forEach((obj) => {
-              URL.revokeObjectURL(obj.fileAsURL);
-            });
-          }
+          revokeUrls();
           setPhotoList(convertedFiles);
         })
         .catch((e) => {
@@ -45,24 +46,9 @@ const PhotoForm = (props) => {
         completed: false,
         saveSuccessful: false,
         progress: 0,
-      }; //will this become the storage URL?
+      };
     });
     return Promise.all(promises);
-  };
-
-  //this function displays photos to be loaded
-  const displayPhotos = () => {
-    return photoList.map((file) => {
-      return (
-        <div>
-          <img src={file.fileAsURL} alt="sign to be submitted"></img>
-          {inProgress ? <ProgressBar percentage={file.progress} /> : ""}
-          {file.completed ? (
-            <div> {file.saveSuccessful ? successMsg : errorMsg}</div>
-          ) : null}
-        </div>
-      );
-    });
   };
 
   //uploading each file object to storage
@@ -91,7 +77,6 @@ const PhotoForm = (props) => {
   const successCallback = (task, fileObj) => {
     fileObj.completed = true;
     fileObj.saveSuccessful = true;
-    setInProgress(false);
     //set state here
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
@@ -126,13 +111,23 @@ const PhotoForm = (props) => {
     console.log(photoList);
   }, [photoList]);
 
+  //setting progress state to false once all uploads are done
+  useEffect(() => {
+    for (let i = 0; i < photoList.length; i++) {
+      if (!photoList[i].completed) {
+        return;
+      }
+    }
+    setInProgress(false);
+  }, [photoList]);
+
   return (
     <div>
       <h2>Upload new signs</h2>
       <input type="file" multiple onChange={handleChange}></input>
       <button onClick={uploadPhotos}>Submit Photos</button>
 
-      {displayPhotos()}
+      <PhotoPreview photos={photoList} inProgress={inProgress} />
     </div>
   );
 };
