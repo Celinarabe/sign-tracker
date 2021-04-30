@@ -27,7 +27,6 @@ const PhotoForm = (props) => {
         })
         .catch((e) => {
           console.log(e);
-          console.log("error setting data");
         });
     }
   };
