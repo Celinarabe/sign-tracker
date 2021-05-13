@@ -1,13 +1,17 @@
-import { FirebaseApp, FirebaseDb, FirebaseStorage } from "./firebase";
+import { FirebaseApp, FirebaseAuth, FirebaseDb, FirebaseStorage } from "./firebase";
 import React, { useState, useEffect } from "react";
 import "./stylesheets/App.css";
 import PhotoForm from "./components/PhotoForm";
 import CampaignForm from "./components/CampaignForm";
+import Login from "./components/Login";
+
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
 const storage = new FirebaseStorage(firebaseApp);
+const auth = new FirebaseAuth(firebaseApp);
+
 
 const displayCampaigns = (arr) => {
   return arr.map((campaign, idx) => {
@@ -50,7 +54,9 @@ function App() {
     <div>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
       <CampaignForm database={db} />
-      <PhotoForm storage={storage} database={db}/>
+      <PhotoForm storage={storage} database={db} />
+
+      <Login auth={auth}/>
     </div>
   );
 }
