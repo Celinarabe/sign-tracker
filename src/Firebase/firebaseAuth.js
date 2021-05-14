@@ -7,6 +7,9 @@ class FirebaseAuth {
   loginUser = async (email, password) => {
     try {
       await this.auth.signInWithEmailAndPassword(email, password);
+      console.log('logged in')
+      var user = this.auth.currentUser
+      console.log(user.email)
     } catch (error) {
       console.log('ERROR ERROR')
       console.log(error)
@@ -16,11 +19,19 @@ class FirebaseAuth {
   signupUser = async (email, password) => {
     try {
       await this.auth.createUserWithEmailAndPassword(email, password);
+      console.log('signed up and logged in')
+      var user = this.auth.currentUser
+      console.log(user.email)
     } catch (error) {
-      console.log('SIGN UP ERROR', email)
+      console.log('SIGN UP ERROR')
       console.log(error)
     }
   }
+
+
+
+  //realtime listener
+
 }
 
 export default FirebaseAuth;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 const Login = (props) => {
   const [state, setState] = useState({
     email: "",
@@ -22,10 +21,15 @@ const Login = (props) => {
 
   const handleSignupClick = async (e) => {
     e.preventDefault();
-    console.log(state.email)
+    console.log(state.email);
     await props.auth.signupUser(state.email, state.password);
-    
-  }
+  };
+
+  const handleLogoutClick = (e) => {
+    e.preventDefault();
+    props.auth.auth.signOut();
+  };
+
   return (
     <div>
       <h2>Sign up here!</h2>
@@ -48,6 +52,9 @@ const Login = (props) => {
       </button>
       <button id="btnSignup" type="submit" onClick={handleSignupClick}>
         Sign Up
+      </button>
+      <button id="btnLogout" type="submit" onClick={handleLogoutClick}>
+        Log Out
       </button>
     </div>
   );
