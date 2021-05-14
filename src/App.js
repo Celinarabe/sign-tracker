@@ -1,17 +1,21 @@
-import { FirebaseApp, FirebaseAuth, FirebaseDb, FirebaseStorage } from "./firebase";
+import {
+  FirebaseApp,
+  FirebaseAuth,
+  FirebaseDb,
+  FirebaseStorage,
+} from "./firebase";
 import React, { useState, useEffect } from "react";
 import "./stylesheets/App.css";
 import PhotoForm from "./components/PhotoForm";
 import CampaignForm from "./components/CampaignForm";
 import Login from "./components/Login";
-
+import withUser from "./hoc/withUser";
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
 const db = new FirebaseDb(firebaseApp);
 const storage = new FirebaseStorage(firebaseApp);
 const auth = new FirebaseAuth(firebaseApp);
-
 
 const displayCampaigns = (arr) => {
   return arr.map((campaign, idx) => {
@@ -30,7 +34,7 @@ const displayCampaigns = (arr) => {
   });
 };
 
-function App() {
+function App(props) {
   const [campaigns, setCampaigns] = useState([]); //data state
   const [isLoading, setIsLoading] = useState(true); //loading state
 
@@ -52,13 +56,13 @@ function App() {
 
   return (
     <div>
+      <h1>Hello, {props.user ? props.user.email : "Guest"}</h1>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
       <CampaignForm database={db} />
       <PhotoForm storage={storage} database={db} />
-
-      <Login auth={auth}/>
+      <Login auth={auth} />
     </div>
   );
 }
 
-export default App;
+export default withUser(App, auth);
