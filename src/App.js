@@ -9,7 +9,7 @@ import "./stylesheets/App.css";
 import PhotoForm from "./components/PhotoForm";
 import CampaignForm from "./components/CampaignForm";
 import Login from "./components/Login";
-import withUser from "./hoc/withUser";
+import withAuth from "./hoc/withAuth";
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
@@ -65,4 +65,4 @@ function App(props) {
   );
 }
 
-export default withUser(App, auth);
+export default withAuth(App, auth);
