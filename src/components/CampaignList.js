@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 
 
@@ -5,6 +6,16 @@ const CampaignList = (props) => {
 
   const [campaigns, setCampaigns] = useState([]); //data state
   const [isLoading, setIsLoading] = useState(true); //loading state
+=======
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
+const CampaignList = (props) => {
+  const [campaigns, setCampaigns] = useState([]); //data state
+  const [isLoading, setIsLoading] = useState(true); //loading state
+  const user = useContext(AuthContext);
+
+>>>>>>> 58d83cbc68c00964bb82fd5b77e1c0df2550914e
 
   const displayCampaigns = (arr) => {
     return arr.map((campaign, idx) => {
@@ -15,7 +26,10 @@ const CampaignList = (props) => {
             <div key={sign.id}>
               <p>sign ID: {sign.id}</p>
               <img src={sign.image} alt="sign"></img>
+<<<<<<< HEAD
               {/* <p>Posted? {sign.posted ? "yes" : "no"}</p> */}
+=======
+>>>>>>> 58d83cbc68c00964bb82fd5b77e1c0df2550914e
             </div>
           ))}
         </li>
@@ -40,9 +54,17 @@ const CampaignList = (props) => {
 
   return (
     <div>
+<<<<<<< HEAD
+=======
+      <h3>Welcome {user? user.email: "Guest"}</h3>
+>>>>>>> 58d83cbc68c00964bb82fd5b77e1c0df2550914e
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default CampaignList;
+=======
+export default CampaignList;
+>>>>>>> 58d83cbc68c00964bb82fd5b77e1c0df2550914e
