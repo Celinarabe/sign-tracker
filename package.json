@@ -13,6 +13,8 @@
     "exifr": "^6.2.0",
     "firebase": "^8.3.3",
     "framer-motion": "^4.1.17",
+    "google-map-react": "^2.1.9",
+    "google-maps-react": "^2.0.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.2.3",

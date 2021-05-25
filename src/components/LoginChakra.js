@@ -11,6 +11,7 @@ const Login = () => {
           <Heading mb={6}>Log in</Heading>
           <Input placeholder="Email" mb={6} type="email" />
           <Input placeholder="Password" mb={6} type="password" />
+          <Button colorScheme="teal">Log In</Button>
         </Flex>
       </Flex>
       

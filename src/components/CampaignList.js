@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { Heading } from "@chakra-ui/react"
+
 
 const CampaignList = (props) => {
   const [campaigns, setCampaigns] = useState([]); //data state
@@ -40,7 +42,7 @@ const CampaignList = (props) => {
 
   return (
     <div>
-      <h3>Welcome {user? user.email: "Guest"}</h3>
+      <Heading as="h2">Welcome {user? user.email: "Guest"}</Heading>
       {isLoading ? <p>Loading...</p> : <ul>{displayCampaigns(campaigns)}</ul>}
     </div>
   );
