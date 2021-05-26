@@ -4,7 +4,9 @@ import {
   FirebaseDb,
   FirebaseStorage,
 } from "./firebase";
+import "@fontsource/montserrat/400.css"
 import { ChakraProvider } from "@chakra-ui/react";
+
 import { AuthProvider } from "./context/AuthContext";
 import "./stylesheets/App.css";
 import PhotoForm from "./components/PhotoForm";
@@ -12,7 +14,9 @@ import CampaignForm from "./components/CampaignForm";
 import CampaignList from "./components/CampaignList";
 //import LoginChakra from "./components/LoginChakra";
 import Login from "./components/Login";
-import { withAuth } from './hoc/withAuth';
+import { withAuth } from "./hoc/withAuth";
+import Routes from "./components/Routes";
+import theme from "./chakraUI/theme"
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
@@ -22,16 +26,18 @@ const auth = new FirebaseAuth(firebaseApp);
 
 function App() {
   return (
-    <div>
-      <ChakraProvider>
-        <AuthProvider auth={auth}>
-          <CampaignList database={db} />
-          <CampaignForm database={db} />
-          <PhotoForm storage={storage} database={db} />
-          <Login auth={auth} />
-        </AuthProvider>
-      </ChakraProvider>
-    </div>
+     <div>
+       <ChakraProvider theme={theme}>
+       <Routes />
+    {/*      <AuthProvider auth={auth}>
+           <CampaignList database={db} />
+           <CampaignForm database={db} />
+           <PhotoForm storage={storage} database={db} />
+           <Login auth={auth} />
+         </AuthProvider> */}
+       </ChakraProvider>
+     </div>
+    
   );
 }
 
