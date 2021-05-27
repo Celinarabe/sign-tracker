@@ -6,7 +6,7 @@ const theme = extendTheme({
     body: "Montserrat",
   },
   fontSizes: {
-    lg: "18px",
+    xl: "9rem",
   },
   colors: {
     blue: {
@@ -17,28 +17,50 @@ const theme = extendTheme({
     eggshell: "#E5E5E5",
     white: "#FFFFFF",
     black: "#000000",
-    gray: "#C4C4C4",
+    gray: {
+      100: "#C4C4C4",
+      200: "#E3E3E3",
+    },
   },
+
   components: {
-    Button: {
+    Heading: {
       baseStyle: {
         fontWeight: "semibold",
-      },
-      sizes: {
-        xl: {
-          h: "56px",
-          fontSize: "lg",
-          px: "32px",
-        },
+        letterSpacing: "0.1rem",
+        color: "black",
+        
       },
       variants: {
-        "with-shadowyow": {
-          bg: "red.400",
+        jumbo: {
+          fontWeight: "extrabold",
+          fontSize: "10vw",
+          letterSpacing: "0.2rem",
+        },
+        normal: {
+          fontSize: "5vw",
+        },
+      },
+    },
+    // Input: {
+    //   baseStyle: {
+    //     focusBorderColor: "gray",
+    //   },
+    //   variants: {
+    //     normal: {
+    //       focusBorderColor: "lime",
+    //     },
+    //   },
+    // },
+    Button: {
+      variants: {
+        main: {
+          bg: "gray",
           boxShadow: "0 0 2px 2px #efdfde",
         },
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 export default theme;

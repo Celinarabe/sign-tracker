@@ -5,6 +5,8 @@ import {
   FirebaseStorage,
 } from "./firebase";
 import "@fontsource/montserrat/400.css"
+import "@fontsource/montserrat/600.css"
+import "@fontsource/montserrat/800.css"
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { AuthProvider } from "./context/AuthContext";
