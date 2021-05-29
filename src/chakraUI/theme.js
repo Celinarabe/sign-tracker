@@ -6,7 +6,19 @@ const theme = extendTheme({
     body: "Montserrat",
   },
   fontSizes: {
-    xl: "9rem",
+    xs: "0.75rem",
+    sm: "0.875rem",
+    md: "1rem",
+    lg: "1.125rem",
+    xl: "1.25rem",
+    "2xl": "1.5rem",
+    "3xl": "1.875rem",
+    "4xl": "2.25rem",
+    "5xl": "3rem",
+    "6xl": "3.75rem",
+    "7xl": "4.5rem",
+    "8xl": "6rem",
+    "9xl": "8rem",
   },
   colors: {
     blue: {
@@ -18,8 +30,9 @@ const theme = extendTheme({
     white: "#FFFFFF",
     black: "#000000",
     gray: {
-      100: "#C4C4C4",
-      200: "#E3E3E3",
+      100: "#C4C4C4", //medium
+      200: "#E3E3E3", //lightest
+      300: "#4E4F67", //darkest
     },
   },
 
@@ -27,20 +40,33 @@ const theme = extendTheme({
     Heading: {
       baseStyle: {
         fontWeight: "semibold",
-        letterSpacing: "0.1rem",
-        color: "black",
         
+        color: "black",
       },
       variants: {
         jumbo: {
           fontWeight: "extrabold",
-          fontSize: "10vw",
+          fontSize: "9xl",
           letterSpacing: "0.2rem",
         },
         normal: {
-          fontSize: "5vw",
+          fontSize: "5xl",
+          letterSpacing: "0.1rem",
         },
+        sub: {
+          fontSize: "xl",
+          fontWeight: "semibold",
+          color: "gray.300",
+        }
       },
+    },
+    Text: {
+      variants: {
+        minor: {
+          fontSize: "xs",
+          color: "gray.300",
+        },
+      }
     },
     // Input: {
     //   baseStyle: {
@@ -62,5 +88,5 @@ const theme = extendTheme({
     },
   },
 });
-//
+
 export default theme;
