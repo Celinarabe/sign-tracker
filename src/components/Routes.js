@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import WelcomePage from "./WelcomePage";
-import Dashboard from "./Dashboard";
+import DashboardPage from "./DashboardPage";
 // import Navigation from "./Navigation";
 
 const Routes = () => {
@@ -13,7 +13,7 @@ const Routes = () => {
       {/* Switch component looks through our defined routes and matches with route requested */}
       <Switch>
         <Route exact path={["/welcome"]} component={WelcomePage} />
-        <Route exact path={["/","/dashboard"]} component={Dashboard} />
+        <Route exact path={["/","/dashboard"]} component={DashboardPage} />
       </Switch>
     </BrowserRouter>
   );

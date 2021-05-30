@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { MapBg } from "../images/";
 import LoginChakra from "./LoginChakra";
+import {Link as ReactLink } from "react-router-dom"
 
 const WelcomePage = () => {
   return (
@@ -34,9 +35,11 @@ const WelcomePage = () => {
             </Heading>
           </Flex>
           <Flex mt="15%" justify="center">
-            <Button bg="gray.100" color="#4E4F67" w="150px">
-              Try it out!
-            </Button>
+            <Link as={ReactLink} to="/dashboard">
+              <Button bg="gray.100" color="#4E4F67" w="150px">
+                Try it out!
+              </Button>
+            </Link>
           </Flex>
         </Box>
 
