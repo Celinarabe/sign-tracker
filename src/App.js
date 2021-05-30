@@ -18,7 +18,7 @@ import CampaignList from "./components/CampaignList";
 import Login from "./components/Login";
 import { withAuth } from "./hoc/withAuth";
 import Routes from "./components/Routes";
-import theme from "./chakraUI/theme"
+import theme from "./theme"
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it

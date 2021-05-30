@@ -26,7 +26,7 @@ const WelcomePage = () => {
           bgSize="100% 100%"
           p="5% 5%"
         >
-          <Flex h="55%" w="100%" align="flex-end" mb="5%">
+          <Flex h="55%" w="full" align="flex-end" mb="5%">
             <Heading variant="jumbo" color="white">
               Photo
               <br /> Mapper
