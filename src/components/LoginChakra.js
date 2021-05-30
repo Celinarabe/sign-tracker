@@ -1,23 +1,59 @@
-import React from 'react'
-import { Button, Flex, Heading, Input, Icon } from "@chakra-ui/react"
-import { MdSettings } from "react-icons/md"
+import React from "react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Input,
+  Icon,
+  Stack,
+  Box,
+  Checkbox,
+  Text,
+  Link,
+} from "@chakra-ui/react";
+import { MdSettings } from "react-icons/md";
 
-
-const Login = () => {
+const LoginChakra = () => {
   return (
     <div>
-      <Flex height="50vh" alignItems="center" justifyContent="center">
-        <Flex direction="column" background="gray.100" p={12} rounded={6}>
-          <Heading mb={6}>Log in</Heading>
-          <Input placeholder="Email" mb={6} type="email" />
-          <Input placeholder="Password" mb={6} type="password" />
-        </Flex>
-      </Flex>
-      
-      <Icon as={MdSettings} />
+      <Heading
+        variant="normal"
+        mt="10%"
+        mb="7%"
+        textAlign={[null, "center", "left"]}
+      >
+        Log in
+      </Heading>
+      <Stack direction={["column"]} spacing="1rem" mb="3rem">
+        <Box>
+          <Text>Email</Text>
+          <Input placeholder="Enter your email"></Input>
+        </Box>
+        <Box>
+          <Text>Password</Text>
+          <Input placeholder="Enter your password"></Input>
+        </Box>
+        <Box>
+          <Checkbox mt="1%">Keep me logged in</Checkbox>
+        </Box>
+        <Button w="100%" colorScheme="blue">
+          Log in
+        </Button>
+      </Stack>
+      <Text align="center">
+        Don't have an account?
+        <Link href="" fontWeight="semibold">
+          Sign up
+        </Link>
+      </Text>
 
+      <Text align="center">
+        <Link href="" fontWeight="semibold">
+          Forgot Password?
+        </Link>
+      </Text>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default LoginChakra;
