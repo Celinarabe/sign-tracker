@@ -4,6 +4,9 @@ const Button = {
       bg: "gray",
       boxShadow: "0 0 2px 2px #efdfde",
     },
+    link : {
+      
+    }
   },
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+//file imports
 import {
   Button,
   Flex,
@@ -10,8 +10,8 @@ import {
   Checkbox,
   Text,
   Link,
+  VStack,
 } from "@chakra-ui/react";
-import { MdSettings } from "react-icons/md";
 
 const LoginChakra = () => {
   return (
@@ -24,32 +24,24 @@ const LoginChakra = () => {
       >
         Log in
       </Heading>
-      <Stack direction={["column"]} spacing="1rem" mb="3rem">
-        <Box>
+      <VStack spacing={5} w="100%" mb="1rem">
+        <Box w="100%">
           <Text>Email</Text>
           <Input placeholder="Enter your email"></Input>
         </Box>
-        <Box>
+        <Box w="100%">
           <Text>Password</Text>
           <Input placeholder="Enter your password"></Input>
         </Box>
-        <Box>
-          <Checkbox mt="1%">Keep me logged in</Checkbox>
-        </Box>
+
         <Button w="100%" colorScheme="blue">
           Log in
         </Button>
-      </Stack>
+      </VStack>
       <Text align="center">
-        Don't have an account?
+        Don't have an account?&nbsp;
         <Link href="" fontWeight="semibold">
           Sign up
-        </Link>
-      </Text>
-
-      <Text align="center">
-        <Link href="" fontWeight="semibold">
-          Forgot Password?
         </Link>
       </Text>
     </div>

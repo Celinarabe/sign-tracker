@@ -1,4 +1,4 @@
-import React from "react";
+//file imports
 import {
   Button,
   Flex,
@@ -14,12 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { Sign1 } from "../images";
 
+//this component will accept props in the future but is currently using static data
 const Sign = () => {
   return (
     <div>
       <hr className="line-break" />
-      <Flex justify="space-between">
-        <Box>
+      <Flex justify="space-between" my={3}>
+        <Box position="relative">
           <Heading mb=".1rem" variant="sub">
             Queens St & Shenandoah
           </Heading>
@@ -27,7 +28,13 @@ const Sign = () => {
             Taken on: 4/28/21
           </Text>
           <Text mb="1.5rem">Big Sign</Text>
-          <Button variant="link" colorScheme="black">
+          <Button
+            position="absolute"
+            bottom="0"
+            size="xs"
+            variant="link"
+            colorScheme="black"
+          >
             Edit note
           </Button>
         </Box>

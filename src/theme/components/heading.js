@@ -7,15 +7,15 @@ const heading = {
   variants: {
     jumbo: {
       fontWeight: "extrabold",
-      fontSize: "9xl",
+      fontSize: "8xl",
       letterSpacing: "0.2rem",
     },
     normal: {
-      fontSize: "5xl",
+      fontSize: "2xl",
       letterSpacing: "0.1rem",
     },
     sub: {
-      fontSize: "xl",
+      fontSize: "md",
       fontWeight: "semibold",
       color: "gray.300",
     }
