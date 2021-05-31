@@ -11,6 +11,8 @@ class Campaign {
   setSigns(signList) {
     this.signs = signList;
   }
+
+
 }
 
 // Firestore data converter

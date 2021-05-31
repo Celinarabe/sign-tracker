@@ -23,6 +23,9 @@ const db = new FirebaseDb(firebaseApp);
 const storage = new FirebaseStorage(firebaseApp);
 const auth = new FirebaseAuth(firebaseApp);
 
+
+const fetchSigns = async () => {
+
 function App() {
   return (
     <div>
@@ -30,11 +33,12 @@ function App() {
         <AuthProvider auth={auth}>
           <DarkModeSwitch />
           <LoginChakra />
+          
           <CampaignList database={db} />
+          <MapContainer database={db}/>
           <CampaignForm database={db} />
           <PhotoForm storage={storage} database={db} />
           <Login auth={auth} />
-          <MapContainer />
         </AuthProvider>
       </ChakraProvider>
     </div>
