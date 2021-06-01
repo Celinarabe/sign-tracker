@@ -1,12 +1,9 @@
-body {
-  height: 95vh;
-  width: 95vw;
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    /* overflow-x: hidden;  */
 }
 
-.border {
-  background-color: #fff;
-}
-
-/* html {
-  overflow: hidden;
-} */

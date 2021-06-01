@@ -1,16 +1,7 @@
 //file imports
 import {
   Button,
-  Flex,
-  Heading,
-  Input,
-  Icon,
-  Stack,
-  Box,
-  Checkbox,
   Text,
-  Image,
-  Link,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -23,11 +14,17 @@ import {
 const UploadPhoto = (props) => {
   return (
     <div>
-      <Modal scrollBehavior="inside"closeOnOverlayClick={false} isOpen={props.isOpen} onClose={props.onClose}>
+      <Modal
+        scrollBehavior="inside"
+        closeOnOverlayClick={false}
+        isOpen={props.isOpen}
+        onClose={props.onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Modal Title</ModalHeader>
           <ModalCloseButton />
+          {/* Need to add stuff here */}
           <ModalBody>
             <Text>Hey guys</Text>
           </ModalBody>

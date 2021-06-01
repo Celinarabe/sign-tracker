@@ -1,21 +1,26 @@
 //component imports
-import React from "react";
+import React, { Component, useEffect, useState } from "react";
 import Sign from "./Sign";
 
 //file imports
 import { Heading, Text } from "@chakra-ui/react";
 
-//this component will receive signs as props
-const SignList = () => {
+//this component receives signs as props
+//TODO: this component needs campaign as props
+const SignList = (props) => {
+  const displaySigns = () =>
+    props.signs.map((sign, idx) => {
+      console.log(sign.latitude);
+      return <div>{<Sign title={sign.latitude} imageSrc={sign.image} />}</div>;
+    });
+
   return (
     <div>
-      <Text>6 Items</Text>
+      <Text>{props.signs ? props.signs.length : ""} Items</Text>
       <Heading variant="normal" mb="2.5rem">
         Educators for PISD
       </Heading>
-      <Sign />
-      <Sign />
-      <Sign />
+      {props.signs ? displaySigns() : ""}
     </div>
   );
 };

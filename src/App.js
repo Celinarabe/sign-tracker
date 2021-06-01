@@ -1,9 +1,6 @@
 //component imports
-import PhotoForm from "./components/PhotoForm";
-import CampaignForm from "./components/CampaignForm";
-import CampaignList from "./components/CampaignList";
-import Login from "./components/Login";
-import Routes from "./components/Routes";
+import WelcomePage from "./components/WelcomePage";
+import DashboardPage from "./components/DashboardPage";
 
 //file imports
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
@@ -16,6 +13,7 @@ import {
 import { AuthProvider } from "./context/AuthContext";
 import { withAuth } from "./hoc/withAuth";
 import theme from "./theme";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 //css imports
 import "@fontsource/montserrat/400.css";
@@ -35,7 +33,20 @@ function App() {
       <AuthProvider auth={auth}>
         <ChakraProvider theme={theme}>
           <CSSReset />
-          <Routes />
+          <BrowserRouter>
+            <Switch>
+              <Route
+                exact
+                path={["/welcome"]}
+                render={() => <WelcomePage auth={auth} />}
+              />
+              <Route
+                exact
+                path={["/", "/dashboard"]}
+                render={() => <DashboardPage database={db} />}
+              />
+            </Switch>
+          </BrowserRouter>
           {/* <CampaignList database={db} />
           <CampaignForm database={db} />
           <PhotoForm storage={storage} database={db} />

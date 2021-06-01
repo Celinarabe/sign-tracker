@@ -12,29 +12,67 @@ import {
   Link,
   VStack,
 } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Link as ReactLink } from "react-router-dom";
 
-const LoginChakra = () => {
+const LoginChakra = (props) => {
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [id]: value.trim(),
+    }));
+  };
+
+  const handleLoginClick = async (e) => {
+    e.preventDefault();
+    await props.auth.loginUser(state.email, state.password);
+  };
+
+  const handleSignupClick = async (e) => {
+    e.preventDefault();
+    console.log(state.email);
+    await props.auth.signupUser(state.email, state.password);
+  };
+
   return (
     <div>
-      <Heading
-        variant="normal"
-        mt="10%"
-        mb="7%"
-        textAlign="left"
-      >
+      <Heading variant="normal" mt="10%" mb="7%" textAlign="left">
         Log in
       </Heading>
       <VStack spacing={5} w="100%" mb="1rem">
         <Box w="100%">
           <Text>Email</Text>
-          <Input placeholder="Enter your email"></Input>
+          <Input
+            id="email"
+            onChange={handleChange}
+            value={state.email}
+            placeholder="Enter your email"
+          ></Input>
         </Box>
         <Box w="100%">
           <Text>Password</Text>
-          <Input placeholder="Enter your password"></Input>
+          <Input
+            id="password"
+            type="password"
+            onChange={handleChange}
+            value={state.password}
+            placeholder="Enter your password"
+          ></Input>
         </Box>
 
-        <Button w="100%" colorScheme="blue">
+        <Button
+          id="btnLogin"
+          type="submit"
+          w="100%"
+          colorScheme="blue"
+          onClick={handleLoginClick}
+        >
           Log in
         </Button>
       </VStack>

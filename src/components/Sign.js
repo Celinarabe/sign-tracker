@@ -1,33 +1,23 @@
 //file imports
-import {
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Icon,
-  Stack,
-  Box,
-  Checkbox,
-  Text,
-  Image,
-  Link,
-} from "@chakra-ui/react";
-import { Sign1 } from "../images";
+import { Button, Flex, Heading, Box, Text, Image } from "@chakra-ui/react";
 
-//this component will accept props in the future but is currently using static data
-const Sign = () => {
+//this component will accept a sign as props
+const Sign = (props) => {
+  console.log(props.sign);
   return (
     <div>
       <hr className="line-break" />
       <Flex justify="space-between" my={3}>
         <Box position="relative">
           <Heading mb=".1rem" variant="sub">
-            Queens St & Shenandoah
+            {props.title}
           </Heading>
           <Text mb="1rem" variant="minor">
             Taken on: 4/28/21
           </Text>
-          <Text mb="1.5rem"variant="minor">Big Sign</Text>
+          <Text mb="1.5rem" variant="minor">
+            Big Sign
+          </Text>
           <Button
             position="absolute"
             bottom="0"
@@ -41,7 +31,7 @@ const Sign = () => {
         <Image
           borderRadius="lg"
           objectFit="cover"
-          src={Sign1}
+          src={props.imageSrc}
           mx="10px"
         ></Image>
       </Flex>
