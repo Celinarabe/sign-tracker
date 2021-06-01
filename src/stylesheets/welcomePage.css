@@ -1,0 +1,12 @@
+body {
+  height: 95vh;
+  width: 95vw;
+}
+
+.border {
+  background-color: #fff;
+}
+
+/* html {
+  overflow: hidden;
+} */

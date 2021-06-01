@@ -27,7 +27,7 @@ const Sign = () => {
           <Text mb="1rem" variant="minor">
             Taken on: 4/28/21
           </Text>
-          <Text mb="1.5rem">Big Sign</Text>
+          <Text mb="1.5rem"variant="minor">Big Sign</Text>
           <Button
             position="absolute"
             bottom="0"

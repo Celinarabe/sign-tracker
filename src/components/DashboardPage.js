@@ -1,9 +1,11 @@
 //component imports
 import SignList from "./SignList";
 import SideBar from "./SideBar";
+import UploadPhoto from "./UploadPhoto";
 
 //file imports
 import React, { useState, useEffect, useContext } from "react";
+import { useDisclosure } from "@chakra-ui/react";
 import { AuthContext } from "../context/AuthContext";
 import {
   Button,
@@ -18,9 +20,17 @@ import {
   Checkbox,
   VStack,
   Stack,
+  Lorem,
   Link,
   Image,
   Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 
 //css imports
@@ -29,9 +39,15 @@ import "../stylesheets/dashboard.css";
 const Dashboard = () => {
   //will need access to user object
   const user = useContext(AuthContext);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div>
-      <SideBar />
+      <SideBar uploadClick={onOpen} />
+      <UploadPhoto isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
+      
+      
+      
 
       <Box display={{ md: "flex" }}>
         <Box

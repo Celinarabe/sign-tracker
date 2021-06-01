@@ -8,6 +8,13 @@ import {
   Heading,
   Input,
   Box,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
   Text,
   Container,
   SimpleGrid,
@@ -21,53 +28,93 @@ import {
 import { MapBg } from "../images/";
 import { Link as ReactLink } from "react-router-dom";
 import { useRef } from "react";
+import { useDisclosure } from "@chakra-ui/react";
+
+//css imports
+import "../stylesheets/welcomePage.css";
 
 const WelcomePage = () => {
-  const scrollToRef = (ref) =>
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  const myRef = useRef(null);
-  const executeScroll = () => scrollToRef(myRef);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef();
+
+  // const scrollToRef = (ref) =>
+  //   ref.current.scrollIntoView({ behavior: "smooth" });
+  // const myRef = useRef(null);
+  // const executeScroll = () => scrollToRef(myRef);
   return (
-    <div>
-      <Box display={{ md: "flex" }}>
-        <Box
-          bgImage={MapBg}
-          borderRadius={{ base: "0", md: "0 20% 20% 0" }}
-          bgSize="100% 100%"
-          p="5% 5%"
-          h="100vh"
-          w={{ base: "100vw", md: "60vw" }}
-        >
-          <Flex h="55%" w="full" align="flex-end" mb="5%">
-            <Heading variant="jumbo" color="white">
-              Photo
-              <br /> Mapper
-            </Heading>
-          </Flex>
+    <div className="border">
+      <Box display={{ md: "flex" }} p="6em">
+        <div>
+          <Box
+            sx={{ filter: "drop-shadow(0px 0px 1em rgba(0, 0, 0, 0.25))" }}
+            bgImage={MapBg}
+            borderRadius={{ base: "0", md: "0 20% 20% 0" }}
+            bgSize="100% 100%"
+            p="5% 3%"
+            h="100vh"
+            w={{ base: "100vw", md: "57vw" }}
+          >
+            <Flex h="55%" w="100vw" align="flex-end" mb="5%">
+              <Heading
+                fontSize={{ base: "7xl", sm: "8xl", md: "8xl" }}
+                letterSpacing="0.2rem"
+                fontWeight="extrabold"
+                color="white"
+              >
+                Photo
+                <br /> Mapper
+              </Heading>
+            </Flex>
 
-          <VStack spacing={4} mt={8}>
-            <Link as={ReactLink} to="/dashboard">
-              <Button bg="gray.100" color="#4E4F67" w="150px">
-                Try it out!
+            <VStack spacing={4} mt={8}>
+              <Link as={ReactLink} to="/dashboard">
+                <Button bg="gray.100" color="#4E4F67" w="150px">
+                  Try it out!
+                </Button>
+              </Link>
+
+              <Button
+                ref={btnRef}
+                onClick={onOpen}
+                display={{ base: "block", md: "none" }}
+                bg="gray.100"
+                color="#4E4F67"
+                w="150px"
+              >
+                Log in
               </Button>
-            </Link>
+              <Drawer
+                isOpen={isOpen}
+                placement="right"
+                onClose={onClose}
+                finalFocusRef={btnRef}
+              >
+                <DrawerOverlay />
+                <DrawerContent>
+                  <DrawerCloseButton />
+                  {/* <DrawerHeader>Log In</DrawerHeader> */}
 
-            {/* Need to add either a drawer or scroll to login section */}
-            <Button
-              onClick={executeScroll}
-              display={{ base: "block", md: "none" }}
-              bg="gray.100"
-              color="#4E4F67"
-              w="150px"
-            >
-              Log in
-            </Button>
-          </VStack>
-        </Box>
-        <div ref={myRef}>
-          <Box bg="white" height="100vh" p="5% 5%" w={{ md: "50vw" }}>
-            <LoginChakra />
+                  <DrawerBody>
+                    <LoginChakra />
+                  </DrawerBody>
+
+                  <DrawerFooter></DrawerFooter>
+                </DrawerContent>
+              </Drawer>
+            </VStack>
           </Box>
+
+          <div>
+            <Box
+              bg="white"
+              display={{ base: "none", md: "block" }}
+              h="100vh"
+              p="5% 8%"
+              w={{ md: "40vw" }}
+            >
+              <LoginChakra />
+            </Box>
+          </div>
         </div>
       </Box>
     </div>

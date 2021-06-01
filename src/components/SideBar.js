@@ -17,7 +17,7 @@ import { AiFillHome, AiFillCamera } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
 
 
-const SideBar = () => {
+const SideBar = (props) => {
   return (
     <div><Box
     position="fixed"
@@ -35,7 +35,7 @@ const SideBar = () => {
         </Button>
       </Link>
 
-      <Button variant="ghost"  w="100%">
+      <Button onClick={props.uploadClick}variant="ghost"  w="100%">
         <Icon as={AiFillCamera} w={8} h={8} color="blue.200" />
       </Button>
       <Link as={ReactLink} to="/welcome">

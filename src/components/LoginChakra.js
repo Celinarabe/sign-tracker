@@ -20,7 +20,7 @@ const LoginChakra = () => {
         variant="normal"
         mt="10%"
         mb="7%"
-        textAlign={[null, "center", "left"]}
+        textAlign="left"
       >
         Log in
       </Heading>
