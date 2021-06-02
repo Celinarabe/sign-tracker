@@ -16,8 +16,8 @@ import "../stylesheets/dashboard.css";
 const Dashboard = (props) => {
   const user = useContext(AuthContext); //user object
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
-  const [signs, setSigns] = useState();
-  const [campaign, setCampaign] = useState(); //NEED TO QUERY CAMPAIGNS BASED ON USER
+  const [signs, setSigns] = useState([]);
+  const [campaign, setCampaign] = useState(); //NEED TO QUERY CAMPAIGN BASED ON USER
 
   console.log(signs);
   const fetchSigns = async () => {

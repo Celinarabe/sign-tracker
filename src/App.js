@@ -47,10 +47,6 @@ function App() {
               />
             </Switch>
           </BrowserRouter>
-          {/* <CampaignList database={db} />
-          <CampaignForm database={db} />
-          <PhotoForm storage={storage} database={db} />
-          <Login auth={auth} /> */}
         </ChakraProvider>
       </AuthProvider>
     </div>

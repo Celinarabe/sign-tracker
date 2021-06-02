@@ -12,29 +12,25 @@ const MapContainer = (props) => {
   const mapStyles = {};
 
   const onMarkerClick = (props, marker, e) => {
-    console.log("were here");
-    console.log(props);
     setSelectedPlace(props);
     setActiveMarker(marker);
     setShowingInfo(true);
   };
 
   const createMarkers = () => {
-    setMarkers(
-      props.signs.map((sign, idx) => {
-        console.log(sign.image);
-        return (
-          // going to need to add more sign data to display in infowindow
-          <Marker
-            onClick={onMarkerClick}
-            key={sign.id}
-            title={sign.latitude}
-            imgSrc={sign.image}
-            position={{ lat: sign.latitude, lng: sign.longitude }}
-          />
-        );
-      })
-    );
+    const signMarkers = props.signs.map((sign, idx) => {
+      return (
+        // going to need to add more sign data to display in infowindow
+        <Marker
+          onClick={onMarkerClick}
+          key={sign.id}
+          title={sign.latitude}
+          imgSrc={sign.image}
+          position={{ lat: sign.latitude, lng: sign.longitude }}
+        />
+      );
+    });
+    setMarkers(signMarkers);
   };
 
   const getBounds = () => {
@@ -78,6 +74,7 @@ const MapContainer = (props) => {
   );
 };
 
+//TODO: store this securely
 export default GoogleApiWrapper({
   apiKey: "AIzaSyBSpE08gglOIu8keG0gZO0B9rDEt9Q3npo",
 })(MapContainer);
