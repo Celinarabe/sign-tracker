@@ -24,6 +24,9 @@ class FirebaseDb {
     return campaigns;
   };
 
+  //TODO: get campaign based on user
+
+
   writeCampaign = async (campaignObj) => {
     try {
       await this.createCampaign(campaignObj);

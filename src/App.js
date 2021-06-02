@@ -1,18 +1,25 @@
+//component imports
+import WelcomePage from "./components/WelcomePage";
+import DashboardPage from "./components/DashboardPage";
+
+//file imports
+import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import {
   FirebaseApp,
   FirebaseAuth,
   FirebaseDb,
   FirebaseStorage,
 } from "./firebase";
-import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "./context/AuthContext";
+import { withAuth } from "./hoc/withAuth";
+import theme from "./theme";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+//css imports
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/600.css";
+import "@fontsource/montserrat/800.css";
 import "./stylesheets/App.css";
-import PhotoForm from "./components/PhotoForm";
-import CampaignForm from "./components/CampaignForm";
-import CampaignList from "./components/CampaignList";
-//import LoginChakra from "./components/LoginChakra";
-import Login from "./components/Login";
-import { withAuth } from './hoc/withAuth';
 
 //TO DO: remove this when we get to production
 const firebaseApp = new FirebaseApp().app; //creating new firebase app object and pulling the app property from it
@@ -23,14 +30,25 @@ const auth = new FirebaseAuth(firebaseApp);
 function App() {
   return (
     <div>
-      <ChakraProvider>
-        <AuthProvider auth={auth}>
-          <CampaignList database={db} />
-          <CampaignForm database={db} />
-          <PhotoForm storage={storage} database={db} />
-          <Login auth={auth} />
-        </AuthProvider>
-      </ChakraProvider>
+      <AuthProvider auth={auth}>
+        <ChakraProvider theme={theme}>
+          <CSSReset />
+          <BrowserRouter>
+            <Switch>
+              <Route
+                exact
+                path={["/welcome"]}
+                render={() => <WelcomePage auth={auth} />}
+              />
+              <Route
+                exact
+                path={["/", "/dashboard"]}
+                render={() => <DashboardPage database={db} />}
+              />
+            </Switch>
+          </BrowserRouter>
+        </ChakraProvider>
+      </AuthProvider>
     </div>
   );
 }

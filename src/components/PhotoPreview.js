@@ -1,7 +1,6 @@
 import React from "react";
 import "../stylesheets/ProgressBar.css";
 
-
 //this function displays photos to be loaded
 const PhotoPreview = (props) => {
   const successMsg = "Image uploaded successfully";
@@ -19,7 +18,6 @@ const PhotoPreview = (props) => {
     );
   });
 };
-
 
 const ProgressBar = (props) => {
   return (
