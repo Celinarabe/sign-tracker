@@ -8,9 +8,9 @@ const PhotoPreview = (props) => {
   const successMsg = "Image uploaded successfully";
   const errorMsg = "Unable to upload image";
 
-  return props.photos? props.photos.map((file) => {
+  return props.photos? props.photos.map((file, idx) => {
     return (
-      <div>
+      <div key={idx}>
         <img src={file.fileAsURL} alt="sign to be submitted"></img>
         {props.inProgress ? <Progress hasStripe value={file.progress} /> : ""}
         {file.completed ? (

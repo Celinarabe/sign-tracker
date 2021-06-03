@@ -1,7 +1,6 @@
 //component imports
 import SignList from "./SignList";
 import SideBar from "./SideBar";
-import UploadPhoto from "./UploadPhoto";
 import MapContainer from "./MapContainer";
 import StyledDropzone from "./StyledDropzone"
 
@@ -18,7 +17,7 @@ const Dashboard = (props) => {
   const user = useContext(AuthContext); //user object
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
   const [signs, setSigns] = useState([]);
-  const [campaign, setCampaign] = useState(); //NEED TO QUERY CAMPAIGN BASED ON USER
+  const [campaign, setCampaign] = useState(""); //NEED TO QUERY CAMPAIGN BASED ON USER
 
 
   const fetchSigns = async () => {

@@ -2,13 +2,12 @@
 import { PhotoPreview } from "./PhotoPreview";
 import { Sign } from "../models/sign";
 
-import React, { useMemo, useCallback, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import Dropzone from "react-dropzone";
+
 import * as exifr from "exifr";
 import {
   Button,
-  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -21,6 +20,7 @@ import {
   TabPanels,
   TabPanel,
   TabList,
+  Text,
 } from "@chakra-ui/react";
 
 const baseStyle = {
@@ -52,15 +52,32 @@ const rejectStyle = {
 };
 
 function StyledDropzone(props) {
+  const UnknownTypeMsg =
+    "Unaccepted file format. (Needs to be .jpg, .jpeg, or .png.)";
+  const UnknownLocationMsg = "Unable to find location data for this photo.";
+
   const [photoList, setPhotoList] = useState([]);
   const [inProgress, setInProgress] = useState(false);
+  const [saveSuccessful, setSaveSuccessful] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const revokeUrls = () => {
-    //if photo list isn't empty, revoke url space in memory
-    if (photoList.length !== 0) {
-      photoList.forEach((obj) => {
-        URL.revokeObjectURL(obj.fileAsURL);
-      });
+  //this function takes user files and calls extract data and sets state
+  const handleChange = (files) => {
+    setErrorMessage("");
+    if (files) {
+      extractData(files)
+        .then((convertedFiles) => {
+          revokeUrls();
+          setPhotoList(photoList.concat(convertedFiles));
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e instanceof TypeError) {
+            setErrorMessage(UnknownLocationMsg);
+          } else {
+            setErrorMessage(UnknownTypeMsg);
+          }
+        });
     }
   };
 
@@ -83,20 +100,12 @@ function StyledDropzone(props) {
     return Promise.all(promises);
   };
 
-  //this function calls extract data and sets state
-  const handleChange = (files) => {
-    if (files) {
-      console.log("before update:", photoList);
-      extractData(files)
-        .then((convertedFiles) => {
-          revokeUrls();
-          console.log("converted files", convertedFiles);
-          console.log("current photos:", photoList);
-          setPhotoList(photoList.concat(convertedFiles)); //another array
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+  const revokeUrls = () => {
+    //if photo list isn't empty, revoke url space in memory
+    if (photoList.length !== 0) {
+      photoList.forEach((obj) => {
+        URL.revokeObjectURL(obj.fileAsURL);
+      });
     }
   };
 
@@ -105,7 +114,7 @@ function StyledDropzone(props) {
     setInProgress(true);
     photoList.forEach((obj) => {
       props.storage.uploadSign(
-        "Gij7b83mMQsIiXWapL9A", //CAMPAIGN AGAIN
+        "Gij7b83mMQsIiXWapL9A", //NEED TO SPECIFY CAMPAIGN
         obj,
         progressCallback,
         errorCallback,
@@ -115,7 +124,6 @@ function StyledDropzone(props) {
   };
 
   const progressCallback = (progress, fileObj) => {
-    console.log("Upload is " + progress + "% done");
     fileObj.progress = progress;
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
@@ -130,6 +138,7 @@ function StyledDropzone(props) {
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
     setPhotoList(newArr);
+
     //writing to firestore
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
       console.log("File available at", downloadURL);
@@ -155,6 +164,13 @@ function StyledDropzone(props) {
     setPhotoList(newArr);
   };
 
+  const handleExit = () => {
+    setPhotoList([]);
+    setErrorMessage("");
+    setSaveSuccessful(false);
+    props.onClose();
+  };
+
   //setting progress state to false once all uploads are done
   useEffect(() => {
     if (photoList.length > 0) {
@@ -164,13 +180,13 @@ function StyledDropzone(props) {
         }
       }
       setInProgress(false);
+      setSaveSuccessful(true);
     }
   }, [photoList]);
 
+  //useCallback: the function will be recreated when anything in the dep. array changes
+  //good for when you want to prevent a function from being created on every single render
   const onDrop = (acceptedFiles) => {
-    // Do something with the files
-    console.log("accepted from drop zone", acceptedFiles);
-
     handleChange(acceptedFiles);
   };
 
@@ -192,21 +208,15 @@ function StyledDropzone(props) {
     [isDragActive, isDragReject, isDragAccept]
   );
 
-  useEffect(() => {
-    console.log("current photo list:", photoList);
-  }, [photoList]);
-
-  console.log("after update", photoList);
-
   return (
     <Modal
       scrollBehavior="inside"
       closeOnOverlayClick={false}
       isOpen={props.isOpen}
-      onClose={props.onClose}
+      onClose={handleExit}
     >
       <ModalOverlay />
-      <ModalContent top="10rem">
+      <ModalContent>
         <ModalHeader>Add Photos</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -219,12 +229,16 @@ function StyledDropzone(props) {
             <TabPanels>
               <TabPanel>
                 <div className="container">
-                  <div {...getRootProps({ style })}>
+                  <div {...getRootProps({ style })} hidden={saveSuccessful}>
                     <input {...getInputProps()} />
                     <p>
                       Drag 'n' drop some files here, or click to select files
                     </p>
                   </div>
+
+                  <Text fontWeight="medium" color="tomato" mt={2}>
+                    {errorMessage}
+                  </Text>
                   <PhotoPreview photos={photoList} inProgress={inProgress} />
                 </div>
               </TabPanel>
@@ -237,12 +251,28 @@ function StyledDropzone(props) {
         </ModalBody>
 
         <ModalFooter>
-          <Button mx={1} variant="ghost">
+          <Button
+            mx={1}
+            variant="ghost"
+            hidden={saveSuccessful}
+            onClick={handleExit}
+          >
             Cancel
           </Button>
 
-          <Button colorScheme="blue" onClick={uploadPhotos}>
+          <Button
+            colorScheme="blue"
+            hidden={saveSuccessful}
+            onClick={uploadPhotos}
+          >
             Upload
+          </Button>
+          <Button
+            colorScheme="blue"
+            hidden={!saveSuccessful}
+            onClick={handleExit}
+          >
+            Done
           </Button>
         </ModalFooter>
       </ModalContent>
