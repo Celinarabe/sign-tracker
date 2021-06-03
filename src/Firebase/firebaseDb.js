@@ -24,6 +24,7 @@ class FirebaseDb {
     return campaigns;
   };
 
+
   //TODO: get campaign based on user
 
 
@@ -36,14 +37,24 @@ class FirebaseDb {
     }
   };
 
+
   //write new campaign to firestore
   createCampaign = async (campaignObj) => {
     //returns new doc
     return await this.db
       .collection("campaign")
+      .doc("userId")
       .withConverter(campaignConverter)
-      .add(campaignObj);
+      .set(campaignObj);
   };
+
+  getCampaign = async (userId) => {
+    return await this.db
+      .collection("campaign")
+      .where("owner", "equals", userId)
+      .withConverter(campaignConverter)
+      .get();
+  }
 
   //query firestore for sign subcollection based on campaignID
   getSigns = async (campaignID) => {

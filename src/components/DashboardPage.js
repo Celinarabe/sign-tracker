@@ -3,6 +3,7 @@ import SignList from "./SignList";
 import SideBar from "./SideBar";
 import UploadPhoto from "./UploadPhoto";
 import MapContainer from "./MapContainer";
+import StyledDropzone from "./StyledDropzone"
 
 //file imports
 import React, { useState, useEffect, useContext } from "react";
@@ -19,7 +20,7 @@ const Dashboard = (props) => {
   const [signs, setSigns] = useState([]);
   const [campaign, setCampaign] = useState(); //NEED TO QUERY CAMPAIGN BASED ON USER
 
-  console.log(signs);
+
   const fetchSigns = async () => {
     const signs = await props.database.getSigns("Gij7b83mMQsIiXWapL9A"); //will need to set this to user associated campaign
     setSigns(signs);
@@ -35,7 +36,7 @@ const Dashboard = (props) => {
   return (
     <div>
       <SideBar uploadClick={onOpen} />
-      <UploadPhoto isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <StyledDropzone storage={props.storage} database={props.database} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 
       <Box display={{ md: "flex" }} pr="0">
         <Box

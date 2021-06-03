@@ -1,3 +1,6 @@
+//component imports
+import StyledDropzone from "./StyledDropzone"
+
 //file imports
 import {
   Button,
@@ -9,7 +12,15 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Tabs,
+  Tab,
+  TabPanels,
+  TabPanel,
+  TabList,
 } from "@chakra-ui/react";
+
+import React, { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 const UploadPhoto = (props) => {
   return (
@@ -21,19 +32,32 @@ const UploadPhoto = (props) => {
         onClose={props.onClose}
       >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+        <ModalContent top="10rem">
+          <ModalHeader>Add Photos</ModalHeader>
           <ModalCloseButton />
-          {/* Need to add stuff here */}
           <ModalBody>
-            <Text>Hey guys</Text>
+            <Tabs isFitted>
+              <TabList>
+                <Tab>Upload Photo</Tab>
+                <Tab>Take a Photo</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <StyledDropzone storage={props.storage} database={props.database}/>
+                </TabPanel>
+
+                <TabPanel>
+                  <p>Download our app to take pictures &#128516;</p>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={props.onClose}>
-              Close
+              Submit
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
