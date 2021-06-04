@@ -43,7 +43,7 @@ function App() {
               <Route
                 exact
                 path={["/", "/dashboard"]}
-                render={() => <DashboardPage database={db} />}
+                render={() => <DashboardPage database={db} storage={storage} />}
               />
             </Switch>
           </BrowserRouter>

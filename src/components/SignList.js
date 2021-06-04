@@ -10,8 +10,7 @@ import { Heading, Text } from "@chakra-ui/react";
 const SignList = (props) => {
   const displaySigns = () =>
     props.signs.map((sign, idx) => {
-      console.log(sign.latitude);
-      return <div>{<Sign title={sign.latitude} imageSrc={sign.image} />}</div>;
+      return <div key={idx}>{<Sign title={sign.latitude} imageSrc={sign.image} />}</div>;
     });
 
   return (
