@@ -81,7 +81,7 @@ function StyledDropzone(props) {
     }
   };
 
-  //this function creates sign object list
+  //this function gets gps data and creates array of sign objects
   const extractData = (files, idx) => {
     const promises = files.map(async (file) => {
       const { latitude, longitude } = await exifr.gps(file);
@@ -100,8 +100,8 @@ function StyledDropzone(props) {
     return Promise.all(promises);
   };
 
+  //if photo list isn't empty, revoke url space in memory
   const revokeUrls = () => {
-    //if photo list isn't empty, revoke url space in memory
     if (photoList.length !== 0) {
       photoList.forEach((obj) => {
         URL.revokeObjectURL(obj.fileAsURL);
@@ -123,25 +123,28 @@ function StyledDropzone(props) {
     });
   };
 
-  const progressCallback = (progress, fileObj) => {
-    fileObj.progress = progress;
+  //updating the file state
+  const updateFile = (fileObj) => {
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
     setPhotoList(newArr);
+  };
+
+  //this function updates a files progress state
+  const progressCallback = (progress, fileObj) => {
+    fileObj.progress = progress;
+    updateFile(fileObj);
   };
 
   //create sign object and write to firestore
   const successCallback = (task, fileObj) => {
     fileObj.completed = true;
     fileObj.saveSuccessful = true;
-    //set state here
-    let newArr = [...photoList];
-    newArr[fileObj.key] = fileObj;
-    setPhotoList(newArr);
+    //updating the files success status
+    updateFile(fileObj);
 
     //writing to firestore
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      console.log("File available at", downloadURL);
       let newSign = new Sign(
         null,
         downloadURL,
@@ -159,9 +162,8 @@ function StyledDropzone(props) {
     fileObj.completed = true;
     fileObj.saveSuccessful = false;
     setInProgress(false);
-    let newArr = [...photoList];
-    newArr[fileObj.key] = fileObj;
-    setPhotoList(newArr);
+    //updating the files success status
+    updateFile(fileObj);
   };
 
   const handleExit = () => {

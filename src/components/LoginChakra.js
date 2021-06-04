@@ -66,15 +66,16 @@ const LoginChakra = (props) => {
           ></Input>
         </Box>
 
-        <Button
-          id="btnLogin"
-          type="submit"
-          w="100%"
-          colorScheme="blue"
-          onClick={handleLoginClick}
-        >
-          Log in
-        </Button>
+        <Link as={ReactLink} to="/dashboard" w="100%">
+          <Button
+            id="btnLogin"
+            w="100%"
+            colorScheme="blue"
+            onClick={handleLoginClick}
+          >
+            Log in
+          </Button>
+        </Link>
       </VStack>
       <Text align="center">
         Don't have an account?&nbsp;
