@@ -4,6 +4,7 @@ import { Link as ReactLink } from "react-router-dom";
 import { AiFillHome, AiFillCamera } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
 
+
 const SideBar = (props) => {
   return (
     <div>
