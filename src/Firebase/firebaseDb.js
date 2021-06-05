@@ -56,6 +56,8 @@ class FirebaseDb {
     return signList.docs.map((doc) => doc.data());
   };
 
+  
+
   // upload sign function
   //write new sign to firestore
   createSign = async (signObj, campaignID) => {

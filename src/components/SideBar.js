@@ -3,6 +3,7 @@ import { Button, Icon, Stack, Box, Link } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 import { AiFillHome, AiFillCamera } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
+import { MdCreateNewFolder } from "react-icons/md";
 
 const SideBar = (props) => {
   return (
@@ -25,6 +26,10 @@ const SideBar = (props) => {
 
           <Button onClick={props.uploadClick} variant="ghost" w="100%">
             <Icon as={AiFillCamera} w={8} h={8} color="blue.200" />
+          </Button>
+
+          <Button onClick={props.uploadClick} variant="ghost" w="100%">
+            <Icon as={MdCreateNewFolder} w={8} h={8} color="blue.200" />
           </Button>
           <Link as={ReactLink} to="/welcome">
             <Button variant="ghost" w="100%">

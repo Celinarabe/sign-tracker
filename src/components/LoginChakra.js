@@ -36,7 +36,7 @@ const LoginChakra = (props) => {
 
   const handleSignupClick = async (e) => {
     e.preventDefault();
-    console.log(state.email);
+    console.log(state.uid);
     await props.auth.signupUser(state.email, state.password);
   };
 

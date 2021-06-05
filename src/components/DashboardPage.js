@@ -16,6 +16,7 @@ import "../stylesheets/dashboard.css";
 const Dashboard = (props) => {
   const user = useContext(AuthContext); //user object
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
+  const { campaignIsOpen, campaignOnOpen, campaignOnClose } = useDisclosure(); //modal for creating new campaign
   const [signs, setSigns] = useState([]);
   const [campaign, setCampaign] = useState(""); //NEED TO QUERY CAMPAIGN BASED ON USER
 
@@ -37,6 +38,7 @@ const Dashboard = (props) => {
       <SideBar uploadClick={onOpen} />
       <StyledDropzone storage={props.storage} database={props.database} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 
+      
       <Box display={{ md: "flex" }} pr="0">
         <Box
           pl="80px"
