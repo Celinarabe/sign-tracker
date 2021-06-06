@@ -24,7 +24,7 @@ const MapContainer = (props) => {
         <Marker
           onClick={onMarkerClick}
           key={sign.id}
-          title={sign.latitude}
+          title={String(sign.latitude)}
           imgSrc={sign.image}
           position={{ lat: sign.latitude, lng: sign.longitude }}
         />
@@ -60,7 +60,7 @@ const MapContainer = (props) => {
         bounds={bounds}
         zoom={14}
         style={mapStyles}
-        initialCenter={{}}
+        initialCenter={{lat: 0, lng: 0}}
       >
         {markers}
         <InfoWindow marker={activeMarker} visible={showingInfo}>
