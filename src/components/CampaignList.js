@@ -27,12 +27,13 @@ const CampaignList = (props) => {
     //define async function
     const fetchCampaigns = async () => {
       setIsLoading(true); //trigger loading state
-      const camps = await props.database.getCampaigns(); //async function returns promise
+      console.log(user.uid)
+      const camps = await props.database.getCampaignsUser(user.uid); //async function returns promise
       setCampaigns(camps); //resolve the promise by setting state to this response
       setIsLoading(false); //set loading state to false
     };
     fetchCampaigns(); //when the component mounts, run fetchCampaigns
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     console.log(campaigns);

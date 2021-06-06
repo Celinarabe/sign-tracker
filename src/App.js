@@ -1,6 +1,7 @@
 //component imports
 import WelcomePage from "./components/WelcomePage";
 import DashboardPage from "./components/DashboardPage";
+import CampaignList from "./components/CampaignList"
 
 //file imports
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
@@ -44,6 +45,7 @@ function App() {
                 exact
                 path={["/", "/dashboard"]}
                 render={() => <DashboardPage database={db} storage={storage} />}
+             
               />
             </Switch>
           </BrowserRouter>

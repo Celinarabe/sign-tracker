@@ -8,7 +8,7 @@ class FirebaseDb {
 
   //query firestore for campaign collection
   //async function returns a promise
-  getCampaigns = async () => {
+  getAllCampaigns = async () => {
     const querySnapshot = await this.db //await: wait until this is done to move onto next line
       .collection("campaign")
       .withConverter(campaignConverter)
@@ -23,8 +23,6 @@ class FirebaseDb {
 
     return campaigns;
   };
-
-  //TODO: get campaign based on user
 
 
   writeCampaign = async (campaignObj) => {
@@ -54,6 +52,16 @@ class FirebaseDb {
       .withConverter(signConverter)
       .get();
     return signList.docs.map((doc) => doc.data());
+  };
+
+  //query firestore for all campaigns associated w a user
+  getCampaignsUser = async (userID) => {
+    const campaignList = await this.db
+      .collection("campaign").where(`roles.${userID}`, '==', "owner")
+      .withConverter(campaignConverter)
+      .get();
+
+    return campaignList.docs.map((doc) => doc.data());
   };
 
   // upload sign function
