@@ -2,6 +2,7 @@
 import WelcomePage from "./components/WelcomePage";
 import DashboardPage from "./components/DashboardPage";
 
+
 //file imports
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import {
@@ -40,6 +41,7 @@ function App() {
                 path={["/welcome"]}
                 render={() => <WelcomePage auth={auth} />}
               />
+
               <Route
                 exact
                 path={["/", "/dashboard"]}

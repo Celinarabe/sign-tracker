@@ -1,5 +1,6 @@
 //component imports
 import SignList from "./SignList";
+import AlbumList from "./AlbumList"
 import SideBar from "./SideBar";
 import UploadPhoto from "./UploadPhoto";
 import MapContainer from "./MapContainer";
@@ -18,6 +19,7 @@ const Dashboard = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
   const [signs, setSigns] = useState([]);
   const [campaign, setCampaign] = useState(); //NEED TO QUERY CAMPAIGN BASED ON USER
+  const [albumView, setAlbumView] = useState(true);
 
   console.log(signs);
   const fetchSigns = async () => {
@@ -47,7 +49,7 @@ const Dashboard = (props) => {
           bg="white"
           overflowY="scroll"
         >
-          <SignList signs={signs} campaign={campaign} />
+          <SignList signs={signs} campaign={campaign} visibility="hidden"/>
         </Box>
 
         <Box
