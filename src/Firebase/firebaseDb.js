@@ -1,5 +1,5 @@
 import { albumConverter } from "../models/album";
-import { signConverter } from "../models/sign";
+import { photoConverter } from "../models/photo";
 
 class FirebaseDb {
   constructor(app) {
@@ -15,10 +15,10 @@ class FirebaseDb {
   //     .get();
 
   //   const albums = querySnapshot.docs.map((doc) => doc.data()); //array of album objects
-  //   //loop through each album object, query sign collection, and set to album object
+  //   //loop through each album object, query photo collection, and set to album object
   //   for (const album of albums) {
-  //     const signList = await this.getSigns(album.id);
-  //     album.setSigns(signList);
+  //     const photoList = await this.getphotos(album.id);
+  //     album.setphotos(photoList);
   //   }
 
   //   return albums;
@@ -54,27 +54,27 @@ class FirebaseDb {
       .add(albumObj);
   };
 
-  //query firestore for sign subcollection based on albumID
-  getSigns = async (albumID) => {
-    const signList = await this.db
+  //query firestore for photo subcollection based on albumID
+  getPhotos = async (albumID) => {
+    const photoList = await this.db
       .collection("album")
       .doc(albumID)
-      .collection("signs")
-      .withConverter(signConverter)
+      .collection("photos")
+      .withConverter(photoConverter)
       .get();
-    return signList.docs.map((doc) => doc.data());
+    return photoList.docs.map((doc) => doc.data());
   };
 
-  // upload sign function
-  //write new sign to firestore
-  createSign = async (signObj, albumID) => {
+  // upload photo function
+  //write new photo to firestore
+  createPhoto = async (photoObj, albumID) => {
     //returns new doc
     return await this.db
       .collection("album")
       .doc(albumID)
-      .collection("signs")
-      .withConverter(signConverter)
-      .add(signObj);
+      .collection("photos")
+      .withConverter(photoConverter)
+      .add(photoObj);
   };
 }
 

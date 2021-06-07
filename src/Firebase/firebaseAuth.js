@@ -7,11 +7,9 @@ class FirebaseAuth {
   loginUser = async (email, password) => {
     try {
       await this.auth.signInWithEmailAndPassword(email, password);
-      console.log('logged in')
       var user = this.auth.currentUser
       console.log(user.email)
     } catch (error) {
-      console.log('ERROR ERROR')
       console.log(error)
     }
   };

@@ -3,9 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import AlbumForm from "./AlbumForm";
 import { albumConverter } from "../models/album";
 import { AuthContext } from "../context/AuthContext";
-import { Heading, Text, Button, Icon } from "@chakra-ui/react";
+import { Heading, Text, Button, Icon, Spinner, Box, useDisclosure } from "@chakra-ui/react";
 import { FaAngleRight } from "react-icons/fa";
-import { useDisclosure, Box } from "@chakra-ui/react";
 
 const AlbumList = (props) => {
   const [albums, setAlbums] = useState([]); //data state
@@ -23,7 +22,7 @@ const AlbumList = (props) => {
       setIsLoading(false); //set loading state to false
     };
     fetchAlbums();
-  }, [user.uid]);
+  }, [user]); //make sure user is logged in
 
   //setting up real time listener on component mount
   useEffect(() => {
@@ -40,6 +39,29 @@ const AlbumList = (props) => {
     return listener;
   }, []);
 
+  //display content after loading
+  const displayContent = () => {
+    return (
+      <div>
+        <Text mt="0.5rem" mb="0.7rem" color="blue.300">
+          {albums ? <div>{albums.length} Items</div> : null}
+        </Text>
+        <ul>{displayAlbums(albums)}</ul>
+        <Button
+          mt={4}
+          mb={4}
+          ml={1}
+          color="gray.100"
+          variant="link"
+          onClick={onOpen}
+        >
+          Create New Album...
+        </Button>
+      </div>
+    );
+  };
+
+  //display album list
   const displayAlbums = (arr) => {
     return arr.map((album, idx) => {
       return (
@@ -52,6 +74,7 @@ const AlbumList = (props) => {
             isFullWidth
             colorScheme="blue"
             variant="ghost"
+            onClick={() => handleSelectAlbum(album)}
           >
             <Box
               display="flex"
@@ -72,40 +95,22 @@ const AlbumList = (props) => {
     });
   };
 
+  //set selected album state
+  const handleSelectAlbum = (album) => {
+    props.setSelectedAlbum(album);
+  };
+
   //conditionally render albums list
-  if (!props.albumView) {
+  if (props.selectedAlbum) {
     return null;
   }
   return (
     <div>
-      <Heading mt="1.5rem" variant="normal">
+      <Heading mt="3rem" variant="normal">
         Albums
       </Heading>
 
-      <div>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <div>
-            <Text mt="0.5rem" mb="0.7rem" color="blue.300">
-              {albums ? <div>{albums.length} Items</div> : null}
-            </Text>
-
-            <ul>{displayAlbums(albums)}</ul>
-          </div>
-        )}
-      </div>
-
-      <Button
-        mt={4}
-        mb={4}
-        ml={1}
-        color="gray.100"
-        variant="link"
-        onClick={onOpen}
-      >
-        Create New Album...
-      </Button>
+      {isLoading ? <Spinner size="md" mt={4}speed="0.65s"color="blue.300"/> : displayContent()}
 
       {/* Create new album modal */}
       <AlbumForm

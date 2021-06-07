@@ -1,6 +1,6 @@
 //component imports
 import { PhotoPreview } from "./PhotoPreview";
-import { Sign } from "../models/sign";
+import { Photo } from "../models/photo";
 
 import React, { useMemo, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
@@ -81,7 +81,7 @@ function StyledDropzone(props) {
     }
   };
 
-  //this function gets gps data and creates array of sign objects
+  //this function gets gps data and creates array of Photo objects
   const extractData = (files, idx) => {
     const promises = files.map(async (file) => {
       const { latitude, longitude } = await exifr.gps(file);
@@ -113,7 +113,7 @@ function StyledDropzone(props) {
   const uploadPhotos = () => {
     setInProgress(true);
     photoList.forEach((obj) => {
-      props.storage.uploadSign(
+      props.storage.uploadPhoto(
         "Gij7b83mMQsIiXWapL9A", //NEED TO SPECIFY CAMPAIGN
         obj,
         progressCallback,
@@ -136,7 +136,7 @@ function StyledDropzone(props) {
     updateFile(fileObj);
   };
 
-  //create sign object and write to firestore
+  //create Photo object and write to firestore
   const successCallback = (task, fileObj) => {
     fileObj.completed = true;
     fileObj.saveSuccessful = true;
@@ -145,14 +145,14 @@ function StyledDropzone(props) {
 
     //writing to firestore
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      let newSign = new Sign(
+      let newPhoto = new Photo(
         null,
         downloadURL,
         fileObj.latitude,
         fileObj.longitude
       );
       props.database
-        .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
+        .createPhoto(newPhoto, "Gij7b83mMQsIiXWapL9A")
         .then(() => console.log("uploaded successfully"));
     });
   };

@@ -1,5 +1,5 @@
 //component imports
-import SignList from "./SignList";
+import PhotoList from "./PhotoList";
 import AlbumList from "./AlbumList";
 import MapContainer from "./MapContainer";
 import StyledDropzone from "./StyledDropzone";
@@ -16,13 +16,8 @@ import "../stylesheets/dashboard.css";
 const Dashboard = (props) => {
   const user = useContext(AuthContext); //user object
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
-  const [signs, setSigns] = useState([]);
-  const [albumView, setAlbumView] = useState(true);
-
-  const fetchSigns = async () => {
-    const signs = await props.database.getSigns("Gij7b83mMQsIiXWapL9A"); //will need to set this to user associated campaign
-    setSigns(signs);
-  };
+  const [selectedAlbum, setSelectedAlbum] = useState("");
+  const [photos, setPhotos] = useState([{}]);
 
   return (
     <div>
@@ -43,11 +38,20 @@ const Dashboard = (props) => {
           w={{ base: "100vw", md: "35vw" }}
           bg="white"
           overflowY="scroll"
-          
           sx={{ filter: "drop-shadow(0px 0px 1em rgba(0, 0, 0, 0.25))" }}
         >
-          <SignList signs={signs} albumView={albumView} />
-          <AlbumList albumView={albumView} database={props.database} />
+          <PhotoList
+            photos={photos}
+            setPhotos={setPhotos}
+            setSelectedAlbum={setSelectedAlbum}
+            selectedAlbum={selectedAlbum}
+            database={props.database}
+          />
+          <AlbumList
+            selectedAlbum={selectedAlbum}
+            setSelectedAlbum={setSelectedAlbum}
+            database={props.database}
+          />
         </Box>
 
         <Box
@@ -56,7 +60,7 @@ const Dashboard = (props) => {
           bg="blue"
           position="relative"
         >
-          <MapContainer signs={signs} />
+          <MapContainer Photos={photos} />
         </Box>
       </Box>
     </div>
