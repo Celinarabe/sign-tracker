@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Campaign } from "../models/campaign";
+import { Campaign } from "../models/album";
 import { useForm } from "react-hook-form";
 
 const CampaignForm = (props) => {

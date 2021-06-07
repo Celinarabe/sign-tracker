@@ -48,6 +48,7 @@ const MapContainer = (props) => {
   //if changes to sign list occurs
   useEffect(() => {
     if (props.signs) {
+      console.log('HERE WE ARE SIGNS')
       createMarkers();
       getBounds();
     }
@@ -57,18 +58,25 @@ const MapContainer = (props) => {
     <div>
       <Map
         google={props.google}
-        bounds={bounds}
+        
         zoom={14}
         style={mapStyles}
-        initialCenter={{lat: 0, lng: 0}}
+        initialCenter={{
+          lat: -1.2884,
+          lng: 36.8233,
+        }}
+        center={{
+          lat: -1.2884,
+          lng: 36.8233,
+        }}
       >
-        {markers}
+        {/* {markers}
         <InfoWindow marker={activeMarker} visible={showingInfo}>
           <div>
             <h4>{selectedPlace.title}</h4>
             <img alt="sign pic" src={selectedPlace.imgSrc} />
           </div>
-        </InfoWindow>
+        </InfoWindow> */}
       </Map>
     </div>
   );

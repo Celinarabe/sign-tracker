@@ -12,7 +12,6 @@ import {
   FirebaseStorage,
 } from "./firebase";
 import { AuthProvider } from "./context/AuthContext";
-import { withAuth } from "./hoc/withAuth";
 import theme from "./theme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 

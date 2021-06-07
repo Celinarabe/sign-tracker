@@ -13,6 +13,9 @@ const SignList = (props) => {
     props.signs.map((sign, idx) => {
       return <div key={idx}>{<Sign title={sign.latitude} imageSrc={sign.image} />}</div>;
     });
+  if (props.albumView) {
+    return null;
+  }
 
   return (
     <div>

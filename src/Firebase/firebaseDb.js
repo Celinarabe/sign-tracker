@@ -1,4 +1,4 @@
-import { campaignConverter } from "../models/campaign";
+import { albumConverter } from "../models/album";
 import { signConverter } from "../models/sign";
 
 class FirebaseDb {
@@ -6,50 +6,59 @@ class FirebaseDb {
     this.db = app.firestore(); //getting db from the app object we pass in
   }
 
-  //query firestore for campaign collection
-  //async function returns a promise
-  getCampaigns = async () => {
-    const querySnapshot = await this.db //await: wait until this is done to move onto next line
-      .collection("campaign")
-      .withConverter(campaignConverter)
+  // //query firestore for album collection
+  // //async function returns a promise
+  // getalbums = async () => {
+  //   const querySnapshot = await this.db //await: wait until this is done to move onto next line
+  //     .collection("album")
+  //     .withConverter(albumConverter)
+  //     .get();
+
+  //   const albums = querySnapshot.docs.map((doc) => doc.data()); //array of album objects
+  //   //loop through each album object, query sign collection, and set to album object
+  //   for (const album of albums) {
+  //     const signList = await this.getSigns(album.id);
+  //     album.setSigns(signList);
+  //   }
+
+  //   return albums;
+  // };
+
+  //get albums based on user
+  //query firestore for all albums associated with a uid
+  getUserAlbums = async (userID) => {
+    const albumDocs = await this.db
+      .collection("album")
+      .where(`roles.${userID}`, "==", "owner")
+      .withConverter(albumConverter)
       .get();
 
-    const campaigns = querySnapshot.docs.map((doc) => doc.data()); //array of campaign objects
-    //loop through each campaign object, query sign collection, and set to campaign object
-    for (const campaign of campaigns) {
-      const signList = await this.getSigns(campaign.id);
-      campaign.setSigns(signList);
-    }
-
-    return campaigns;
+    return albumDocs.docs.map((doc) => doc.data());
   };
 
-  //TODO: get campaign based on user
-
-
-  writeCampaign = async (campaignObj) => {
+  writeAlbum = async (albumObj) => {
     try {
-      await this.createCampaign(campaignObj);
+      await this.createAlbum(albumObj);
       return true;
     } catch (error) {
       return false;
     }
   };
 
-  //write new campaign to firestore
-  createCampaign = async (campaignObj) => {
+  //write new album to firestore
+  createAlbum = async (albumObj) => {
     //returns new doc
     return await this.db
-      .collection("campaign")
-      .withConverter(campaignConverter)
-      .add(campaignObj);
+      .collection("album")
+      .withConverter(albumConverter)
+      .add(albumObj);
   };
 
-  //query firestore for sign subcollection based on campaignID
-  getSigns = async (campaignID) => {
+  //query firestore for sign subcollection based on albumID
+  getSigns = async (albumID) => {
     const signList = await this.db
-      .collection("campaign")
-      .doc(campaignID)
+      .collection("album")
+      .doc(albumID)
       .collection("signs")
       .withConverter(signConverter)
       .get();
@@ -58,11 +67,11 @@ class FirebaseDb {
 
   // upload sign function
   //write new sign to firestore
-  createSign = async (signObj, campaignID) => {
+  createSign = async (signObj, albumID) => {
     //returns new doc
     return await this.db
-      .collection("campaign")
-      .doc(campaignID)
+      .collection("album")
+      .doc(albumID)
       .collection("signs")
       .withConverter(signConverter)
       .add(signObj);
