@@ -1,13 +1,10 @@
-//component importsw
+//file imports
+import React, { useState, useEffect, useContext } from "react";
 import AlbumForm from "./AlbumForm";
 import { albumConverter } from "../models/album";
-
-import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-//file imports
-import { Heading, Text, Button, Icon, Input } from "@chakra-ui/react";
+import { Heading, Text, Button, Icon } from "@chakra-ui/react";
 import { FaAngleRight } from "react-icons/fa";
-
 import { useDisclosure, Box } from "@chakra-ui/react";
 
 const AlbumList = (props) => {
@@ -28,6 +25,7 @@ const AlbumList = (props) => {
     fetchAlbums();
   }, [user.uid]);
 
+  //setting up real time listener on component mount
   useEffect(() => {
     const listener = props.database.db
       .collection("album")
@@ -46,7 +44,6 @@ const AlbumList = (props) => {
     return arr.map((album, idx) => {
       return (
         <div key={album.id}>
-          <hr />
           <Button
             h="3rem"
             py={3}
@@ -68,15 +65,13 @@ const AlbumList = (props) => {
               <Icon as={FaAngleRight} boxSize="1.5em" color="gray"></Icon>
             </Box>
           </Button>
+          <hr />
         </div>
       );
     });
   };
 
-  useEffect(() => {
-    console.log(albums);
-  }, [albums]);
-
+  //conditionally render albums list
   if (!props.albumView) {
     return null;
   }
@@ -85,6 +80,7 @@ const AlbumList = (props) => {
       <Heading mt="1.5rem" variant="normal">
         Albums
       </Heading>
+
       <div>
         {isLoading ? (
           <p>Loading...</p>
@@ -93,6 +89,7 @@ const AlbumList = (props) => {
             <Text mt="0.5rem" mb="0.7rem" color="blue.300">
               {albums ? <div>{albums.length} Items</div> : null}
             </Text>
+
             <ul>{displayAlbums(albums)}</ul>
           </div>
         )}
@@ -101,14 +98,15 @@ const AlbumList = (props) => {
       <Button
         mt={4}
         mb={4}
-        isFullWidth
+        ml={1}
         color="gray.100"
         variant="link"
         onClick={onOpen}
       >
-        Create New Album
+        Create New Album...
       </Button>
 
+      {/* Create new album modal */}
       <AlbumForm
         isOpen={isOpen}
         onOpen={onOpen}

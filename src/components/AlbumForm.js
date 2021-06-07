@@ -37,6 +37,7 @@ const AlbumForm = (props) => {
     );
   };
 
+  //resetting values upon modal close
   const handleExit = () => {
     setTitle("");
     setSubmitted(false);
@@ -44,7 +45,7 @@ const AlbumForm = (props) => {
     props.onClose();
   };
 
-  //on submit
+  //when user submits form
   const onSubmit = async (e) => {
     let newAlbum = new Album(null, title, user.uid);
     const status = await props.database.writeAlbum(newAlbum);
@@ -56,7 +57,7 @@ const AlbumForm = (props) => {
     <div>
       <Modal isOpen={props.isOpen} onClose={props.onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent top="10rem">
           <ModalHeader>Create New Album</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -97,6 +98,7 @@ const AlbumForm = (props) => {
               variant="ghost"
               onClick={handleExit}
               hidden={!saveSuccessful}
+              type="submit"
             >
               Done
             </Button>

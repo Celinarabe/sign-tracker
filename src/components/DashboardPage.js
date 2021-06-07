@@ -1,9 +1,8 @@
 //component imports
 import SignList from "./SignList";
-import AlbumList from "./AlbumList"
-import SideBar from "./SideBar";
+import AlbumList from "./AlbumList";
 import MapContainer from "./MapContainer";
-import StyledDropzone from "./StyledDropzone"
+import StyledDropzone from "./StyledDropzone";
 
 //file imports
 import React, { useState, useEffect, useContext } from "react";
@@ -18,7 +17,6 @@ const Dashboard = (props) => {
   const user = useContext(AuthContext); //user object
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
   const [signs, setSigns] = useState([]);
-  const [albums, setAlbums] = useState(); //NEED TO QUERY CAMPAIGN BASED ON USER
   const [albumView, setAlbumView] = useState(true);
 
   const fetchSigns = async () => {
@@ -26,14 +24,15 @@ const Dashboard = (props) => {
     setSigns(signs);
   };
 
-  
-
-
-  
-
   return (
     <div>
-      <StyledDropzone storage={props.storage} database={props.database} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <StyledDropzone
+        storage={props.storage}
+        database={props.database}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
 
       <Box display={{ md: "flex" }} pr="0">
         <Box
@@ -45,8 +44,8 @@ const Dashboard = (props) => {
           bg="white"
           overflowY="scroll"
         >
-          <SignList signs={signs} albumView={albumView}/>
-          <AlbumList albumView={albumView} database={props.database}/>
+          <SignList signs={signs} albumView={albumView} />
+          <AlbumList albumView={albumView} database={props.database} />
         </Box>
 
         <Box
