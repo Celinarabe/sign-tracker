@@ -48,6 +48,7 @@ const AlbumList = (props) => {
             h="3rem"
             py={3}
             px={1}
+            my={2}
             isFullWidth
             colorScheme="blue"
             variant="ghost"

@@ -43,6 +43,8 @@ const Dashboard = (props) => {
           w={{ base: "100vw", md: "35vw" }}
           bg="white"
           overflowY="scroll"
+          
+          sx={{ filter: "drop-shadow(0px 0px 1em rgba(0, 0, 0, 0.25))" }}
         >
           <SignList signs={signs} albumView={albumView} />
           <AlbumList albumView={albumView} database={props.database} />
