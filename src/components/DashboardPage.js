@@ -13,11 +13,9 @@ import { Box } from "@chakra-ui/react";
 //css imports
 import "../stylesheets/dashboard.css";
 
-const Dashboard = (props) => {
+const DashboardPage = (props) => {
   const user = useContext(AuthContext); //user object
   const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
-  const [selectedAlbum, setSelectedAlbum] = useState("");
-  const [photos, setPhotos] = useState([{}]);
 
   return (
     <div>
@@ -29,6 +27,7 @@ const Dashboard = (props) => {
         onClose={onClose}
       />
 
+      {/* Left side with album/signs list */}
       <Box display={{ md: "flex" }} pr="0">
         <Box
           pl="2rem"
@@ -40,31 +39,21 @@ const Dashboard = (props) => {
           overflowY="scroll"
           sx={{ filter: "drop-shadow(0px 0px 1em rgba(0, 0, 0, 0.25))" }}
         >
-          <PhotoList
-            photos={photos}
-            setPhotos={setPhotos}
-            setSelectedAlbum={setSelectedAlbum}
-            selectedAlbum={selectedAlbum}
-            database={props.database}
-          />
-          <AlbumList
-            selectedAlbum={selectedAlbum}
-            setSelectedAlbum={setSelectedAlbum}
-            database={props.database}
-          />
+          <PhotoList database={props.database} />
+          <AlbumList database={props.database} />
         </Box>
-
+        {/* Right side with map */}
         <Box
           h={{ base: "50vh", md: "100vh" }}
           w={{ base: "100vw", md: "100%" }}
           bg="blue"
           position="relative"
         >
-          <MapContainer Photos={photos} />
+          <MapContainer />
         </Box>
       </Box>
     </div>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

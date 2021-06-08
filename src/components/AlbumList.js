@@ -3,7 +3,16 @@ import React, { useState, useEffect, useContext } from "react";
 import AlbumForm from "./AlbumForm";
 import { albumConverter } from "../models/album";
 import { AuthContext } from "../context/AuthContext";
-import { Heading, Text, Button, Icon, Spinner, Box, useDisclosure } from "@chakra-ui/react";
+import AlbumContext from "../context/AlbumContext"
+import {
+  Heading,
+  Text,
+  Button,
+  Icon,
+  Spinner,
+  Box,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { FaAngleRight } from "react-icons/fa";
 
 const AlbumList = (props) => {
@@ -11,6 +20,8 @@ const AlbumList = (props) => {
   const [isLoading, setIsLoading] = useState(true); //loading state
   const user = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const selectedAlbum = AlbumContext(state => state.selectedAlbum)
+  const addAlbum = AlbumContext(state => state.addAlbum)
 
   //fetching albums based on current user logged in
   useEffect(() => {
@@ -22,7 +33,7 @@ const AlbumList = (props) => {
       setIsLoading(false); //set loading state to false
     };
     fetchAlbums();
-  }, [user]); //make sure user is logged in
+  }, [user]); //fetch albums based on current user
 
   //setting up real time listener on component mount
   useEffect(() => {
@@ -97,11 +108,11 @@ const AlbumList = (props) => {
 
   //set selected album state
   const handleSelectAlbum = (album) => {
-    props.setSelectedAlbum(album);
+    addAlbum(album);
   };
 
   //conditionally render albums list
-  if (props.selectedAlbum) {
+  if (selectedAlbum) {
     return null;
   }
   return (
@@ -110,7 +121,11 @@ const AlbumList = (props) => {
         Albums
       </Heading>
 
-      {isLoading ? <Spinner size="md" mt={4}speed="0.65s"color="blue.300"/> : displayContent()}
+      {isLoading ? (
+        <Spinner size="md" mt={4} speed="0.65s" color="blue.300" />
+      ) : (
+        displayContent()
+      )}
 
       {/* Create new album modal */}
       <AlbumForm

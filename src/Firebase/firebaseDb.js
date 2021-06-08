@@ -65,6 +65,8 @@ class FirebaseDb {
     return photoList.docs.map((doc) => doc.data());
   };
 
+
+
   // upload photo function
   //write new photo to firestore
   createPhoto = async (photoObj, albumID) => {
