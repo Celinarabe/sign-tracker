@@ -1,5 +1,6 @@
 //component imports
 import Photo from "./Photo";
+import StyledDropzone from "./StyledDropzone"
 
 //file imports
 import React, { Component, useEffect, useState, useContext } from "react";
@@ -15,6 +16,13 @@ import {
   MenuItem,
   IconButton,
   Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { photoConverter } from "../models/photo";
@@ -54,6 +62,7 @@ const PhotoList = (props) => {
       .doc(selectedAlbum.id)
       .collection("photos")
       .onSnapshot((snapshot) => {
+        console.log('UPDATE TO PHOTO LSITA')
         const updated = [];
         snapshot.forEach((doc) => {
           updated.push(photoConverter.fromFirestore(doc));
@@ -61,7 +70,7 @@ const PhotoList = (props) => {
         addPhotos(updated);
       });
     return listener;
-  }, []);
+  }, [selectedAlbum]);
 
   const displayContent = () => {
     return (
@@ -106,7 +115,7 @@ const PhotoList = (props) => {
       >
         Albums
       </Button>
-      <Flex mt="1.5rem" justifyContent="space-between">
+      <Flex mt={2} justifyContent="space-between">
         <Heading variant="normal">{selectedAlbum.title}</Heading>
         <Menu>
           <MenuButton
@@ -117,7 +126,9 @@ const PhotoList = (props) => {
           />
           {/* TO DO: add menu functionality */}
           <MenuList>
-            <MenuItem icon={<AddIcon />}>Add photos</MenuItem>
+            <MenuItem icon={<AddIcon />} onClick={onOpen}>
+              Add photos
+            </MenuItem>
             <MenuItem icon={<EditIcon />}>Edit Album</MenuItem>
             <MenuItem icon={<DeleteIcon />}>Delete album</MenuItem>
           </MenuList>
@@ -128,6 +139,13 @@ const PhotoList = (props) => {
       ) : (
         displayContent()
       )}
+
+      <StyledDropzone
+        isOpen={isOpen}
+        onClose={onClose}
+        storage={props.storage}
+        database={props.database}
+      ></StyledDropzone>
     </div>
   );
 };

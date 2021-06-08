@@ -117,7 +117,7 @@ const AlbumList = (props) => {
   }
   return (
     <div>
-      <Heading mt="3rem" variant="normal">
+      <Heading mt={4} variant="normal">
         Albums
       </Heading>
 

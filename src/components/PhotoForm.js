@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import * as exifr from "exifr";
-import { Sign } from "../models/sign";
+import { Photo } from "../models/photo";
 import { PhotoPreview } from "./PhotoPreview";
 
 const PhotoForm = (props) => {
@@ -82,15 +82,16 @@ const PhotoForm = (props) => {
     setPhotoList(newArr);
     //writing to firestore
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      console.log("File available at", downloadURL);
-      let newSign = new Sign(
+     
+      let newPhoto = new Photo(
         null,
         downloadURL,
         fileObj.latitude,
-        fileObj.longitude
+        fileObj.longitude,
+        "",
       );
       props.database
-        .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
+        .createSign(newPhoto, "Gij7b83mMQsIiXWapL9A")
         .then(() => console.log("uploaded successfully"));
     });
   };

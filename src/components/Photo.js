@@ -7,9 +7,9 @@ const Sign = (props) => {
   return (
     <div>
       <hr className="line-break" />
-      <Flex justify="space-between" my={3}>
+      <Flex justify="space-between" my={3} >
         <Box position="relative">
-          <Heading mb=".1rem" variant="sub">
+          <Heading  w="7rem"mb=".1rem" variant="sub">
             {props.title}
           </Heading>
           <Text mb="1rem" variant="minor">
@@ -31,6 +31,7 @@ const Sign = (props) => {
         <Image
           borderRadius="lg"
           objectFit="cover"
+          h="7rem"
           src={props.imageSrc}
           mx="10px"
         ></Image>

@@ -4,6 +4,7 @@ import { Photo } from "../models/photo";
 
 import React, { useMemo, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import AlbumContext from "../context/AlbumContext";
 
 import * as exifr from "exifr";
 import {
@@ -60,6 +61,7 @@ function StyledDropzone(props) {
   const [inProgress, setInProgress] = useState(false);
   const [saveSuccessful, setSaveSuccessful] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
 
   //this function takes user files and calls extract data and sets state
   const handleChange = (files) => {
@@ -114,7 +116,7 @@ function StyledDropzone(props) {
     setInProgress(true);
     photoList.forEach((obj) => {
       props.storage.uploadPhoto(
-        "Gij7b83mMQsIiXWapL9A", //NEED TO SPECIFY CAMPAIGN
+        selectedAlbum.id,
         obj,
         progressCallback,
         errorCallback,
@@ -123,7 +125,7 @@ function StyledDropzone(props) {
     });
   };
 
-  //updating the file state
+  //helper - updating the file state
   const updateFile = (fileObj) => {
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
@@ -149,11 +151,15 @@ function StyledDropzone(props) {
         null,
         downloadURL,
         fileObj.latitude,
-        fileObj.longitude
+        fileObj.longitude,
+        "",
       );
       props.database
-        .createPhoto(newPhoto, "Gij7b83mMQsIiXWapL9A")
-        .then(() => console.log("uploaded successfully"));
+        .createPhoto(newPhoto, selectedAlbum.id)
+        .then(() => {
+          console.log('image saved successfully')
+        })
+        
     });
   };
 
