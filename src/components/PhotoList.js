@@ -60,7 +60,6 @@ const PhotoList = (props) => {
         .doc(selectedAlbum.id)
         .collection("photos")
         .onSnapshot((snapshot) => {
-          console.log("photolist listener", selectedAlbum.id);
           const updated = [];
           snapshot.forEach((doc) => {
             updated.push(photoConverter.fromFirestore(doc));
@@ -117,7 +116,6 @@ const PhotoList = (props) => {
 
   const handleMenuSelection = (selection) => {
     setSelectedMenuItem(selection);
-    console.log(selection);
     onOpen();
   };
 

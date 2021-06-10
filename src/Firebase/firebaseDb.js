@@ -6,8 +6,7 @@ class FirebaseDb {
     this.db = app.firestore(); //getting db from the app object we pass in
   }
 
-  //get albums based on user
-  //query firestore for all albums associated with a uid
+  //get all albums based on userID
   getUserAlbums = async (userID) => {
     const albumDocs = await this.db
       .collection("album")
@@ -18,6 +17,7 @@ class FirebaseDb {
     return albumDocs.docs.map((doc) => doc.data());
   };
 
+  //get status of document write
   writeAlbum = async (albumObj) => {
     try {
       await this.createAlbum(albumObj);
@@ -27,15 +27,15 @@ class FirebaseDb {
     }
   };
 
-  //write new album to firestore
+  //get created document
   createAlbum = async (albumObj) => {
-    //returns new doc
     return await this.db
       .collection("album")
       .withConverter(albumConverter)
       .add(albumObj);
   };
 
+  //get status of document update
   writeUpdate = async (albumObj, newTitle) => {
     try {
       await this.updateAlbum(albumObj, newTitle);
@@ -45,6 +45,7 @@ class FirebaseDb {
     }
   };
 
+  //get updated document
   updateAlbum = async (albumID, newTitle) => {
     return await this.db
       .collection("album")
@@ -52,11 +53,12 @@ class FirebaseDb {
       .update({ title: newTitle });
   };
 
+  //deletes album
   deleteAlbum = async (albumID) => {
     return await this.db.collection("album").doc(albumID);
   };
 
-  //query firestore for photo subcollection based on albumID
+  //get photo subcollection based on albumID
   getPhotos = async (albumID) => {
     const photoList = await this.db
       .collection("album")
@@ -67,10 +69,8 @@ class FirebaseDb {
     return photoList.docs.map((doc) => doc.data());
   };
 
-  // upload photo function
-  //write new photo to firestore
+  //add new photo to photo sub collection based on albumID
   createPhoto = async (photoObj, albumID) => {
-    //returns new doc
     return await this.db
       .collection("album")
       .doc(albumID)

@@ -37,7 +37,7 @@ const AlbumList = (props) => {
 
   //setting up real time listener on component mount
   useEffect(() => {
-    const listener =  () => {
+    const listener = () => {
       props.database.db
         .collection("album")
         .where(`roles.${user.uid}`, "==", "owner")

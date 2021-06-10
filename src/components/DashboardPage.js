@@ -5,13 +5,7 @@ import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
 
 //file imports
-import {
-  Box,
-  Menu,
-  MenuButton,
-  Flex,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Menu, MenuButton, Flex, IconButton } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 
 //css imports

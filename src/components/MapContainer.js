@@ -3,7 +3,7 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode"; //TO DO: use this for photo title
 import PhotoContext from "../context/PhotoContext";
 
-
+//renders
 const MapContainer = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const [markers, setMarkers] = useState();
@@ -65,7 +65,6 @@ const MapContainer = (props) => {
       setBounds();
     }
   }, [photos]);
-
 
   return (
     <div>
