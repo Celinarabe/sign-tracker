@@ -2,16 +2,6 @@ import { MenuList, MenuItem, Text, Icon } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { BiExit } from "react-icons/bi";
 
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from "@chakra-ui/react";
-
 const SettingsList = (props) => {
   //TODO: handle delete account
 

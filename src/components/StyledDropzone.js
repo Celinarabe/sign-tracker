@@ -16,26 +16,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Tabs,
-  Tab,
-  TabPanels,
-  TabPanel,
-  TabList,
   Text,
-  Input,
-} from "@chakra-ui/react";
-
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
 } from "@chakra-ui/react";
 
 const baseStyle = {

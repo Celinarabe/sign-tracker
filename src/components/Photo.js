@@ -1,9 +1,8 @@
 //file imports
 import { Button, Flex, Heading, Box, Text, Image } from "@chakra-ui/react";
 
-//this component will accept a sign as props
-const Sign = (props) => {
-  console.log(props.sign);
+//this component will accept a photo as props
+const Photo = (props) => {
   return (
     <div>
       <hr className="line-break" />
@@ -40,4 +39,4 @@ const Sign = (props) => {
   );
 };
 
-export default Sign;
+export default Photo;

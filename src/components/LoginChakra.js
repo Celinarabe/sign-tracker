@@ -1,22 +1,20 @@
 //file imports
 import {
   Button,
-  Flex,
   Heading,
   Input,
-  Icon,
-  Stack,
   Box,
-  Checkbox,
   Text,
   Link,
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Link as ReactLink, useHistory} from "react-router-dom";
+import { Link as ReactLink, useHistory } from "react-router-dom";
 
 const LoginChakra = (props) => {
-  const history = useHistory()
+  //history object is passed into each route as a prop
+  //push the route you want the user to be directed to onClick
+  const history = useHistory();
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -33,13 +31,14 @@ const LoginChakra = (props) => {
   const handleLoginClick = async (e) => {
     e.preventDefault();
     await props.auth.loginUser(state.email, state.password);
-    history.push('/') //redirect user to main dashboard page
+    history.push("/"); //redirect user to main dashboard page
   };
 
+  //TO DO: create sign up form
   const handleSignupClick = async (e) => {
     e.preventDefault();
-    console.log(state.email);
     await props.auth.signupUser(state.email, state.password);
+    history.push("/"); //redirect user to main dashboard page
   };
 
   return (

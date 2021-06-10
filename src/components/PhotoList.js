@@ -4,7 +4,7 @@ import StyledDropzone from "./StyledDropzone";
 import EditAlbum from "./EditAlbum";
 
 //file imports
-import React, { Component, useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Heading, Text, Icon, Button } from "@chakra-ui/react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -19,17 +19,9 @@ import {
   IconButton,
   Flex,
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
 } from "@chakra-ui/react";
-import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { photoConverter } from "../models/photo";
-import { albumConverter } from "../models/album";
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -44,7 +36,6 @@ const PhotoList = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
-  const addAlbum = AlbumContext((state) => state.addAlbum);
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -63,8 +54,8 @@ const PhotoList = (props) => {
 
   //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
-    const listener = async () => {
-      await props.database.db
+    const listener = () => {
+      props.database.db
         .collection("album")
         .doc(selectedAlbum.id)
         .collection("photos")
@@ -88,7 +79,7 @@ const PhotoList = (props) => {
   //       .doc(selectedAlbum.id)
   //       .onSnapshot((snapshot) => {
   //         console.log("in listenerrr", snapshot);
-    
+
   //         //const updatedAlbum = doc.data();
   //         // if (updatedAlbum) {
   //         //   addAlbum(doc.data())

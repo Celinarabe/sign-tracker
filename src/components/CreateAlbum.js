@@ -11,7 +11,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
 } from "@chakra-ui/react";
 
 const CreateAlbum = (props) => {
@@ -48,7 +47,6 @@ const CreateAlbum = (props) => {
   //when user submits form
   const onSubmit = async (e) => {
     let newAlbum = new Album(null, title, user.uid);
-    console.log(newAlbum)
     const status = await props.database.writeAlbum(newAlbum);
     setSaveSuccessful(status);
     setSubmitted(true);

@@ -6,24 +6,6 @@ class FirebaseDb {
     this.db = app.firestore(); //getting db from the app object we pass in
   }
 
-  // //query firestore for album collection
-  // //async function returns a promise
-  // getalbums = async () => {
-  //   const querySnapshot = await this.db //await: wait until this is done to move onto next line
-  //     .collection("album")
-  //     .withConverter(albumConverter)
-  //     .get();
-
-  //   const albums = querySnapshot.docs.map((doc) => doc.data()); //array of album objects
-  //   //loop through each album object, query photo collection, and set to album object
-  //   for (const album of albums) {
-  //     const photoList = await this.getphotos(album.id);
-  //     album.setphotos(photoList);
-  //   }
-
-  //   return albums;
-  // };
-
   //get albums based on user
   //query firestore for all albums associated with a uid
   getUserAlbums = async (userID) => {

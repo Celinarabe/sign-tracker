@@ -1,9 +1,9 @@
 import React, { Component, useEffect, useState } from "react";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
-import Geocode from "react-geocode";
+import Geocode from "react-geocode"; //TO DO: use this for photo title
 import PhotoContext from "../context/PhotoContext";
 
-//mapContainer will receive photos list as a prop from dashboard component
+
 const MapContainer = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const [markers, setMarkers] = useState();
@@ -22,7 +22,6 @@ const MapContainer = (props) => {
   const createMarkers = () => {
     const photoMarkers = photos.map((photo, idx) => {
       return (
-        // going to need to add more photo data to display in infowindow
         <Marker
           onClick={onMarkerClick}
           key={photo.id}
@@ -78,6 +77,7 @@ const MapContainer = (props) => {
         initialCenter={{ lat: 0, lng: 0 }}
       >
         {markers}
+        {/* TODO: add more to info window */}
         <InfoWindow marker={activeMarker} visible={showingInfo}>
           <div>
             <h4>{selectedPlace.title}</h4>

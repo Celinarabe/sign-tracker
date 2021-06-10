@@ -7,11 +7,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Tabs,
-  Tab,
-  TabPanels,
-  TabPanel,
-  TabList,
   Text,
   Input,
 } from "@chakra-ui/react";
@@ -44,7 +39,6 @@ const EditAlbum = (props) => {
 
   //handle edit album click
   const handleSaveChanges = async (e) => {
-    console.log("handling save changes click", selectedAlbum.id, title);
     const status = await props.database.writeUpdate(selectedAlbum.id, title);
     setSaveSuccessful(status);
     setSubmitted(true);
@@ -57,6 +51,7 @@ const EditAlbum = (props) => {
     props.onClose();
   };
 
+  //conditionally render modal based on menu selection
   if (props.selectedMenuItem !== "Edit Album") {
     return null;
   }
@@ -73,15 +68,16 @@ const EditAlbum = (props) => {
         <ModalHeader>Edit Album</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-
-          <form hidden={saveSuccessful} onSubmit={handleSubmit(handleSaveChanges)}>
+          <form
+            hidden={saveSuccessful}
+            onSubmit={handleSubmit(handleSaveChanges)}
+          >
             <Text mb="8px">Album Name:</Text>
             <Input
               isRequired
               placeholder="Album Name"
               value={title}
               onChange={handleTitleInputChange}
-              
             />
 
             {errors.title && <p>Title is required.</p>}
@@ -89,7 +85,7 @@ const EditAlbum = (props) => {
               type="submit"
               colorScheme="blue"
               mt={3}
-              hidden={handleSaveChanges}
+              disabled={title === selectedAlbum.title}
             >
               Save
             </Button>
