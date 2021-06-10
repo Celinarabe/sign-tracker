@@ -17,7 +17,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { MapBg } from "../images/";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, } from "react-router-dom";
 import { useRef } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 
@@ -27,6 +27,8 @@ import "../stylesheets/welcomePage.css";
 const WelcomePage = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+
+
 
   return (
     <div>
@@ -97,7 +99,7 @@ const WelcomePage = (props) => {
             p="5% 8%"
             w={{ md: "40vw" }}
           >
-            <LoginChakra auth={props.auth} />
+            <LoginChakra auth={props.auth} history={props.history} />
           </Box>
         </div>
       </Box>

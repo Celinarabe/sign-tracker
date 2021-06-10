@@ -152,14 +152,11 @@ function StyledDropzone(props) {
         downloadURL,
         fileObj.latitude,
         fileObj.longitude,
-        "",
+        ""
       );
-      props.database
-        .createPhoto(newPhoto, selectedAlbum.id)
-        .then(() => {
-          console.log('image saved successfully')
-        })
-        
+      props.database.createPhoto(newPhoto, selectedAlbum.id).then(() => {
+        console.log("image saved successfully");
+      });
     });
   };
 

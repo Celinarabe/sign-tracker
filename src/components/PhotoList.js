@@ -1,11 +1,13 @@
 //component imports
 import Photo from "./Photo";
-import StyledDropzone from "./StyledDropzone"
+import StyledDropzone from "./StyledDropzone";
+
 
 //file imports
 import React, { Component, useEffect, useState, useContext } from "react";
 import { Heading, Text, Icon, Button } from "@chakra-ui/react";
 import { AuthContext } from "../context/AuthContext";
+
 import { FaAngleLeft, FaEllipsisV } from "react-icons/fa";
 import {
   useDisclosure,
@@ -16,6 +18,7 @@ import {
   MenuItem,
   IconButton,
   Flex,
+  Box,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -26,6 +29,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { photoConverter } from "../models/photo";
+import { albumConverter } from "../models/album";
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -33,12 +37,13 @@ import AlbumContext from "../context/AlbumContext";
 const PhotoList = (props) => {
   const [isLoading, setIsLoading] = useState(true); //loading state
   const user = useContext(AuthContext);
-  const { isOpen, onOpen, onClose } = useDisclosure(); //TODO: upload photo modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const addPhotos = PhotoContext((state) => state.addPhotos);
   const removePhotos = PhotoContext((state) => state.removePhotos);
   const photos = PhotoContext((state) => state.photoList);
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
+  const addAlbum = AlbumContext((state) => state.addAlbum);
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -55,14 +60,13 @@ const PhotoList = (props) => {
     }
   }, [selectedAlbum]);
 
-  //setting up real time listener on component mount
+  //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
     const listener = props.database.db
       .collection("album")
       .doc(selectedAlbum.id)
       .collection("photos")
       .onSnapshot((snapshot) => {
-        console.log('UPDATE TO PHOTO LSITA')
         const updated = [];
         snapshot.forEach((doc) => {
           updated.push(photoConverter.fromFirestore(doc));
@@ -70,7 +74,22 @@ const PhotoList = (props) => {
         addPhotos(updated);
       });
     return listener;
-  }, [selectedAlbum]);
+  }, []);
+
+  //TO DO: add real time listener for album document name changes
+  // useEffect(() => {
+  //   const listener = props.database.db
+  //     .collection("album")
+  //     .doc(selectedAlbum.id)
+  //     .onSnapshot((snapshot) => {
+  //       console.log('in listenerrr',snapshot);
+  //       //const updatedAlbum = doc.data();
+  //       // if (updatedAlbum) {
+  //       //   addAlbum(doc.data())
+  //       // }
+  //     });
+  //   return listener;
+  // }, [selectedAlbum]);
 
   const displayContent = () => {
     return (
@@ -86,9 +105,9 @@ const PhotoList = (props) => {
   const displayPhotos = () =>
     photos.map((photo, idx) => {
       return (
-        <div key={photo.id}>
+        <Box key={photo.id}>
           {<Photo title={photo.latitude} imageSrc={photo.image} />}
-        </div>
+        </Box>
       );
     });
 
@@ -96,6 +115,12 @@ const PhotoList = (props) => {
   const handleAlbumView = () => {
     removeAlbum();
     removePhotos();
+  };
+
+  //handle edit click
+  const handleEditClick = async (e) => {
+    console.log('handling edit click',selectedAlbum.id);
+    await props.database.updateAlbum(selectedAlbum.id, "newish title");
   };
 
   //conditionally render component if an album was selected
@@ -110,26 +135,30 @@ const PhotoList = (props) => {
         color="gray.300"
         pl={0}
         ml={0}
+     
         variant="link"
         leftIcon={<Icon pl={0} ml={0} as={FaAngleLeft} boxSize="1.5em"></Icon>}
       >
         Albums
       </Button>
-      <Flex mt={2} justifyContent="space-between">
+      <Flex mt={2} justifyContent={{ md: "space-between" }}>
         <Heading variant="normal">{selectedAlbum.title}</Heading>
-        <Menu>
+        <Menu preventOverflow boundary="scrollParent">
           <MenuButton
             as={IconButton}
             aria-label="Options"
             icon={<Icon as={FaEllipsisV}></Icon>}
             variant="outline"
+            ml={{ base: "2", md: "0" }}
           />
           {/* TO DO: add menu functionality */}
           <MenuList>
             <MenuItem icon={<AddIcon />} onClick={onOpen}>
               Add photos
             </MenuItem>
-            <MenuItem icon={<EditIcon />}>Edit Album</MenuItem>
+            <MenuItem icon={<EditIcon />} onClick={handleEditClick}>
+              Edit Album
+            </MenuItem>
             <MenuItem icon={<DeleteIcon />}>Delete album</MenuItem>
           </MenuList>
         </Menu>

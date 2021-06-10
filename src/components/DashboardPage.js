@@ -2,47 +2,78 @@
 import PhotoList from "./PhotoList";
 import AlbumList from "./AlbumList";
 import MapContainer from "./MapContainer";
-import StyledDropzone from "./StyledDropzone";
+import SettingsList from "./SettingsList";
 
 //file imports
-import React, { useState, useEffect, useContext } from "react";
-import { useDisclosure } from "@chakra-ui/react";
-import { AuthContext } from "../context/AuthContext";
-import { Box, Heading } from "@chakra-ui/react";
-import AlbumContext from "../context/AlbumContext"
+import {
+  Box,
+  Menu,
+  MenuButton,
+  Flex,
+  IconButton,
+} from "@chakra-ui/react";
+import { SettingsIcon } from "@chakra-ui/icons";
 
 //css imports
 import "../stylesheets/dashboard.css";
 
 const DashboardPage = (props) => {
-  const user = useContext(AuthContext); //user object
-  const { isOpen, onOpen, onClose } = useDisclosure(); //modal for photo upload
-  const selectedAlbum = AlbumContext(state => state.selectedAlbum)
-
   return (
     <div>
-      <StyledDropzone
-        
-        database={props.database}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-      />
-
       {/* Left side with album/signs list */}
-      <Box display={{ md: "flex" }} pr="0">
+      <Flex
+        display={{ base: "flex", md: "flex" }}
+        pr="0"
+        justify={{ base: "space-between", md: "" }}
+        direction={{ base: "column", md: "row" }}
+        h="100vh"
+      >
         <Box
           pl="2rem"
+          pt={4}
           pr="20px"
-          pt="30px"
           h={{ md: "100vh" }}
           w={{ base: "100vw", md: "45%" }}
           bg="white"
           overflowY="scroll"
-          sx={{ filter: "drop-shadow(0px 0px 1em rgba(0, 0, 0, 0.25))" }}
         >
+          {/* Settings button */}
+          <Menu>
+            <MenuButton
+              display={{ md: "none" }}
+              position="absolute"
+              mt={2}
+              right={3}
+              as={IconButton}
+              size="lg"
+              aria-label="Options"
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
+              icon={<SettingsIcon boxSize={5} color="gray.300" />}
+              variant="ghost"
+            ></MenuButton>
+
+            <SettingsList auth={props.auth} />
+          </Menu>
           <PhotoList database={props.database} storage={props.storage} />
           <AlbumList database={props.database} />
+          {/* settings button */}
+          <Menu colorScheme="blue" display="none">
+            <MenuButton
+              display={{ base: "none", md: "block" }}
+              position="absolute"
+              bottom={3}
+              as={IconButton}
+              size="lg"
+              aria-label="Options"
+              icon={<SettingsIcon boxSize={6} color="gray.300" />}
+              variant="ghost"
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
+            ></MenuButton>
+
+            <SettingsList auth={props.auth} />
+          </Menu>
         </Box>
         {/* Right side with map */}
         <Box
@@ -50,10 +81,11 @@ const DashboardPage = (props) => {
           w={{ base: "100vw" }}
           bg="blue"
           position="relative"
+          zIndex="base"
         >
           <MapContainer />
         </Box>
-      </Box>
+      </Flex>
     </div>
   );
 };

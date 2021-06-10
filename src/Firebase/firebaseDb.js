@@ -54,6 +54,13 @@ class FirebaseDb {
       .add(albumObj);
   };
 
+  updateAlbum = async (albumID, newTitle) => {
+    return await this.db
+      .collection("album")
+      .doc(albumID)
+      .update({ title: newTitle });
+  };
+
   //query firestore for photo subcollection based on albumID
   getPhotos = async (albumID) => {
     const photoList = await this.db
@@ -64,8 +71,6 @@ class FirebaseDb {
       .get();
     return photoList.docs.map((doc) => doc.data());
   };
-
-
 
   // upload photo function
   //write new photo to firestore

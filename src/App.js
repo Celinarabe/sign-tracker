@@ -2,7 +2,6 @@
 import WelcomePage from "./components/WelcomePage";
 import DashboardPage from "./components/DashboardPage";
 
-
 //file imports
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import {
@@ -28,6 +27,9 @@ const storage = new FirebaseStorage(firebaseApp);
 const auth = new FirebaseAuth(firebaseApp);
 
 function App() {
+  //history object lets us manually control history of the browser
+  //history object is passed into each route as a prop
+  //push the route you want the user to be directed to onClick
   return (
     <div>
       <AuthProvider auth={auth}>
@@ -35,16 +37,15 @@ function App() {
           <CSSReset />
           <BrowserRouter>
             <Switch>
-              <Route
-                exact
+              {/* This is the route we want to redirect to if a user is logged in */}
+              <Route exact
+                path={["/", "/dashboard"]}
+                render={() => <DashboardPage auth={auth} database={db} storage={storage}/>}
+              />
+              {/* This is the route we want to redirect to if no user is logged in */}
+              <Route exact
                 path={["/welcome"]}
                 render={() => <WelcomePage auth={auth} />}
-              />
-
-              <Route
-                exact
-                path={["/", "/dashboard"]}
-                render={() => <DashboardPage database={db} storage={storage} />}
               />
             </Switch>
           </BrowserRouter>

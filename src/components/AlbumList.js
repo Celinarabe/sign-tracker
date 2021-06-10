@@ -1,6 +1,6 @@
 //file imports
 import React, { useState, useEffect, useContext } from "react";
-import AlbumForm from "./AlbumForm";
+import CreateAlbum from "./CreateAlbum";
 import { albumConverter } from "../models/album";
 import { AuthContext } from "../context/AuthContext";
 import AlbumContext from "../context/AlbumContext"
@@ -45,6 +45,7 @@ const AlbumList = (props) => {
         snapshot.forEach((doc) => {
           updated.push(albumConverter.fromFirestore(doc));
         });
+        console.log('listener on albumList',updated)
         setAlbums(updated);
       });
     return listener;
@@ -62,11 +63,12 @@ const AlbumList = (props) => {
           mt={4}
           mb={4}
           ml={1}
-          color="gray.100"
-          variant="link"
+          colorScheme="blue"
+          variant="ghost"
           onClick={onOpen}
+          w="100%"
         >
-          Create New Album...
+          <Text color="gray.100">Create New Album... </Text>
         </Button>
       </div>
     );
@@ -128,7 +130,7 @@ const AlbumList = (props) => {
       )}
 
       {/* Create new album modal */}
-      <AlbumForm
+      <CreateAlbum
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}

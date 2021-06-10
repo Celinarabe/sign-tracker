@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-const AlbumForm = (props) => {
+const CreateAlbum = (props) => {
   const [title, setTitle] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [saveSuccessful, setSaveSuccessful] = useState(false);
@@ -109,4 +109,4 @@ const AlbumForm = (props) => {
   );
 };
 
-export default AlbumForm;
+export default CreateAlbum;

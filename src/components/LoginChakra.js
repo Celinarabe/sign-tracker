@@ -13,9 +13,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Link as ReactLink } from "react-router-dom";
+import { Link as ReactLink, useHistory} from "react-router-dom";
 
 const LoginChakra = (props) => {
+  const history = useHistory()
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -32,6 +33,7 @@ const LoginChakra = (props) => {
   const handleLoginClick = async (e) => {
     e.preventDefault();
     await props.auth.loginUser(state.email, state.password);
+    history.push('/') //redirect user to main dashboard page
   };
 
   const handleSignupClick = async (e) => {
