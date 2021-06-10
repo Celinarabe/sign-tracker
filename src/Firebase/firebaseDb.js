@@ -54,11 +54,24 @@ class FirebaseDb {
       .add(albumObj);
   };
 
+  writeUpdate = async (albumObj, newTitle) => {
+    try {
+      await this.updateAlbum(albumObj, newTitle);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   updateAlbum = async (albumID, newTitle) => {
     return await this.db
       .collection("album")
       .doc(albumID)
       .update({ title: newTitle });
+  };
+
+  deleteAlbum = async (albumID) => {
+    return await this.db.collection("album").doc(albumID);
   };
 
   //query firestore for photo subcollection based on albumID

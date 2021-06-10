@@ -22,6 +22,20 @@ import {
   TabPanel,
   TabList,
   Text,
+  Input,
+} from "@chakra-ui/react";
+
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
 } from "@chakra-ui/react";
 
 const baseStyle = {
@@ -56,12 +70,12 @@ function StyledDropzone(props) {
   const UnknownTypeMsg =
     "Unaccepted file format. (Needs to be .jpg, .jpeg, or .png.)";
   const UnknownLocationMsg = "Unable to find location data for this photo.";
+  const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
 
   const [photoList, setPhotoList] = useState([]);
   const [inProgress, setInProgress] = useState(false);
   const [saveSuccessful, setSaveSuccessful] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
 
   //this function takes user files and calls extract data and sets state
   const handleChange = (files) => {
@@ -213,6 +227,10 @@ function StyledDropzone(props) {
     [isDragActive, isDragReject, isDragAccept]
   );
 
+  if (props.selectedMenuItem !== "Add Photos") {
+    return null;
+  }
+
   return (
     <Modal
       scrollBehavior="inside"
@@ -225,34 +243,17 @@ function StyledDropzone(props) {
         <ModalHeader>Add Photos</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Tabs isFitted>
-            <TabList>
-              <Tab>Upload Photo</Tab>
-              <Tab>Take a Photo</Tab>
-            </TabList>
+          <div className="container">
+            <div {...getRootProps({ style })} hidden={saveSuccessful}>
+              <input {...getInputProps()} />
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            </div>
 
-            <TabPanels>
-              <TabPanel>
-                <div className="container">
-                  <div {...getRootProps({ style })} hidden={saveSuccessful}>
-                    <input {...getInputProps()} />
-                    <p>
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  </div>
-
-                  <Text fontWeight="medium" color="tomato" mt={2}>
-                    {errorMessage}
-                  </Text>
-                  <PhotoPreview photos={photoList} inProgress={inProgress} />
-                </div>
-              </TabPanel>
-
-              <TabPanel>
-                <p>Coming Soon &#128516;</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+            <Text fontWeight="medium" color="tomato" mt={2}>
+              {errorMessage}
+            </Text>
+            <PhotoPreview photos={photoList} inProgress={inProgress} />
+          </div>
         </ModalBody>
 
         <ModalFooter>

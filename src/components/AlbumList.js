@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import CreateAlbum from "./CreateAlbum";
 import { albumConverter } from "../models/album";
 import { AuthContext } from "../context/AuthContext";
-import AlbumContext from "../context/AlbumContext"
+import AlbumContext from "../context/AlbumContext";
 import {
   Heading,
   Text,
@@ -20,8 +20,8 @@ const AlbumList = (props) => {
   const [isLoading, setIsLoading] = useState(true); //loading state
   const user = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const selectedAlbum = AlbumContext(state => state.selectedAlbum)
-  const addAlbum = AlbumContext(state => state.addAlbum)
+  const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
+  const addAlbum = AlbumContext((state) => state.addAlbum);
 
   //fetching albums based on current user logged in
   useEffect(() => {
@@ -37,17 +37,19 @@ const AlbumList = (props) => {
 
   //setting up real time listener on component mount
   useEffect(() => {
-    const listener = props.database.db
-      .collection("album")
-      .where(`roles.${user.uid}`, "==", "owner")
-      .onSnapshot((snapshot) => {
-        const updated = [];
-        snapshot.forEach((doc) => {
-          updated.push(albumConverter.fromFirestore(doc));
+    const listener = async () => {
+      await props.database.db
+        .collection("album")
+        .where(`roles.${user.uid}`, "==", "owner")
+        .onSnapshot((snapshot) => {
+          const updated = [];
+          snapshot.forEach((doc) => {
+            updated.push(albumConverter.fromFirestore(doc));
+          });
+          console.log("listener on albumList", updated);
+          setAlbums(updated);
         });
-        console.log('listener on albumList',updated)
-        setAlbums(updated);
-      });
+    };
     return listener;
   }, []);
 

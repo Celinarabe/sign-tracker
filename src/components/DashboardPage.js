@@ -58,7 +58,7 @@ const DashboardPage = (props) => {
           <PhotoList database={props.database} storage={props.storage} />
           <AlbumList database={props.database} />
           {/* settings button */}
-          <Menu colorScheme="blue" display="none">
+          <Menu colorScheme="blue">
             <MenuButton
               display={{ base: "none", md: "block" }}
               position="absolute"

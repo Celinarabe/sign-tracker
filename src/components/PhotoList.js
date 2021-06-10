@@ -1,7 +1,7 @@
 //component imports
 import Photo from "./Photo";
 import StyledDropzone from "./StyledDropzone";
-
+import EditAlbum from "./EditAlbum";
 
 //file imports
 import React, { Component, useEffect, useState, useContext } from "react";
@@ -36,6 +36,7 @@ import AlbumContext from "../context/AlbumContext";
 
 const PhotoList = (props) => {
   const [isLoading, setIsLoading] = useState(true); //loading state
+  const [selectedMenuItem, setSelectedMenuItem] = useState("");
   const user = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const addPhotos = PhotoContext((state) => state.addPhotos);
@@ -62,34 +63,40 @@ const PhotoList = (props) => {
 
   //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
-    const listener = props.database.db
-      .collection("album")
-      .doc(selectedAlbum.id)
-      .collection("photos")
-      .onSnapshot((snapshot) => {
-        const updated = [];
-        snapshot.forEach((doc) => {
-          updated.push(photoConverter.fromFirestore(doc));
+    const listener = async () => {
+      await props.database.db
+        .collection("album")
+        .doc(selectedAlbum.id)
+        .collection("photos")
+        .onSnapshot((snapshot) => {
+          console.log("photolist listener", selectedAlbum.id);
+          const updated = [];
+          snapshot.forEach((doc) => {
+            updated.push(photoConverter.fromFirestore(doc));
+          });
+          addPhotos(updated);
         });
-        addPhotos(updated);
-      });
+    };
     return listener;
   }, []);
 
-  //TO DO: add real time listener for album document name changes
+  // // TO DO: add real time listener for album document name changes
   // useEffect(() => {
-  //   const listener = props.database.db
-  //     .collection("album")
-  //     .doc(selectedAlbum.id)
-  //     .onSnapshot((snapshot) => {
-  //       console.log('in listenerrr',snapshot);
-  //       //const updatedAlbum = doc.data();
-  //       // if (updatedAlbum) {
-  //       //   addAlbum(doc.data())
-  //       // }
-  //     });
+  //   const listener = async () => {
+  //     await props.database.db
+  //       .collection("album")
+  //       .doc(selectedAlbum.id)
+  //       .onSnapshot((snapshot) => {
+  //         console.log("in listenerrr", snapshot);
+    
+  //         //const updatedAlbum = doc.data();
+  //         // if (updatedAlbum) {
+  //         //   addAlbum(doc.data())
+  //         // }
+  //       });
+  //   };
   //   return listener;
-  // }, [selectedAlbum]);
+  // }, []);
 
   const displayContent = () => {
     return (
@@ -117,10 +124,10 @@ const PhotoList = (props) => {
     removePhotos();
   };
 
-  //handle edit click
-  const handleEditClick = async (e) => {
-    console.log('handling edit click',selectedAlbum.id);
-    await props.database.updateAlbum(selectedAlbum.id, "newish title");
+  const handleMenuSelection = (selection) => {
+    setSelectedMenuItem(selection);
+    console.log(selection);
+    onOpen();
   };
 
   //conditionally render component if an album was selected
@@ -135,7 +142,6 @@ const PhotoList = (props) => {
         color="gray.300"
         pl={0}
         ml={0}
-     
         variant="link"
         leftIcon={<Icon pl={0} ml={0} as={FaAngleLeft} boxSize="1.5em"></Icon>}
       >
@@ -153,13 +159,18 @@ const PhotoList = (props) => {
           />
           {/* TO DO: add menu functionality */}
           <MenuList>
-            <MenuItem icon={<AddIcon />} onClick={onOpen}>
+            <MenuItem
+              icon={<AddIcon />}
+              onClick={() => handleMenuSelection("Add Photos")}
+            >
               Add photos
             </MenuItem>
-            <MenuItem icon={<EditIcon />} onClick={handleEditClick}>
+            <MenuItem
+              icon={<EditIcon />}
+              onClick={() => handleMenuSelection("Edit Album")}
+            >
               Edit Album
             </MenuItem>
-            <MenuItem icon={<DeleteIcon />}>Delete album</MenuItem>
           </MenuList>
         </Menu>
       </Flex>
@@ -174,7 +185,14 @@ const PhotoList = (props) => {
         onClose={onClose}
         storage={props.storage}
         database={props.database}
+        selectedMenuItem={selectedMenuItem}
       ></StyledDropzone>
+      <EditAlbum
+        isOpen={isOpen}
+        onClose={onClose}
+        database={props.database}
+        selectedMenuItem={selectedMenuItem}
+      ></EditAlbum>
     </div>
   );
 };
