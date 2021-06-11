@@ -64,7 +64,7 @@ const EditAlbum = (props) => {
       onClose={handleExit}
     >
       <ModalOverlay />
-      <ModalContent top="10rem">
+      <ModalContent>
         <ModalHeader>Edit Album</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

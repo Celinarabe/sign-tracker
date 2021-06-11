@@ -38,7 +38,7 @@ const WelcomePage = (props) => {
           bgSize="100% 100%"
           p="5% 3%"
           h="100vh"
-          w={{ base: "100vw", md: "57vw" }}
+          w={{ base: "100vw", md: "50vw" }}
         >
           <Flex h="55%" w="100vw" align="flex-end" mb="5%">
             <Heading

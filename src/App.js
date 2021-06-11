@@ -37,7 +37,7 @@ function App() {
               {/* This is the route we want to redirect to if a user is logged in */}
               <Route
                 exact
-                path={["/", "/dashboard"]}
+                path={["/dashboard"]}
                 render={() => (
                   <DashboardPage auth={auth} database={db} storage={storage} />
                 )}
@@ -45,7 +45,7 @@ function App() {
               {/* This is the route we want to redirect to if no user is logged in */}
               <Route
                 exact
-                path={["/welcome"]}
+                path={["/", "/welcome"]}
                 render={() => <WelcomePage auth={auth} />}
               />
             </Switch>

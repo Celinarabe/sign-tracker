@@ -141,21 +141,28 @@ const PhotoList = (props) => {
         <Menu preventOverflow boundary="scrollParent">
           <MenuButton
             as={IconButton}
+           
             aria-label="Options"
             icon={<Icon as={FaEllipsisV}></Icon>}
             variant="outline"
-            ml={{ base: "2", md: "0" }}
+            ml={{ base: "2", md: "0.25rem" }}
+            _hover={{ bg: "blue.100" }}
+            _focus={{ bg: "blue.100" }}
           />
           {/* TO DO: add menu functionality */}
           <MenuList>
             <MenuItem
               icon={<AddIcon />}
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
               onClick={() => handleMenuSelection("Add Photos")}
             >
               Add photos
             </MenuItem>
             <MenuItem
               icon={<EditIcon />}
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
               onClick={() => handleMenuSelection("Edit Album")}
             >
               Edit Album

@@ -31,7 +31,7 @@ const LoginChakra = (props) => {
   const handleLoginClick = async (e) => {
     e.preventDefault();
     await props.auth.loginUser(state.email, state.password);
-    history.push("/"); //redirect user to main dashboard page
+    history.push("/dashboard"); //redirect user to main dashboard page
   };
 
   //TO DO: create sign up form

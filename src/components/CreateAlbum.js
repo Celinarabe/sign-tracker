@@ -56,7 +56,7 @@ const CreateAlbum = (props) => {
     <div>
       <Modal isOpen={props.isOpen} onClose={props.onClose}>
         <ModalOverlay />
-        <ModalContent top="10rem">
+        <ModalContent>
           <ModalHeader>Create New Album</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
