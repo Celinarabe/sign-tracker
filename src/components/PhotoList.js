@@ -70,24 +70,6 @@ const PhotoList = (props) => {
     return listener;
   }, []);
 
-  // // TO DO: add real time listener for album document name changes
-  // useEffect(() => {
-  //   const listener = async () => {
-  //     await props.database.db
-  //       .collection("album")
-  //       .doc(selectedAlbum.id)
-  //       .onSnapshot((snapshot) => {
-  //         console.log("in listenerrr", snapshot);
-
-  //         //const updatedAlbum = doc.data();
-  //         // if (updatedAlbum) {
-  //         //   addAlbum(doc.data())
-  //         // }
-  //       });
-  //   };
-  //   return listener;
-  // }, []);
-
   const displayContent = () => {
     return (
       <div>

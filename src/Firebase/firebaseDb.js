@@ -78,6 +78,29 @@ class FirebaseDb {
       .withConverter(photoConverter)
       .add(photoObj);
   };
+
+  /**
+   * Returns a listener to a list of albums that a particular user owns.
+   * The callback is executed when an album is updated.
+   * @param {*} userId   User Id of the current logged in User.
+   * @param {*} callback Callback of the component that is registering the listener.
+   *                     The Callback function should expect a list of updated albums.
+   *                     Typically, the callback should update the requesting component's
+   *                     state.
+   */
+  getAlbumsListener = (userId, callback) => {
+    return this.db
+      .collection("album")
+      .where(`roles.${userId}`, "==", "owner")
+      .onSnapshot((snapshot) => {
+        const updated = [];
+        snapshot.forEach((doc) => {
+          updated.push(albumConverter.fromFirestore(doc));
+        });
+        callback(updated);
+      });
+  }
+
 }
 
 export default FirebaseDb;

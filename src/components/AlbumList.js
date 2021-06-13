@@ -37,20 +37,23 @@ const AlbumList = (props) => {
 
   //setting up real time listener on component mount
   useEffect(() => {
-    const listener = () => {
-      props.database.db
-        .collection("album")
-        .where(`roles.${user.uid}`, "==", "owner")
-        .onSnapshot((snapshot) => {
-          const updated = [];
-          snapshot.forEach((doc) => {
-            updated.push(albumConverter.fromFirestore(doc));
+
+    const unsubscribe =
+      props.database.getAlbumsListener(
+        user.uid,
+        (updatedAlbums) => {
+          setAlbums(updatedAlbums); // update the state with the modified albums
+
+          // Update the selectedAlbum just in case it was the one that changed.
+          updatedAlbums.forEach(album => {
+            if (album.id === selectedAlbum.id) {
+              addAlbum(album);
+            }
           });
-          console.log("listener on albumList", updated);
-          setAlbums(updated);
         });
-    };
-    return listener;
+    
+    // unsubscribe after unmounting.
+    return () => unsubscribe();
   }, []);
 
   //display content after loading
