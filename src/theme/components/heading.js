@@ -15,7 +15,7 @@ const heading = {
       letterSpacing: "0.1rem",
     },
     sub: {
-      fontSize: "md",
+      fontSize: "sm",
       fontWeight: "semibold",
       color: "gray.300",
     }

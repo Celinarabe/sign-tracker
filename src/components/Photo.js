@@ -4,38 +4,42 @@ import { Button, Flex, Heading, Box, Text, Image } from "@chakra-ui/react";
 //this component will accept a photo as props
 const Photo = (props) => {
   return (
-    <div>
+    <Box >
       <hr className="line-break" />
-      <Flex justify="space-between" my={3} >
+      <Flex
+        justify="space-between"
+        my={3}
+        h="7.5rem"
+        
+      >
         <Box position="relative">
-          <Heading  w="7rem"mb=".1rem" variant="sub">
+          <Heading mb=".1rem" mr={1} variant="sub">
             {props.title}
           </Heading>
-          <Text mb="1rem" variant="minor">
-            Taken on: 4/28/21
-          </Text>
-          <Text mb="1.5rem" variant="minor">
-            Big Sign
-          </Text>
-          <Button
-            position="absolute"
-            bottom="0"
-            size="xs"
-            variant="link"
-            colorScheme="black"
-          >
-            Edit note
-          </Button>
+          <Box position="absolute" bottom="0" mb={3}>
+            <Text mt="1.5rem" mb={0} variant="minor">
+              {props.notes}
+            </Text>
+
+            <Button
+              size="xs"
+              variant="link"
+              colorScheme="black"
+            >
+              Edit note
+            </Button>
+          </Box>
         </Box>
+
         <Image
-          borderRadius="lg"
+          borderRadius="md"
           objectFit="cover"
-          h="7rem"
+          h="75%"
           src={props.imageSrc}
           mx="10px"
         ></Image>
       </Flex>
-    </div>
+    </Box>
   );
 };
 
