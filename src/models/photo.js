@@ -1,6 +1,7 @@
 class Photo {
-  constructor(id, image, latitude, longitude, notes) {
+  constructor(id, title,image, latitude, longitude, notes) {
     this.id = id;
+    this.title = title;
     this.image = image; //download URL in storage
     this.latitude = latitude;
     this.longitude = longitude;
@@ -14,6 +15,7 @@ class Photo {
 var photoConverter = {
   toFirestore: function (photo) {
     return {
+      title: photo.title,
       image: photo.image,
       latitude: photo.latitude,
       longitude: photo.longitude,
@@ -27,6 +29,7 @@ var photoConverter = {
     const data = snapshot.data(options);
     return new Photo(
       id,
+      data.title,
       data.image,
       data.latitude,
       data.longitude,

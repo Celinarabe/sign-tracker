@@ -5,6 +5,8 @@ import { Photo } from "../models/photo";
 import React, { useMemo, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import AlbumContext from "../context/AlbumContext";
+import Geocode from "react-geocode"; //TO DO: use this for photo title
+
 
 import * as exifr from "exifr";
 import {
@@ -47,6 +49,8 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
+Geocode.setApiKey("AIzaSyBSpE08gglOIu8keG0gZO0B9rDEt9Q3npo")
+
 function StyledDropzone(props) {
   const UnknownTypeMsg =
     "Unaccepted file format. (Needs to be .jpg, .jpeg, or .png.)";
@@ -82,13 +86,21 @@ function StyledDropzone(props) {
   const extractData = (files, idx) => {
     const promises = files.map(async (file) => {
       const { latitude, longitude } = await exifr.gps(file);
+      const address = await Geocode.fromLatLng(latitude, longitude)
+      console.log(address)
+      const formatted_address = address.results[0].formatted_address.split(',')[0]
+      const notes = address.results[0].formatted_address.split(',').slice(1).toString()
+      console.log(formatted_address)
+      console.log(notes)
       const fileAsURL = URL.createObjectURL(file); //to preview the photo - creates a file in the browser's storage
       return {
         key: idx,
+        title: formatted_address,
         latitude,
         longitude,
         file,
         fileAsURL,
+        notes,
         completed: false,
         saveSuccessful: false,
         progress: 0,
@@ -144,10 +156,11 @@ function StyledDropzone(props) {
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
       let newPhoto = new Photo(
         null,
+        fileObj.title,
         downloadURL,
         fileObj.latitude,
         fileObj.longitude,
-        ""
+        fileObj.notes
       );
       props.database.createPhoto(newPhoto, selectedAlbum.id).then(() => {
         console.log("image saved successfully");

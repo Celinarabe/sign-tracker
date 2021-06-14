@@ -25,7 +25,7 @@ const MapContainer = (props) => {
         <Marker
           onClick={onMarkerClick}
           key={photo.id}
-          title={String(photo.latitude)}
+          title={photo.title}
           imgSrc={photo.image}
           position={{ lat: photo.latitude, lng: photo.longitude }}
         />
@@ -79,8 +79,8 @@ const MapContainer = (props) => {
         {/* TODO: add more to info window */}
         <InfoWindow marker={activeMarker} visible={showingInfo}>
           <div>
-            <h4>{selectedPlace.title}</h4>
-            <img alt="random" src={selectedPlace.imgSrc} />
+            <h3 style={{"font-weight": "500",margin:"0.5rem 0 1rem 0"}}>{selectedPlace.title}</h3>
+            <img style={{"object-fit": "contain", "margin-left":"auto", "margin-right":"auto"}} alt="marker at this location" src={selectedPlace.imgSrc} />
           </div>
         </InfoWindow>
       </Map>

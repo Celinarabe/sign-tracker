@@ -103,7 +103,7 @@ const PhotoList = (props) => {
     photos.map((photo, idx) => {
       return (
         <Box key={photo.id}>
-          {<Photo title={photo.latitude} imageSrc={photo.image} />}
+          {<Photo title={photo.title} imageSrc={photo.image} notes={photo.notes} />}
         </Box>
       );
     });
