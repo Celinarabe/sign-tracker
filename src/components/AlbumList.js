@@ -1,7 +1,6 @@
 //file imports
 import React, { useState, useEffect, useContext } from "react";
 import CreateAlbum from "./CreateAlbum";
-import { albumConverter } from "../models/album";
 import { AuthContext } from "../context/AuthContext";
 import AlbumContext from "../context/AlbumContext";
 import {
@@ -21,7 +20,7 @@ const AlbumList = (props) => {
   const user = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
-  const addAlbum = AlbumContext((state) => state.addAlbum);
+  const setAlbum = AlbumContext((state) => state.setAlbum);
 
   //fetching albums based on current user logged in
   useEffect(() => {
@@ -43,15 +42,7 @@ const AlbumList = (props) => {
         user.uid,
         (updatedAlbums) => {
           setAlbums(updatedAlbums); // update the state with the modified albums
-
-          // Update the selectedAlbum just in case it was the one that changed.
-          updatedAlbums.forEach(album => {
-            if (album.id === selectedAlbum.id) {
-              addAlbum(album);
-            }
-          });
         });
-    
     // unsubscribe after unmounting.
     return () => unsubscribe();
   }, []);
@@ -115,13 +106,9 @@ const AlbumList = (props) => {
 
   //set selected album state
   const handleSelectAlbum = (album) => {
-    addAlbum(album);
+    setAlbum(album);
   };
 
-  //conditionally render albums list
-  if (selectedAlbum) {
-    return null;
-  }
   return (
     <div>
       <Heading mt={4} variant="normal">

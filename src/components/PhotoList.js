@@ -36,6 +36,8 @@ const PhotoList = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
+  const updateAlbum = AlbumContext((state) => state.updateAlbum);
+
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -55,7 +57,7 @@ const PhotoList = (props) => {
   //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
     const listener = () => {
-      props.database.db
+      return props.database.db
         .collection("album")
         .doc(selectedAlbum.id)
         .collection("photos")
@@ -67,8 +69,23 @@ const PhotoList = (props) => {
           addPhotos(updated);
         });
     };
-    return listener;
+    const unsubscribe = listener();
+    return () => unsubscribe();
   }, []);
+
+  useEffect(() => { 
+    const listener = () => {
+      return props.database.db
+        .collection("album")
+        .doc(selectedAlbum.id)
+        .onSnapshot((doc) => {
+          updateAlbum(doc.data());
+        });
+    };
+    const unsubscribe = listener();
+    return () => unsubscribe();
+
+  }, [])
 
   const displayContent = () => {
     return (

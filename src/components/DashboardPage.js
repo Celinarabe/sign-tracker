@@ -3,6 +3,7 @@ import PhotoList from "./PhotoList";
 import AlbumList from "./AlbumList";
 import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
+import AlbumContext from "../context/AlbumContext";
 
 //file imports
 import { Box, Menu, MenuButton, Flex, IconButton } from "@chakra-ui/react";
@@ -12,6 +13,7 @@ import { SettingsIcon } from "@chakra-ui/icons";
 import "../stylesheets/dashboard.css";
 
 const DashboardPage = (props) => {
+  const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   return (
     <div>
       {/* Left side with album/signs list */}
@@ -49,8 +51,9 @@ const DashboardPage = (props) => {
 
             <SettingsList auth={props.auth} />
           </Menu>
-          <PhotoList database={props.database} storage={props.storage} />
-          <AlbumList database={props.database} />
+          {selectedAlbum ?
+            <PhotoList database={props.database} storage={props.storage} /> :
+            <AlbumList database={props.database} />}
           {/* settings button */}
           <Menu colorScheme="blue">
             <MenuButton
