@@ -21,7 +21,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
-import { photoConverter } from "../models/photo";
+
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -40,7 +40,6 @@ const PhotoList = (props) => {
 
   //fetching photos on selected album change
   useEffect(() => {
-    //define async function
     const fetchPhotos = async () => {
       setIsLoading(true); //trigger loading state
       const photoList = await props.database.getPhotos(selectedAlbum.id); //async function returns promise
@@ -48,47 +47,32 @@ const PhotoList = (props) => {
       setIsLoading(false); //set loading state to false
     };
     if (selectedAlbum && user) {
-      //make sure a user is logged in?
       fetchPhotos();
     }
   }, [selectedAlbum]);
 
-  //setting up real time listener for photos sub collection on component mount
+  // //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
-    const listener = () => {
-      return props.database.db
-        .collection("album")
-        .doc(selectedAlbum.id)
-        .collection("photos")
-        .onSnapshot((snapshot) => {
-          const updated = [];
-          snapshot.forEach((doc) => {
-            updated.push(photoConverter.fromFirestore(doc));
-          });
-          addPhotos(updated);
-        });
-    };
-    const unsubscribe = listener();
-    return () => unsubscribe();
+    const unsubscibePhotos = props.database.getPhotosListener(
+      selectedAlbum,
+      (updatedPhotos) => {
+        console.log("here222", updatedPhotos);
+        addPhotos(updatedPhotos);
+      }
+    );
+    return () => unsubscibePhotos();
   }, []);
 
   //setting up real time listener for album title change
   useEffect(() => {
-    const listener = () => {
-      return props.database.db
-        .collection("album")
-        .doc(selectedAlbum.id)
-        .onSnapshot((snapshot) => {
-          const updatedAlbum = {
-            ...selectedAlbum,
-            ...snapshot.data(),
-          };
-          console.log(updatedAlbum);
-          addAlbum(updatedAlbum);
-        });
-    };
-    const unsubscribe = listener();
-    return () => unsubscribe();
+    const unsubscibeAlbum = props.database.getAlbumListener(
+      selectedAlbum,
+      (updatedAlbum) => {
+        console.log("here", updatedAlbum);
+        addAlbum(updatedAlbum);
+      }
+    );
+    return () => unsubscibeAlbum();
   }, []);
 
   const displayContent = () => {
@@ -122,10 +106,6 @@ const PhotoList = (props) => {
     onOpen();
   };
 
-  //conditionally render component if an album was selected
-  if (!selectedAlbum) {
-    return null;
-  }
 
   return (
     <div>
@@ -151,7 +131,6 @@ const PhotoList = (props) => {
             _hover={{ bg: "blue.100" }}
             _focus={{ bg: "blue.100" }}
           />
-          {/* TO DO: add menu functionality */}
           <MenuList>
             <MenuItem
               icon={<AddIcon />}

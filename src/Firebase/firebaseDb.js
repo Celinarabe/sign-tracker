@@ -99,8 +99,34 @@ class FirebaseDb {
         });
         callback(updated);
       });
-  }
+  };
 
+  getAlbumListener = (selectedAlbum, callback) => {
+    return this.db
+      .collection("album")
+      .doc(selectedAlbum.id)
+      .onSnapshot((snapshot) => {
+        const updatedAlbum = {
+          ...selectedAlbum,
+          ...snapshot.data(),
+        };
+        callback(updatedAlbum);
+      });
+  };
+
+  getPhotosListener = (selectedAlbum, callback) => {
+    return this.db
+      .collection("album")
+      .doc(selectedAlbum.id)
+      .collection("photos")
+      .onSnapshot((snapshot) => {
+        const updatedPhotos = [];
+        snapshot.forEach((doc) => {
+          updatedPhotos.push(photoConverter.fromFirestore(doc));
+        });
+        callback(updatedPhotos);
+      });
+  };
 }
 
 export default FirebaseDb;

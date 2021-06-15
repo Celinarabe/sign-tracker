@@ -44,12 +44,7 @@ const AlbumList = (props) => {
         (updatedAlbums) => {
           setAlbums(updatedAlbums); // update the state with the modified albums
           console.log(updatedAlbums)
-          // Update the selectedAlbum just in case it was the one that changed.
-          // updatedAlbums.forEach(album => {
-          //   if (album.id === selectedAlbum.id) {
-          //     addAlbum(album);
-          //   }
-          // });
+
         });
     
     // unsubscribe after unmounting.

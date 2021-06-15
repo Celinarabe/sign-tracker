@@ -5,15 +5,24 @@ import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
 
 //file imports
+import { useContext, } from "react"
 import { Box, Menu, MenuButton, Flex, IconButton } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import AlbumContext from "../context/AlbumContext";
+import {withRouter, useHistory} from "react-router-dom"
+import { AuthContext } from "../context/AuthContext";
 
 //css imports
 import "../stylesheets/dashboard.css";
 
 const DashboardPage = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
+  const user = useContext(AuthContext)
+  const history = useHistory();
+  if (!user) {
+    history.push('/')
+    return null
+  }
   return (
     <div>
       {/* Left side with album/signs list */}
