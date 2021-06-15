@@ -43,18 +43,18 @@ const AlbumList = (props) => {
         user.uid,
         (updatedAlbums) => {
           setAlbums(updatedAlbums); // update the state with the modified albums
-
+          console.log(updatedAlbums)
           // Update the selectedAlbum just in case it was the one that changed.
-          updatedAlbums.forEach(album => {
-            if (album.id === selectedAlbum.id) {
-              addAlbum(album);
-            }
-          });
+          // updatedAlbums.forEach(album => {
+          //   if (album.id === selectedAlbum.id) {
+          //     addAlbum(album);
+          //   }
+          // });
         });
     
     // unsubscribe after unmounting.
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   //display content after loading
   const displayContent = () => {
@@ -118,10 +118,7 @@ const AlbumList = (props) => {
     addAlbum(album);
   };
 
-  //conditionally render albums list
-  if (selectedAlbum) {
-    return null;
-  }
+
   return (
     <div>
       <Heading mt={4} variant="normal">

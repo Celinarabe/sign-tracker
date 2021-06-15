@@ -36,6 +36,7 @@ const PhotoList = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
+  const addAlbum = AlbumContext((state) => state.addAlbum);
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -55,7 +56,7 @@ const PhotoList = (props) => {
   //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
     const listener = () => {
-      props.database.db
+      return props.database.db
         .collection("album")
         .doc(selectedAlbum.id)
         .collection("photos")
@@ -67,7 +68,27 @@ const PhotoList = (props) => {
           addPhotos(updated);
         });
     };
-    return listener;
+    const unsubscribe = listener();
+    return () => unsubscribe();
+  }, []);
+
+  //setting up real time listener for album title change
+  useEffect(() => {
+    const listener = () => {
+      return props.database.db
+        .collection("album")
+        .doc(selectedAlbum.id)
+        .onSnapshot((snapshot) => {
+          const updatedAlbum = {
+            ...selectedAlbum,
+            ...snapshot.data(),
+          };
+          console.log(updatedAlbum);
+          addAlbum(updatedAlbum);
+        });
+    };
+    const unsubscribe = listener();
+    return () => unsubscribe();
   }, []);
 
   const displayContent = () => {
@@ -123,7 +144,6 @@ const PhotoList = (props) => {
         <Menu preventOverflow boundary="scrollParent">
           <MenuButton
             as={IconButton}
-           
             aria-label="Options"
             icon={<Icon as={FaEllipsisV}></Icon>}
             variant="outline"

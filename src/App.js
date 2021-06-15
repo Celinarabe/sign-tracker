@@ -9,7 +9,7 @@ import {
   FirebaseAuth,
   FirebaseDb,
   FirebaseStorage,
-} from "./Firebase";
+} from "./firebase";
 import { AuthProvider } from "./context/AuthContext";
 import theme from "./theme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
