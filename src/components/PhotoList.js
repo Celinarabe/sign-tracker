@@ -21,7 +21,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
-import { photoConverter } from "../models/photo";
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -36,10 +35,10 @@ const PhotoList = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
+  const setAlbum = AlbumContext((state) => state.setAlbum);
 
   //fetching photos on selected album change
   useEffect(() => {
-    //define async function
     const fetchPhotos = async () => {
       setIsLoading(true); //trigger loading state
       const photoList = await props.database.getPhotos(selectedAlbum.id); //async function returns promise
@@ -47,46 +46,31 @@ const PhotoList = (props) => {
       setIsLoading(false); //set loading state to false
     };
     if (selectedAlbum && user) {
-      //make sure a user is logged in?
       fetchPhotos();
     }
   }, [selectedAlbum]);
 
-  //setting up real time listener for photos sub collection on component mount
+  // //setting up real time listener for photos sub collection on component mount
   useEffect(() => {
-    const listener = () => {
-      props.database.db
-        .collection("album")
-        .doc(selectedAlbum.id)
-        .collection("photos")
-        .onSnapshot((snapshot) => {
-          const updated = [];
-          snapshot.forEach((doc) => {
-            updated.push(photoConverter.fromFirestore(doc));
-          });
-          addPhotos(updated);
-        });
-    };
-    return listener;
+    const unsubscibePhotos = props.database.getPhotosListener(
+      selectedAlbum,
+      (updatedPhotos) => {
+        addPhotos(updatedPhotos);
+      }
+    );
+    return () => unsubscibePhotos();
   }, []);
 
-  // // TO DO: add real time listener for album document name changes
-  // useEffect(() => {
-  //   const listener = async () => {
-  //     await props.database.db
-  //       .collection("album")
-  //       .doc(selectedAlbum.id)
-  //       .onSnapshot((snapshot) => {
-  //         console.log("in listenerrr", snapshot);
-
-  //         //const updatedAlbum = doc.data();
-  //         // if (updatedAlbum) {
-  //         //   addAlbum(doc.data())
-  //         // }
-  //       });
-  //   };
-  //   return listener;
-  // }, []);
+  //setting up real time listener for album title change
+  useEffect(() => {
+    const unsubscibeAlbum = props.database.getAlbumListener(
+      selectedAlbum,
+      (updatedAlbum) => {
+        setAlbum(updatedAlbum);
+      }
+    );
+    return () => unsubscibeAlbum();
+  }, []);
 
   const displayContent = () => {
     return (
@@ -103,7 +87,13 @@ const PhotoList = (props) => {
     photos.map((photo, idx) => {
       return (
         <Box key={photo.id}>
-          {<Photo title={photo.title} imageSrc={photo.image} notes={photo.notes} />}
+          {
+            <Photo
+              title={photo.title}
+              imageSrc={photo.image}
+              notes={photo.notes}
+            />
+          }
         </Box>
       );
     });
@@ -118,11 +108,6 @@ const PhotoList = (props) => {
     setSelectedMenuItem(selection);
     onOpen();
   };
-
-  //conditionally render component if an album was selected
-  if (!selectedAlbum) {
-    return null;
-  }
 
   return (
     <div>
@@ -141,7 +126,6 @@ const PhotoList = (props) => {
         <Menu preventOverflow boundary="scrollParent">
           <MenuButton
             as={IconButton}
-           
             aria-label="Options"
             icon={<Icon as={FaEllipsisV}></Icon>}
             variant="outline"
@@ -149,7 +133,6 @@ const PhotoList = (props) => {
             _hover={{ bg: "blue.100" }}
             _focus={{ bg: "blue.100" }}
           />
-          {/* TO DO: add menu functionality */}
           <MenuList>
             <MenuItem
               icon={<AddIcon />}

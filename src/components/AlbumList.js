@@ -1,7 +1,6 @@
 //file imports
 import React, { useState, useEffect, useContext } from "react";
 import CreateAlbum from "./CreateAlbum";
-import { albumConverter } from "../models/album";
 import { AuthContext } from "../context/AuthContext";
 import AlbumContext from "../context/AlbumContext";
 import {
@@ -21,37 +20,29 @@ const AlbumList = (props) => {
   const user = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
-  const addAlbum = AlbumContext((state) => state.addAlbum);
+  const setAlbum = AlbumContext((state) => state.setAlbum);
 
   //fetching albums based on current user logged in
   useEffect(() => {
-    //define async function
     const fetchAlbums = async () => {
       setIsLoading(true); //trigger loading state
-      const albums = await props.database.getUserAlbums(user.uid); //async function returns promise
-      setAlbums(albums); //resolve the promise by setting state to this response
-      setIsLoading(false); //set loading state to false
+      const albums = await props.database.getUserAlbums(user.uid);
+      setAlbums(albums);
+      setIsLoading(false);
     };
     fetchAlbums();
   }, [user]); //fetch albums based on current user
 
   //setting up real time listener on component mount
   useEffect(() => {
-    const listener = () => {
-      props.database.db
-        .collection("album")
-        .where(`roles.${user.uid}`, "==", "owner")
-        .onSnapshot((snapshot) => {
-          const updated = [];
-          snapshot.forEach((doc) => {
-            updated.push(albumConverter.fromFirestore(doc));
-          });
-          console.log("listener on albumList", updated);
-          setAlbums(updated);
-        });
-    };
-    return listener;
-  }, []);
+    const unsubscribe = props.database.getAlbumsListener(
+      user.uid,
+      (updatedAlbums) => {
+        setAlbums(updatedAlbums);
+      }
+    );
+    return () => unsubscribe();
+  }, [user]);
 
   //display content after loading
   const displayContent = () => {
@@ -112,13 +103,9 @@ const AlbumList = (props) => {
 
   //set selected album state
   const handleSelectAlbum = (album) => {
-    addAlbum(album);
+    setAlbum(album);
   };
 
-  //conditionally render albums list
-  if (selectedAlbum) {
-    return null;
-  }
   return (
     <div>
       <Heading mt={4} variant="normal">
