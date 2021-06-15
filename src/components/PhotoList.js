@@ -22,7 +22,6 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 
-
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
 
@@ -56,7 +55,6 @@ const PhotoList = (props) => {
     const unsubscibePhotos = props.database.getPhotosListener(
       selectedAlbum,
       (updatedPhotos) => {
-        console.log("here222", updatedPhotos);
         addPhotos(updatedPhotos);
       }
     );
@@ -68,26 +66,11 @@ const PhotoList = (props) => {
     const unsubscibeAlbum = props.database.getAlbumListener(
       selectedAlbum,
       (updatedAlbum) => {
-        console.log("here", updatedAlbum);
         setAlbum(updatedAlbum);
       }
     );
     return () => unsubscibeAlbum();
   }, []);
-
-  useEffect(() => { 
-    const listener = () => {
-      return props.database.db
-        .collection("album")
-        .doc(selectedAlbum.id)
-        .onSnapshot((doc) => {
-          setAlbum(doc.data());
-        });
-    };
-    const unsubscribe = listener();
-    return () => unsubscribe();
-
-  }, [])
 
   const displayContent = () => {
     return (
@@ -104,7 +87,13 @@ const PhotoList = (props) => {
     photos.map((photo, idx) => {
       return (
         <Box key={photo.id}>
-          {<Photo title={photo.title} imageSrc={photo.image} notes={photo.notes} />}
+          {
+            <Photo
+              title={photo.title}
+              imageSrc={photo.image}
+              notes={photo.notes}
+            />
+          }
         </Box>
       );
     });
@@ -119,7 +108,6 @@ const PhotoList = (props) => {
     setSelectedMenuItem(selection);
     onOpen();
   };
-
 
   return (
     <div>

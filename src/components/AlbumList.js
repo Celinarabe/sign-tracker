@@ -24,26 +24,23 @@ const AlbumList = (props) => {
 
   //fetching albums based on current user logged in
   useEffect(() => {
-    //define async function
     const fetchAlbums = async () => {
       setIsLoading(true); //trigger loading state
-      const albums = await props.database.getUserAlbums(user.uid); //async function returns promise
-      setAlbums(albums); //resolve the promise by setting state to this response
-      setIsLoading(false); //set loading state to false
+      const albums = await props.database.getUserAlbums(user.uid);
+      setAlbums(albums);
+      setIsLoading(false);
     };
     fetchAlbums();
   }, [user]); //fetch albums based on current user
 
   //setting up real time listener on component mount
   useEffect(() => {
-
-    const unsubscribe =
-      props.database.getAlbumsListener(
-        user.uid,
-        (updatedAlbums) => {
-          setAlbums(updatedAlbums); // update the state with the modified albums
-        });
-    // unsubscribe after unmounting.
+    const unsubscribe = props.database.getAlbumsListener(
+      user.uid,
+      (updatedAlbums) => {
+        setAlbums(updatedAlbums);
+      }
+    );
     return () => unsubscribe();
   }, [user]);
 
