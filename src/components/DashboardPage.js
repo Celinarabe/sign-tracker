@@ -73,7 +73,6 @@ const DashboardPage = (props) => {
         <Box
           h={{ base: "50vh", md: "100vh" }}
           w={{ base: "100vw" }}
-          bg="blue"
           position="relative"
           zIndex="base"
         >

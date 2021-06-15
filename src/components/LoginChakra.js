@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link as ReactLink, useHistory } from "react-router-dom";
+import LoginContext from "../context/LoginContext"
 
 const LoginChakra = (props) => {
   //history object is passed into each route as a prop
@@ -19,6 +20,9 @@ const LoginChakra = (props) => {
     email: "",
     password: "",
   });
+  const [invalidAuth, setInvalidAuth] = useState(false);
+  const hideLogin = LoginContext((state) => state.hideLogin)
+  const errorMsg = "Invalid Email/Password"
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -29,16 +33,19 @@ const LoginChakra = (props) => {
   };
 
   const handleLoginClick = async (e) => {
-    e.preventDefault();
-    await props.auth.loginUser(state.email, state.password);
-    history.push("/dashboard"); //redirect user to main dashboard page
+    try {
+      e.preventDefault();
+      await props.auth.loginUser(state.email, state.password);
+      history.push("/dashboard"); //redirect user to main dashboard page
+    } catch (error) {
+      console.log(error);
+      setInvalidAuth(true);
+    }
   };
 
-  //TO DO: create sign up form
-  const handleSignupClick = async (e) => {
-    e.preventDefault();
-    await props.auth.signupUser(state.email, state.password);
-    history.push("/"); //redirect user to main dashboard page
+  const handleSignup = () => {
+    setState({ email: "", password: "" });
+    hideLogin()
   };
 
   return (
@@ -46,9 +53,10 @@ const LoginChakra = (props) => {
       <Heading variant="normal" mt="10%" mb="7%" textAlign="left">
         Log in
       </Heading>
+     
       <VStack spacing={5} w="100%" mb="1rem">
-        <Box w="100%">
-          <Text>Email</Text>
+        <Box w="100%" >
+          <Text mb={2}>Email</Text>
           <Input
             id="email"
             onChange={handleChange}
@@ -57,7 +65,7 @@ const LoginChakra = (props) => {
           ></Input>
         </Box>
         <Box w="100%">
-          <Text>Password</Text>
+          <Text mb={2}>Password</Text>
           <Input
             id="password"
             type="password"
@@ -66,23 +74,32 @@ const LoginChakra = (props) => {
             placeholder="Enter your password"
           ></Input>
         </Box>
-
+        {invalidAuth ? <Text color="red.600" variant="minor">{errorMsg}</Text> : ""}
+        
         <Link as={ReactLink} to="/dashboard" w="100%">
           <Button
             id="btnLogin"
             w="100%"
             colorScheme="blue"
             onClick={handleLoginClick}
+            mt={5}
           >
             Log in
           </Button>
         </Link>
+        
       </VStack>
       <Text align="center">
         Don't have an account?&nbsp;
-        <Link href="" fontWeight="semibold">
+        <Button
+          variant="link"
+          color="black"
+          onClick={handleSignup}
+          href=""
+          fontWeight="semibold"
+        >
           Sign up
-        </Link>
+        </Button>
       </Text>
     </div>
   );
