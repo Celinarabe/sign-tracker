@@ -3,12 +3,12 @@ import PhotoList from "./PhotoList";
 import AlbumList from "./AlbumList";
 import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
+import AlbumContext from "../context/AlbumContext";
 
 //file imports
 import { useContext, } from "react"
 import { Box, Menu, MenuButton, Flex, IconButton } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
-import AlbumContext from "../context/AlbumContext";
 import {withRouter, useHistory} from "react-router-dom"
 import { AuthContext } from "../context/AuthContext";
 

@@ -36,7 +36,7 @@ const PhotoList = (props) => {
   const photos = PhotoContext((state) => state.photoList);
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
-  const addAlbum = AlbumContext((state) => state.addAlbum);
+  const setAlbum = AlbumContext((state) => state.setAlbum);
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -69,11 +69,25 @@ const PhotoList = (props) => {
       selectedAlbum,
       (updatedAlbum) => {
         console.log("here", updatedAlbum);
-        addAlbum(updatedAlbum);
+        setAlbum(updatedAlbum);
       }
     );
     return () => unsubscibeAlbum();
   }, []);
+
+  useEffect(() => { 
+    const listener = () => {
+      return props.database.db
+        .collection("album")
+        .doc(selectedAlbum.id)
+        .onSnapshot((doc) => {
+          setAlbum(doc.data());
+        });
+    };
+    const unsubscribe = listener();
+    return () => unsubscribe();
+
+  }, [])
 
   const displayContent = () => {
     return (
@@ -90,7 +104,7 @@ const PhotoList = (props) => {
     photos.map((photo, idx) => {
       return (
         <Box key={photo.id}>
-          {<Photo title={photo.latitude} imageSrc={photo.image} />}
+          {<Photo title={photo.title} imageSrc={photo.image} notes={photo.notes} />}
         </Box>
       );
     });

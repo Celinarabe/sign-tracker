@@ -2,7 +2,8 @@ import create from "zustand";
 
 const AlbumContext = create((set) => ({
   selectedAlbum: "",
-  addAlbum: (newAlbum) => set((state) => ({ selectedAlbum: newAlbum })),
+  setAlbum: (newAlbum) => set((state) => ({ selectedAlbum: newAlbum })),
+  updateAlbum: (update) => set((state) => ({ selectedAlbum: {...state.selectedAlbum, title: update.title}})),
   removeAlbum: () => set({ selectedAlbum: "" }),
 }));
 
