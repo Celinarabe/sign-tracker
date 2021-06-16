@@ -1,9 +1,12 @@
 //component imports
 import { PhotoPreview } from "./PhotoPreview";
-import { Sign } from "../models/sign";
+import { Photo } from "../models/photo";
 
 import React, { useMemo, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import AlbumContext from "../context/AlbumContext";
+import Geocode from "react-geocode"; //TO DO: use this for photo title
+
 
 import * as exifr from "exifr";
 import {
@@ -15,11 +18,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Tabs,
-  Tab,
-  TabPanels,
-  TabPanel,
-  TabList,
   Text,
 } from "@chakra-ui/react";
 
@@ -51,10 +49,13 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
+Geocode.setApiKey("AIzaSyBSpE08gglOIu8keG0gZO0B9rDEt9Q3npo")
+
 function StyledDropzone(props) {
   const UnknownTypeMsg =
     "Unaccepted file format. (Needs to be .jpg, .jpeg, or .png.)";
   const UnknownLocationMsg = "Unable to find location data for this photo.";
+  const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
 
   const [photoList, setPhotoList] = useState([]);
   const [inProgress, setInProgress] = useState(false);
@@ -81,17 +82,25 @@ function StyledDropzone(props) {
     }
   };
 
-  //this function gets gps data and creates array of sign objects
+  //this function gets gps data and creates array of Photo objects
   const extractData = (files, idx) => {
     const promises = files.map(async (file) => {
       const { latitude, longitude } = await exifr.gps(file);
+      const address = await Geocode.fromLatLng(latitude, longitude)
+      console.log(address)
+      const formatted_address = address.results[0].formatted_address.split(',')[0]
+      const notes = address.results[0].formatted_address.split(',').slice(1).toString()
+      console.log(formatted_address)
+      console.log(notes)
       const fileAsURL = URL.createObjectURL(file); //to preview the photo - creates a file in the browser's storage
       return {
         key: idx,
+        title: formatted_address,
         latitude,
         longitude,
         file,
         fileAsURL,
+        notes,
         completed: false,
         saveSuccessful: false,
         progress: 0,
@@ -113,8 +122,8 @@ function StyledDropzone(props) {
   const uploadPhotos = () => {
     setInProgress(true);
     photoList.forEach((obj) => {
-      props.storage.uploadSign(
-        "Gij7b83mMQsIiXWapL9A", //NEED TO SPECIFY CAMPAIGN
+      props.storage.uploadPhoto(
+        selectedAlbum.id,
         obj,
         progressCallback,
         errorCallback,
@@ -123,7 +132,7 @@ function StyledDropzone(props) {
     });
   };
 
-  //updating the file state
+  //helper - updating the file state
   const updateFile = (fileObj) => {
     let newArr = [...photoList];
     newArr[fileObj.key] = fileObj;
@@ -136,7 +145,7 @@ function StyledDropzone(props) {
     updateFile(fileObj);
   };
 
-  //create sign object and write to firestore
+  //create Photo object and write to firestore
   const successCallback = (task, fileObj) => {
     fileObj.completed = true;
     fileObj.saveSuccessful = true;
@@ -145,15 +154,17 @@ function StyledDropzone(props) {
 
     //writing to firestore
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
-      let newSign = new Sign(
+      let newPhoto = new Photo(
         null,
+        fileObj.title,
         downloadURL,
         fileObj.latitude,
-        fileObj.longitude
+        fileObj.longitude,
+        fileObj.notes
       );
-      props.database
-        .createSign(newSign, "Gij7b83mMQsIiXWapL9A")
-        .then(() => console.log("uploaded successfully"));
+      props.database.createPhoto(newPhoto, selectedAlbum.id).then(() => {
+        console.log("image saved successfully");
+      });
     });
   };
 
@@ -210,6 +221,10 @@ function StyledDropzone(props) {
     [isDragActive, isDragReject, isDragAccept]
   );
 
+  if (props.selectedMenuItem !== "Add Photos") {
+    return null;
+  }
+
   return (
     <Modal
       scrollBehavior="inside"
@@ -222,34 +237,17 @@ function StyledDropzone(props) {
         <ModalHeader>Add Photos</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Tabs isFitted>
-            <TabList>
-              <Tab>Upload Photo</Tab>
-              <Tab>Take a Photo</Tab>
-            </TabList>
+          <div className="container">
+            <div {...getRootProps({ style })} hidden={saveSuccessful}>
+              <input {...getInputProps()} />
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            </div>
 
-            <TabPanels>
-              <TabPanel>
-                <div className="container">
-                  <div {...getRootProps({ style })} hidden={saveSuccessful}>
-                    <input {...getInputProps()} />
-                    <p>
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  </div>
-
-                  <Text fontWeight="medium" color="tomato" mt={2}>
-                    {errorMessage}
-                  </Text>
-                  <PhotoPreview photos={photoList} inProgress={inProgress} />
-                </div>
-              </TabPanel>
-
-              <TabPanel>
-                <p>Coming Soon &#128516;</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+            <Text fontWeight="medium" color="tomato" mt={2}>
+              {errorMessage}
+            </Text>
+            <PhotoPreview photos={photoList} inProgress={inProgress} />
+          </div>
         </ModalBody>
 
         <ModalFooter>

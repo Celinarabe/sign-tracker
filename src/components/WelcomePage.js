@@ -1,5 +1,6 @@
 //component imports
 import LoginChakra from "./LoginChakra";
+import Signup from "./Signup";
 
 //file imports
 import {
@@ -18,8 +19,9 @@ import {
 } from "@chakra-ui/react";
 import { MapBg } from "../images/";
 import { Link as ReactLink } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
+import LoginContext from "../context/LoginContext";
 
 //css imports
 import "../stylesheets/welcomePage.css";
@@ -27,6 +29,20 @@ import "../stylesheets/welcomePage.css";
 const WelcomePage = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+  const loginPage = LoginContext((state) => state.loginPage);
+  const showLogin = LoginContext((state) => state.showLogin)
+
+  const displayForm = () => {
+    if (loginPage) {
+      return <LoginChakra auth={props.auth} history={props.history} />;
+    } else {
+      return <Signup auth={props.auth} history={props.history} />;
+    }
+  };
+
+  useEffect(() => {
+    showLogin()
+  }, [])
 
   return (
     <div>
@@ -38,7 +54,7 @@ const WelcomePage = (props) => {
           bgSize="100% 100%"
           p="5% 3%"
           h="100vh"
-          w={{ base: "100vw", md: "57vw" }}
+          w={{ base: "100vw", md: "50vw" }}
         >
           <Flex h="55%" w="100vw" align="flex-end" mb="5%">
             <Heading
@@ -53,21 +69,15 @@ const WelcomePage = (props) => {
           </Flex>
 
           <VStack spacing={4} mt={8}>
-            <Link as={ReactLink} to="/dashboard">
-              <Button bg="gray.100" color="#4E4F67" w="150px">
-                Try it out!
-              </Button>
-            </Link>
-
             <Button
               ref={btnRef}
               onClick={onOpen}
               display={{ base: "block", md: "none" }}
-              bg="gray.100"
-              color="#4E4F67"
+              // bg="gray.100"
+              colorScheme="whiteAlpha"
               w="150px"
             >
-              Log in
+              Start Here
             </Button>
             <Drawer
               isOpen={isOpen}
@@ -79,9 +89,7 @@ const WelcomePage = (props) => {
               <DrawerContent>
                 <DrawerCloseButton />
 
-                <DrawerBody>
-                  <LoginChakra auth={props.auth} />
-                </DrawerBody>
+                <DrawerBody>{displayForm()}</DrawerBody>
 
                 <DrawerFooter></DrawerFooter>
               </DrawerContent>
@@ -97,7 +105,7 @@ const WelcomePage = (props) => {
             p="5% 8%"
             w={{ md: "40vw" }}
           >
-            <LoginChakra auth={props.auth} />
+            {displayForm()}
           </Box>
         </div>
       </Box>

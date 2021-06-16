@@ -1,71 +1,131 @@
-import { campaignConverter } from "../models/campaign";
-import { signConverter } from "../models/sign";
+import { albumConverter } from "../models/album";
+import { photoConverter } from "../models/photo";
 
 class FirebaseDb {
   constructor(app) {
     this.db = app.firestore(); //getting db from the app object we pass in
   }
 
-  //query firestore for campaign collection
-  //async function returns a promise
-  getCampaigns = async () => {
-    const querySnapshot = await this.db //await: wait until this is done to move onto next line
-      .collection("campaign")
-      .withConverter(campaignConverter)
+  //get all albums based on userID
+  getUserAlbums = async (userID) => {
+    const albumDocs = await this.db
+      .collection("album")
+      .where(`roles.${userID}`, "==", "owner")
+      .withConverter(albumConverter)
       .get();
 
-    const campaigns = querySnapshot.docs.map((doc) => doc.data()); //array of campaign objects
-    //loop through each campaign object, query sign collection, and set to campaign object
-    for (const campaign of campaigns) {
-      const signList = await this.getSigns(campaign.id);
-      campaign.setSigns(signList);
-    }
-
-    return campaigns;
+    return albumDocs.docs.map((doc) => doc.data());
   };
 
-  //TODO: get campaign based on user
-
-
-  writeCampaign = async (campaignObj) => {
+  //get status of document write
+  writeAlbum = async (albumObj) => {
     try {
-      await this.createCampaign(campaignObj);
+      await this.createAlbum(albumObj);
       return true;
     } catch (error) {
       return false;
     }
   };
 
-  //write new campaign to firestore
-  createCampaign = async (campaignObj) => {
-    //returns new doc
+  //get created document
+  createAlbum = async (albumObj) => {
     return await this.db
-      .collection("campaign")
-      .withConverter(campaignConverter)
-      .add(campaignObj);
+      .collection("album")
+      .withConverter(albumConverter)
+      .add(albumObj);
   };
 
-  //query firestore for sign subcollection based on campaignID
-  getSigns = async (campaignID) => {
-    const signList = await this.db
-      .collection("campaign")
-      .doc(campaignID)
-      .collection("signs")
-      .withConverter(signConverter)
+  //get status of document update
+  writeUpdate = async (albumObj, newTitle) => {
+    try {
+      await this.updateAlbum(albumObj, newTitle);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  //get updated document
+  updateAlbum = async (albumID, newTitle) => {
+    return await this.db
+      .collection("album")
+      .doc(albumID)
+      .update({ title: newTitle });
+  };
+
+  //deletes album
+  deleteAlbum = async (albumID) => {
+    return await this.db.collection("album").doc(albumID);
+  };
+
+  //get photo subcollection based on albumID
+  getPhotos = async (albumID) => {
+    const photoList = await this.db
+      .collection("album")
+      .doc(albumID)
+      .collection("photos")
+      .withConverter(photoConverter)
       .get();
-    return signList.docs.map((doc) => doc.data());
+    return photoList.docs.map((doc) => doc.data());
   };
 
-  // upload sign function
-  //write new sign to firestore
-  createSign = async (signObj, campaignID) => {
-    //returns new doc
+  //add new photo to photo sub collection based on albumID
+  createPhoto = async (photoObj, albumID) => {
     return await this.db
-      .collection("campaign")
-      .doc(campaignID)
-      .collection("signs")
-      .withConverter(signConverter)
-      .add(signObj);
+      .collection("album")
+      .doc(albumID)
+      .collection("photos")
+      .withConverter(photoConverter)
+      .add(photoObj);
+  };
+
+  /**
+   * Returns a listener to a list of albums that a particular user owns.
+   * The callback is executed when an album is updated.
+   * @param {*} userId   User Id of the current logged in User.
+   * @param {*} callback Callback of the component that is registering the listener.
+   *                     The Callback function should expect a list of updated albums.
+   *                     Typically, the callback should update the requesting component's
+   *                     state.
+   */
+  getAlbumsListener = (userId, callback) => {
+    return this.db
+      .collection("album")
+      .where(`roles.${userId}`, "==", "owner")
+      .onSnapshot((snapshot) => {
+        const updated = [];
+        snapshot.forEach((doc) => {
+          updated.push(albumConverter.fromFirestore(doc));
+        });
+        callback(updated);
+      });
+  };
+
+  getAlbumListener = (selectedAlbum, callback) => {
+    return this.db
+      .collection("album")
+      .doc(selectedAlbum.id)
+      .onSnapshot((snapshot) => {
+        const updatedAlbum = {
+          ...selectedAlbum,
+          ...snapshot.data(),
+        };
+        callback(updatedAlbum);
+      });
+  };
+
+  getPhotosListener = (selectedAlbum, callback) => {
+    return this.db
+      .collection("album")
+      .doc(selectedAlbum.id)
+      .collection("photos")
+      .onSnapshot((snapshot) => {
+        const updatedPhotos = [];
+        snapshot.forEach((doc) => {
+          updatedPhotos.push(photoConverter.fromFirestore(doc));
+        });
+        callback(updatedPhotos);
+      });
   };
 }
 

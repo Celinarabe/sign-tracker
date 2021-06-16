@@ -1,9 +1,11 @@
 import React, { Component, useEffect, useState } from "react";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
-import Geocode from "react-geocode";
+import Geocode from "react-geocode"; //TO DO: use this for photo title
+import PhotoContext from "../context/PhotoContext";
 
-//mapContainer will receive signs list as a prop from dashboard component
+//renders
 const MapContainer = (props) => {
+  const photos = PhotoContext((state) => state.photoList);
   const [markers, setMarkers] = useState();
   const [bounds, setBounds] = useState();
   const [showingInfo, setShowingInfo] = useState(false);
@@ -18,55 +20,67 @@ const MapContainer = (props) => {
   };
 
   const createMarkers = () => {
-    const signMarkers = props.signs.map((sign, idx) => {
+    const photoMarkers = photos.map((photo, idx) => {
       return (
-        // going to need to add more sign data to display in infowindow
         <Marker
           onClick={onMarkerClick}
-          key={sign.id}
-          title={String(sign.latitude)}
-          imgSrc={sign.image}
-          position={{ lat: sign.latitude, lng: sign.longitude }}
+          key={photo.id}
+          title={photo.title}
+          imgSrc={photo.image}
+          position={{ lat: photo.latitude, lng: photo.longitude }}
         />
       );
     });
-    setMarkers(signMarkers);
+    setMarkers(photoMarkers);
   };
 
   const getBounds = () => {
     var mapBounds = new props.google.maps.LatLngBounds();
-    //loop through signs list and extend bounds
-    for (var i = 0; i < props.signs.length; i++) {
+    //adding bounds to center first marker
+    mapBounds.extend({
+      lat: photos[0].latitude - 0.01,
+      lng: photos[0].longitude - 0.01,
+    });
+    mapBounds.extend({
+      lat: photos[0].latitude + 0.01,
+      lng: photos[0].longitude + 0.01,
+    });
+    //loop through photos list and extend bounds
+    for (var i = 0; i < photos.length; i++) {
       mapBounds.extend({
-        lat: props.signs[i].latitude,
-        lng: props.signs[i].longitude,
+        lat: photos[i].latitude,
+        lng: photos[i].longitude,
       });
     }
     setBounds(mapBounds);
   };
 
-  //if changes to sign list occurs
+  //if changes to photo list occurs
   useEffect(() => {
-    if (props.signs) {
+    if (photos.length > 0) {
       createMarkers();
       getBounds();
+    } else {
+      setMarkers();
+      setBounds();
     }
-  }, [props.signs]);
+  }, [photos]);
 
   return (
     <div>
       <Map
         google={props.google}
         bounds={bounds}
-        zoom={14}
+        zoom={12}
         style={mapStyles}
-        initialCenter={{lat: 0, lng: 0}}
+        initialCenter={{ lat: 0, lng: 0 }}
       >
         {markers}
+        {/* TODO: add more to info window */}
         <InfoWindow marker={activeMarker} visible={showingInfo}>
           <div>
-            <h4>{selectedPlace.title}</h4>
-            <img alt="sign pic" src={selectedPlace.imgSrc} />
+            <h3 style={{"font-weight": "500",margin:"0.5rem 0 1rem 0"}}>{selectedPlace.title}</h3>
+            <img style={{"object-fit": "contain", "margin-left":"auto", "margin-right":"auto"}} alt="marker at this location" src={selectedPlace.imgSrc} />
           </div>
         </InfoWindow>
       </Map>

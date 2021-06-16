@@ -11,7 +11,6 @@ import {
   FirebaseStorage,
 } from "./firebase";
 import { AuthProvider } from "./context/AuthContext";
-import { withAuth } from "./hoc/withAuth";
 import theme from "./theme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
@@ -35,15 +34,19 @@ function App() {
           <CSSReset />
           <BrowserRouter>
             <Switch>
+              {/* This is the route we want to redirect to if a user is logged in */}
               <Route
                 exact
-                path={["/welcome"]}
-                render={() => <WelcomePage auth={auth} />}
+                path={["/dashboard"]}
+                render={() => (
+                  <DashboardPage auth={auth} database={db} storage={storage} />
+                )}
               />
+              {/* This is the route we want to redirect to if no user is logged in */}
               <Route
                 exact
-                path={["/", "/dashboard"]}
-                render={() => <DashboardPage database={db} storage={storage} />}
+                path={["/", "/welcome"]}
+                render={() => <WelcomePage auth={auth} />}
               />
             </Switch>
           </BrowserRouter>

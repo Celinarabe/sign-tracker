@@ -1,12 +1,12 @@
 class FirebaseStorage {
   constructor(app) {
     this.storage = app.storage(); //getting a reference to the storage service
-    this.signsRef = this.storage.ref().child("signs"); //creating a reference to signs folder
+    this.photosRef = this.storage.ref().child("photos"); //creating a reference to photos folder
   }
 
   //this method stores the photo in storage
-  uploadSign = (
-    campaignID,
+  uploadPhoto = (
+    albumID,
     fileObj,
     progressCallback,
     errorCallback,
@@ -14,8 +14,8 @@ class FirebaseStorage {
   ) => {
     const { file } = fileObj;
 
-    let task = this.signsRef
-      .child(campaignID)
+    let task = this.photosRef
+      .child(albumID)
       .child(file.name) //should this be our signID? no, can just generate a random string
       .put(file); //should we pass in a file array and map over?
 

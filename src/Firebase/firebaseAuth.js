@@ -5,32 +5,22 @@ class FirebaseAuth {
 
   //write new campaign to firestore
   loginUser = async (email, password) => {
-    try {
+
       await this.auth.signInWithEmailAndPassword(email, password);
-      console.log('logged in')
-      var user = this.auth.currentUser
-      console.log(user.email)
-    } catch (error) {
-      console.log('ERROR ERROR')
-      console.log(error)
-    }
+      var user = this.auth.currentUser;
+      console.log(user.email);
+
+    
   };
 
   signupUser = async (email, password) => {
-    try {
       await this.auth.createUserWithEmailAndPassword(email, password);
-      console.log('signed up and logged in')
-      var user = this.auth.currentUser
-      console.log(user.email)
-    } catch (error) {
-      console.log('SIGN UP ERROR')
-      console.log(error)
-    }
-  }
+      console.log("signed up and logged in");
+      var user = this.auth.currentUser;
+      console.log(user.email);
+    
+  };
 
-
-
-  //realtime listener
 
 }
 

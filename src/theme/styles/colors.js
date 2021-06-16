@@ -1,8 +1,8 @@
 const Colors = {
   blue: {
-    100: "#C4DEFC",
-    200: "#67A9F6",
-    300: "#0875F5",
+    100: "#C4DEFC", //lightest
+    200: "#67A9F6", //medium
+    300: "#0875F5", //darkest
   },
   eggshell: "#E5E5E5",
   white: "#FFFFFF",
