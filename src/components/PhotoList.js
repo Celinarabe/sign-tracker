@@ -2,6 +2,7 @@
 import Photo from "./Photo";
 import StyledDropzone from "./StyledDropzone";
 import EditAlbum from "./EditAlbum";
+import SettingsList from "./SettingsList";
 
 //file imports
 import React, { useEffect, useState, useContext } from "react";
@@ -9,6 +10,7 @@ import { Heading, Text, Icon, Button } from "@chakra-ui/react";
 import { AuthContext } from "../context/AuthContext";
 
 import { FaAngleLeft, FaEllipsisV } from "react-icons/fa";
+import { ImExit} from "react-icons/im"
 import {
   useDisclosure,
   Spinner,
@@ -20,7 +22,7 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -111,16 +113,38 @@ const PhotoList = (props) => {
 
   return (
     <div>
-      <Button
-        onClick={handleAlbumView}
-        color="gray.300"
-        pl={0}
-        ml={0}
-        variant="link"
-        leftIcon={<Icon pl={0} ml={0} as={FaAngleLeft} boxSize="1.5em"></Icon>}
-      >
-        Albums
-      </Button>
+      <Flex justifyContent="space-between">
+        <Button
+          onClick={handleAlbumView}
+          color="gray.300"
+          pl={0}
+          ml={0}
+          variant="link"
+          leftIcon={
+            <Icon pl={0} ml={0} as={FaAngleLeft} boxSize="1.5em"></Icon>
+          }
+        >
+          Albums
+        </Button>
+        <Box>
+          {/* Settings button */}
+          <Menu mr={0}>
+            <MenuButton
+              display={{ md: "none" }}
+              mt={2}
+              as={IconButton}
+              size="lg"
+              aria-label="Options"
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
+              icon={<Icon as={ImExit} boxSize={5} color="gray.300" />}
+              variant="ghost"
+            ></MenuButton>
+
+            <SettingsList auth={props.auth} />
+          </Menu>
+        </Box>
+      </Flex>
       <Flex mt={2} justifyContent={{ md: "space-between" }}>
         <Heading variant="normal">{selectedAlbum.title}</Heading>
         <Menu preventOverflow boundary="scrollParent">

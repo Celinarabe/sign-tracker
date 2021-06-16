@@ -1,3 +1,6 @@
+//component imports
+import SettingsList from "./SettingsList";
+
 //file imports
 import React, { useState, useEffect, useContext } from "react";
 import CreateAlbum from "./CreateAlbum";
@@ -11,8 +14,13 @@ import {
   Spinner,
   Box,
   useDisclosure,
+  Menu,
+  IconButton,
+  MenuButton,
+  Flex,
 } from "@chakra-ui/react";
 import { FaAngleRight } from "react-icons/fa";
+import { ImExit } from "react-icons/im";
 
 const AlbumList = (props) => {
   const [albums, setAlbums] = useState([]); //data state
@@ -51,6 +59,7 @@ const AlbumList = (props) => {
         <Text mt="0.5rem" mb="0.7rem" color="blue.300">
           {albums ? <div>{albums.length} Items</div> : null}
         </Text>
+
         <ul>{displayAlbums(albums)}</ul>
         <Button
           mt={4}
@@ -108,9 +117,29 @@ const AlbumList = (props) => {
 
   return (
     <div>
-      <Heading mt={4} variant="normal">
-        Albums
-      </Heading>
+      <Flex justifyContent="space-between">
+        <Heading mt={4} variant="normal">
+          Albums
+        </Heading>
+        <Box>
+          {/* Settings button */}
+          <Menu mr={0}>
+            <MenuButton
+              display={{ md: "none" }}
+              mt={2}
+              as={IconButton}
+              size="lg"
+              aria-label="Options"
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
+              icon={<Icon as={ImExit} boxSize={5} color="gray.300" />}
+              variant="ghost"
+            ></MenuButton>
+
+            <SettingsList auth={props.auth} />
+          </Menu>
+        </Box>
+      </Flex>
 
       {isLoading ? (
         <Spinner size="md" mt={4} speed="0.65s" color="blue.300" />

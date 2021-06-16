@@ -6,22 +6,30 @@ import SettingsList from "./SettingsList";
 import AlbumContext from "../context/AlbumContext";
 
 //file imports
-import { useContext, } from "react"
-import { Box, Menu, MenuButton, Flex, IconButton } from "@chakra-ui/react";
-import { SettingsIcon } from "@chakra-ui/icons";
-import {withRouter, useHistory} from "react-router-dom"
+import { useContext } from "react";
+import {
+  Box,
+  Menu,
+  MenuButton,
+  Flex,
+  IconButton,
+  Icon,
+  Heading,
+} from "@chakra-ui/react";
+import { withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ImExit } from "react-icons/im";
 
 //css imports
 import "../stylesheets/dashboard.css";
 
 const DashboardPage = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
-  const user = useContext(AuthContext)
+  const user = useContext(AuthContext);
   const history = useHistory();
   if (!user) {
-    history.push('/')
-    return null
+    history.push("/");
+    return null;
   }
   return (
     <div>
@@ -42,27 +50,12 @@ const DashboardPage = (props) => {
           bg="white"
           overflowY="scroll"
         >
-          {/* Settings button */}
-          <Menu>
-            <MenuButton
-              display={{ md: "none" }}
-              position="absolute"
-              mt={2}
-              right={3}
-              as={IconButton}
-              size="lg"
-              aria-label="Options"
-              _hover={{ bg: "blue.100" }}
-              _focus={{ bg: "blue.100" }}
-              icon={<SettingsIcon boxSize={5} color="gray.300" />}
-              variant="ghost"
-            ></MenuButton>
 
-            <SettingsList auth={props.auth} />
-          </Menu>
-          {selectedAlbum? 
-          <PhotoList database={props.database} storage={props.storage} /> :
-          <AlbumList database={props.database} />}
+          {selectedAlbum ? (
+            <PhotoList database={props.database} storage={props.storage} />
+          ) : (
+            <AlbumList database={props.database} />
+          )}
           {/* settings button */}
           <Menu colorScheme="blue">
             <MenuButton
@@ -72,7 +65,7 @@ const DashboardPage = (props) => {
               as={IconButton}
               size="lg"
               aria-label="Options"
-              icon={<SettingsIcon boxSize={6} color="gray.300" />}
+              icon={<Icon as={ImExit} boxSize={6} color="gray.300" />}
               variant="ghost"
               _hover={{ bg: "blue.100" }}
               _focus={{ bg: "blue.100" }}
