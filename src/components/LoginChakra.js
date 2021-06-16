@@ -7,22 +7,26 @@ import {
   Text,
   Link,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link as ReactLink, useHistory } from "react-router-dom";
-import LoginContext from "../context/LoginContext"
+import LoginContext from "../context/LoginContext";
+import { AuthContext } from "../context/AuthContext";
 
 const LoginChakra = (props) => {
   //history object is passed into each route as a prop
   //push the route you want the user to be directed to onClick
   const history = useHistory();
+
+  const user = useContext(AuthContext);
   const [state, setState] = useState({
     email: "",
     password: "",
   });
   const [invalidAuth, setInvalidAuth] = useState(false);
-  const hideLogin = LoginContext((state) => state.hideLogin)
-  const errorMsg = "Invalid Email/Password"
+  const hideLogin = LoginContext((state) => state.hideLogin);
+  const errorMsg = "Invalid Email/Password";
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -45,7 +49,7 @@ const LoginChakra = (props) => {
 
   const handleSignup = () => {
     setState({ email: "", password: "" });
-    hideLogin()
+    hideLogin();
   };
 
   return (
@@ -53,9 +57,9 @@ const LoginChakra = (props) => {
       <Heading variant="normal" mt="10%" mb="7%" textAlign="left">
         Log in
       </Heading>
-     
+
       <VStack spacing={5} w="100%" mb="1rem">
-        <Box w="100%" >
+        <Box w="100%">
           <Text mb={2}>Email</Text>
           <Input
             id="email"
@@ -74,8 +78,14 @@ const LoginChakra = (props) => {
             placeholder="Enter your password"
           ></Input>
         </Box>
-        {invalidAuth ? <Text color="red.600" variant="minor">{errorMsg}</Text> : ""}
-        
+        {invalidAuth ? (
+          <Text color="red.600" variant="minor">
+            {errorMsg}
+          </Text>
+        ) : (
+          ""
+        )}
+
         <Link as={ReactLink} to="/dashboard" w="100%">
           <Button
             id="btnLogin"
@@ -87,7 +97,6 @@ const LoginChakra = (props) => {
             Log in
           </Button>
         </Link>
-        
       </VStack>
       <Text align="center">
         Don't have an account?&nbsp;
