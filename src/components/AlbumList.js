@@ -35,7 +35,6 @@ const AlbumList = (props) => {
 
   //setting up real time listener on component mount
   useEffect(() => {
-    console.log('component did mount')
     const unsubscribe = props.database.getAlbumsListener(
       user.uid,
       (updatedAlbums) => {

@@ -12,34 +12,30 @@ import {
   ModalBody,
   Button,
   ModalCloseButton,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
 
 const SettingsList = (props) => {
   //TODO: handle delete account
   const history = useHistory();
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const successfulDeleteMsg = "Successfully deleted account";
   const errorDeleteMsg = "There was an error deleting this account.";
   const successfulLogoutMsg = "Successfully logged out";
   const errorLogoutMsg = "There was an error logging out";
 
+  const createToast = (msg, status) => {
+    return toast({ title: msg, position: "top", status: status });
+  };
+
   const handleLogoutClick = (e) => {
     try {
       props.auth.auth.signOut();
       history.push("/");
-      toast({
-        title: successfulLogoutMsg,
-        position: "top",
-        status: "success",
-      });
+      createToast(successfulLogoutMsg, "success");
     } catch {
-      toast({
-        title: errorLogoutMsg,
-        position: "top",
-        status: "error",
-      });
+      createToast(errorLogoutMsg, "error");
     }
   };
 
@@ -47,17 +43,9 @@ const SettingsList = (props) => {
     try {
       props.auth.deleteUser();
       history.push("/");
-      toast({
-        title: successfulDeleteMsg,
-        position: "top",
-        status: "success",
-      });
+      createToast(successfulDeleteMsg, "success");
     } catch {
-      toast({
-        title: errorDeleteMsg,
-        position: "top",
-        status: "error",
-      });
+      createToast(errorDeleteMsg, "error");
     }
   };
 
@@ -87,14 +75,13 @@ const SettingsList = (props) => {
         <ModalContent>
           <ModalHeader>Delete Account</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Are you sure you want to delete your account?
-          </ModalBody>
+          <ModalBody>Are you sure you want to delete your account?</ModalBody>
 
           <ModalFooter>
-            
-            <Button variant="ghost" onClick={onClose}>Cancel</Button>
-            <Button colorScheme="red" mr={3} onClick={handleDeleteClick} >
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" mr={3} onClick={handleDeleteClick}>
               Yes
             </Button>
           </ModalFooter>
