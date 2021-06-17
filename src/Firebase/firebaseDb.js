@@ -79,6 +79,16 @@ class FirebaseDb {
       .add(photoObj);
   };
 
+  //get updated photo notes
+  updatePhotoNote = async (albumID, photoID, newNotes) => {
+    return await this.db
+      .collection("album")
+      .doc(albumID)
+      .collection("photos")
+      .doc(photoID)
+      .update({ notes: newNotes });
+  };
+
   /**
    * Returns a listener to a list of albums that a particular user owns.
    * The callback is executed when an album is updated.
