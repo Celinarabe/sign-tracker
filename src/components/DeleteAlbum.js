@@ -20,17 +20,17 @@ const DeleteAlbum = (props) => {
   const toast = useToast();
 
   const deleteSuccessMsg = "Album successfully deleted";
-  const deleteErrorMsg = "An error occurred";
+  const deleteErrorMsg = "Unable to delete album";
 
   //handle confirm delete click
   const handleConfirmDelete = async (e) => {
     try {
       await props.database.deleteAlbum(selectedAlbum.id);
-      props.onClose();
+      handleExit();
       removeAlbum(); //remove album focus and return to album list
       createToast(deleteSuccessMsg, "success");
     } catch {
-      removeAlbum(); //remove album focus and return to album list
+      handleExit(); //return to photo list
       createToast(deleteErrorMsg, "error");
     }
   };

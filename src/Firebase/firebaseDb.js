@@ -55,7 +55,7 @@ class FirebaseDb {
 
   //deletes album
   deleteAlbum = async (albumID) => {
-    return await this.db.collection("album").doc(albumID).delete();
+    return await this.db.collection("album1").doc(albumID).delete();
   };
 
 
