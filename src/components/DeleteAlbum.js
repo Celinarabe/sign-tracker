@@ -27,7 +27,7 @@ const DeleteAlbum = (props) => {
   //handle confirm delete click
   const handleConfirmDelete = async (e) => {
     try {
-      props.storage.deletePhotoFolder(selectedAlbum.id);
+      await props.storage.deletePhotoFolder(selectedAlbum.id);
       await props.database.deleteAlbumPhotos(selectedAlbum.id, photos);
       await props.database.deleteAlbum(selectedAlbum.id);
       handleExit();
