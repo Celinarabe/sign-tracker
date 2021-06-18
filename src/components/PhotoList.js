@@ -92,6 +92,9 @@ const PhotoList = (props) => {
               title={photo.title}
               imageSrc={photo.image}
               notes={photo.notes}
+              albumID = {selectedAlbum.id}
+              photoID = {photo.id}
+              database = {props.database}
             />
           }
         </Box>
