@@ -36,11 +36,9 @@ const Photo = (props) => {
 
   const handleSave = async (e) => {
     setIsLoading(true);
-    await props.database.updatePhotoNote(
-      props.albumID,
-      props.photoID,
-      tempNotes
-    );
+    await props.database.updatePhoto(props.albumID, props.photoID, {
+      notes: tempNotes,
+    });
     setIsLoading(false);
     handleCloseEdit();
   };
