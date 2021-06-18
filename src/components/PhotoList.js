@@ -2,7 +2,7 @@
 import Photo from "./Photo";
 import StyledDropzone from "./StyledDropzone";
 import EditAlbum from "./EditAlbum";
-
+import DeleteAlbum from "./DeleteAlbum"
 //file imports
 import React, { useEffect, useState, useContext } from "react";
 import { Heading, Text, Icon, Button } from "@chakra-ui/react";
@@ -20,7 +20,7 @@ import {
   Flex,
   Box,
 } from "@chakra-ui/react";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -150,6 +150,15 @@ const PhotoList = (props) => {
             >
               Edit Album
             </MenuItem>
+            <MenuItem
+              icon={<DeleteIcon />}
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
+              onClick={() => handleMenuSelection("Delete Album")}
+              color="red.600"
+            >
+              Delete Album
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>
@@ -172,6 +181,13 @@ const PhotoList = (props) => {
         database={props.database}
         selectedMenuItem={selectedMenuItem}
       ></EditAlbum>
+      <DeleteAlbum
+        isOpen={isOpen}
+        onClose={onClose}
+        database={props.database}
+        selectedMenuItem={selectedMenuItem}
+        storage={props.storage}
+      ></DeleteAlbum>
     </div>
   );
 };

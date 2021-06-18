@@ -42,6 +42,17 @@ class FirebaseStorage {
       }
     );
   };
+
+  deletePhotoFolder = async (albumID) => {
+    await this.photosRef
+      .child(albumID)
+      .listAll()
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          itemRef.delete();
+        });
+      });
+  };
 }
 
 export default FirebaseStorage;

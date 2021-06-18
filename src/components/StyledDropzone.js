@@ -151,6 +151,7 @@ function StyledDropzone(props) {
     fileObj.saveSuccessful = true;
     //updating the files success status
     updateFile(fileObj);
+    console.log(fileObj)
 
     //writing to firestore
     task.snapshot.ref.getDownloadURL().then((downloadURL) => {
