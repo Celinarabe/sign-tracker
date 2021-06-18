@@ -43,6 +43,7 @@ class FirebaseStorage {
     );
   };
 
+  //deleting one album
   deletePhotoFolder = async (albumID) => {
     await this.photosRef
       .child(albumID)
@@ -52,6 +53,13 @@ class FirebaseStorage {
           itemRef.delete();
         });
       });
+  };
+
+  //deleting a user's albums
+  deleteAlbumFolders = async (albumList) => {
+    for (const albumItem of albumList) {
+      this.deletePhotoFolder(albumItem.id);
+    }
   };
 }
 

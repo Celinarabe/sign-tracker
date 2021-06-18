@@ -33,7 +33,7 @@ const DashboardPage = (props) => {
       toast({
         title: `Welcome, ${user.email}`,
         position: "top",
-        duration: 3000,
+        duration: 2000,
       });
     }
   }, [user]);
@@ -78,7 +78,7 @@ const DashboardPage = (props) => {
               variant="ghost"
             ></MenuButton>
 
-            <SettingsList auth={props.auth} />
+            <SettingsList auth={props.auth} storage={props.storage} database={props.database}/>
           </Menu>
           {selectedAlbum ? (
             <PhotoList database={props.database} storage={props.storage} />
@@ -100,7 +100,7 @@ const DashboardPage = (props) => {
               _focus={{ bg: "blue.100" }}
             ></MenuButton>
 
-            <SettingsList auth={props.auth} />
+            <SettingsList auth={props.auth} storage={props.storage} database={props.database}/>
           </Menu>
         </Box>
         {/* Right side with map */}

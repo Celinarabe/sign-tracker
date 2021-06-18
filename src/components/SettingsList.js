@@ -3,6 +3,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { BiExit } from "react-icons/bi";
 import { withRouter, useHistory } from "react-router-dom";
 import { useToast, useDisclosure } from "@chakra-ui/react";
+import AlbumsContext from "../context/AlbumsContext";
 import {
   Modal,
   ModalOverlay,
@@ -19,6 +20,7 @@ const SettingsList = (props) => {
   const history = useHistory();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const albumList = AlbumsContext((state) => state.albumList);
 
   const successfulDeleteMsg = "Successfully deleted account";
   const errorDeleteMsg = "There was an error deleting this account.";
@@ -26,7 +28,12 @@ const SettingsList = (props) => {
   const errorLogoutMsg = "There was an error logging out";
 
   const createToast = (msg, status) => {
-    return toast({ title: msg, position: "top", status: status });
+    return toast({
+      title: msg,
+      position: "top",
+      duration: 2000,
+      status: status,
+    });
   };
 
   const handleLogoutClick = (e) => {
@@ -39,8 +46,10 @@ const SettingsList = (props) => {
     }
   };
 
-  const handleDeleteClick = (e) => {
+  const handleDeleteClick = async (e) => {
     try {
+      await props.storage.deleteAlbumFolders(albumList); //deleting albums from storage
+      await props.database.deleteUserAlbums(albumList); //deleting albums and photos from firestore
       props.auth.deleteUser();
       history.push("/");
       createToast(successfulDeleteMsg, "success");

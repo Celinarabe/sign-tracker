@@ -28,8 +28,7 @@ const DeleteAlbum = (props) => {
   const handleConfirmDelete = async (e) => {
     try {
       await props.storage.deletePhotoFolder(selectedAlbum.id);
-      await props.database.deleteAlbumPhotos(selectedAlbum.id, photos);
-      await props.database.deleteAlbum(selectedAlbum.id);
+      await props.database.deleteAlbum(selectedAlbum.id, photos);
       handleExit();
       removeAlbum(); //remove album focus and return to album list
       createToast(deleteSuccessMsg, "success");
