@@ -1,3 +1,4 @@
+import DeleteAlbum from "../components/DeleteAlbum";
 import { albumConverter } from "../models/album";
 import { photoConverter } from "../models/photo";
 
@@ -54,9 +55,18 @@ class FirebaseDb {
   };
 
   //deletes album
-  deleteAlbum = async (albumID) => {
+  deleteAlbum = async (albumID, photoList) => {
+    await this.deleteAlbumPhotos(albumID, photoList)
     return await this.db.collection("album").doc(albumID).delete();
   };
+
+  //deletes all albums
+  deleteUserAlbums = async (albumList) => {
+    for (const albumItem of albumList) {
+      const photoList = await this.getPhotos(albumItem.id)
+      await this.deleteAlbum(albumItem.id, photoList)
+    }
+  }
 
   //deletes photo
   deletePhoto = async (albumID, photoID) => {

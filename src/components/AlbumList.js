@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import CreateAlbum from "./CreateAlbum";
 import { AuthContext } from "../context/AuthContext";
 import AlbumContext from "../context/AlbumContext";
+import AlbumsContext from "../context/AlbumsContext";
 import {
   Heading,
   Text,
@@ -15,19 +16,21 @@ import {
 import { FaAngleRight } from "react-icons/fa";
 
 const AlbumList = (props) => {
-  const [albums, setAlbums] = useState([]); //data state
+  // const [albums, setAlbums] = useState([]); //data state
   const [isLoading, setIsLoading] = useState(true); //loading state
   const user = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const setAlbum = AlbumContext((state) => state.setAlbum);
+  const albumList = AlbumsContext((state) => state.albumList);
+  const setAlbumList = AlbumsContext((state) => state.setAlbumList);
 
   //fetching albums based on current user logged in
   useEffect(() => {
     const fetchAlbums = async () => {
       setIsLoading(true); //trigger loading state
       const albums = await props.database.getUserAlbums(user.uid);
-      setAlbums(albums);
+      setAlbumList(albums);
       setIsLoading(false);
     };
     fetchAlbums();
@@ -38,20 +41,21 @@ const AlbumList = (props) => {
     const unsubscribe = props.database.getAlbumsListener(
       user.uid,
       (updatedAlbums) => {
-        setAlbums(updatedAlbums);
+        setAlbumList(updatedAlbums);
       }
     );
     return () => unsubscribe();
   }, [user]);
+
 
   //display content after loading
   const displayContent = () => {
     return (
       <div>
         <Text mt="0.5rem" mb="0.7rem" color="blue.300">
-          {albums ? <div>{albums.length} Items</div> : null}
+          {albumList ? <div>{albumList.length} Items</div> : null}
         </Text>
-        <ul>{displayAlbums(albums)}</ul>
+        {albumList ? <ul>{displayAlbums(albumList)}</ul> : ""}
         <Button
           mt={4}
           mb={4}

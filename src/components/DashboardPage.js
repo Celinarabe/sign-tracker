@@ -6,10 +6,17 @@ import SettingsList from "./SettingsList";
 import AlbumContext from "../context/AlbumContext";
 
 //file imports
-import { useContext, } from "react"
-import { Box, Menu, MenuButton, Flex, IconButton } from "@chakra-ui/react";
+import { useContext, useEffect } from "react";
+import {
+  Box,
+  Menu,
+  MenuButton,
+  Flex,
+  IconButton,
+  useToast,
+} from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
-import {withRouter, useHistory} from "react-router-dom"
+import { withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 //css imports
@@ -17,12 +24,25 @@ import "../stylesheets/dashboard.css";
 
 const DashboardPage = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
-  const user = useContext(AuthContext)
+  const user = useContext(AuthContext);
   const history = useHistory();
+  const toast = useToast();
+  useEffect(() => {
+    if (user.email) {
+      console.log(user);
+      toast({
+        title: `Welcome, ${user.email}`,
+        position: "top",
+        duration: 2000,
+      });
+    }
+  }, [user]);
+
   if (!user) {
-    history.push('/')
-    return null
+    history.push("/");
+    return null;
   }
+
   return (
     <div>
       {/* Left side with album/signs list */}
@@ -58,11 +78,13 @@ const DashboardPage = (props) => {
               variant="ghost"
             ></MenuButton>
 
-            <SettingsList auth={props.auth} />
+            <SettingsList auth={props.auth} storage={props.storage} database={props.database}/>
           </Menu>
-          {selectedAlbum? 
-          <PhotoList database={props.database} storage={props.storage} /> :
-          <AlbumList database={props.database} />}
+          {selectedAlbum ? (
+            <PhotoList database={props.database} storage={props.storage} />
+          ) : (
+            <AlbumList database={props.database} />
+          )}
           {/* settings button */}
           <Menu colorScheme="blue">
             <MenuButton
@@ -78,7 +100,7 @@ const DashboardPage = (props) => {
               _focus={{ bg: "blue.100" }}
             ></MenuButton>
 
-            <SettingsList auth={props.auth} />
+            <SettingsList auth={props.auth} storage={props.storage} database={props.database}/>
           </Menu>
         </Box>
         {/* Right side with map */}
