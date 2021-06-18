@@ -12,11 +12,13 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import AlbumContext from "../context/AlbumContext";
+import PhotoContext from "../context/PhotoContext";
 import { useToast } from "@chakra-ui/react";
 
 const DeleteAlbum = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
+  const photos = PhotoContext((state) => state.photoList);
   const toast = useToast();
 
   const deleteSuccessMsg = "Album successfully deleted";
@@ -25,6 +27,8 @@ const DeleteAlbum = (props) => {
   //handle confirm delete click
   const handleConfirmDelete = async (e) => {
     try {
+      props.storage.deletePhotoFolder(selectedAlbum.id);
+      await props.database.deleteAlbumPhotos(selectedAlbum.id, photos);
       await props.database.deleteAlbum(selectedAlbum.id);
       handleExit();
       removeAlbum(); //remove album focus and return to album list
@@ -44,7 +48,7 @@ const DeleteAlbum = (props) => {
       title: msg,
       position: "top",
       status: status,
-      duration: 3000,
+      duration: 2000,
     });
   };
 

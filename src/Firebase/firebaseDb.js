@@ -55,9 +55,25 @@ class FirebaseDb {
 
   //deletes album
   deleteAlbum = async (albumID) => {
-    return await this.db.collection("album1").doc(albumID).delete();
+    return await this.db.collection("album").doc(albumID).delete();
   };
 
+  //deletes photo
+  deletePhoto = async (albumID, photoID) => {
+    return await this.db
+      .collection("album")
+      .doc(albumID)
+      .collection("photos")
+      .doc(photoID)
+      .delete();
+  };
+
+  //delete all photos under an album given photolist context
+  deleteAlbumPhotos = async (albumID, photoList) => {
+    for (const photoItem of photoList) {
+      await this.deletePhoto(albumID, photoItem.id)
+    }
+  }
 
   //get photo subcollection based on albumID
   getPhotos = async (albumID) => {

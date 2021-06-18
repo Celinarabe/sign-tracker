@@ -186,6 +186,7 @@ const PhotoList = (props) => {
         onClose={onClose}
         database={props.database}
         selectedMenuItem={selectedMenuItem}
+        storage={props.storage}
       ></DeleteAlbum>
     </div>
   );
