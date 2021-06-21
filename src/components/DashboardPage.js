@@ -57,7 +57,7 @@ const DashboardPage = (props) => {
           pl="2rem"
           pt={4}
           pr="20px"
-          h={{ md: "100vh" }}
+          h={{ base: "50vh",md: "100vh" }}
           w={{ base: "100vw", md: "45%" }}
           bg="white"
           overflowY="scroll"
