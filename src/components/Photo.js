@@ -10,8 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
+import SelectedPhotoContext from "../context/SelectedPhotoContext";
+
 //this component will accept a photo as props
 const Photo = (props) => {
+  const setSelectedPhoto = SelectedPhotoContext((state) => state.setSelectedPhoto);
   const [hideEditForm, setHideEditForm] = useState(true);
   const [notes, setNotes] = useState(props.notes);
   const [tempNotes, setTempNotes] = useState(notes);
@@ -43,12 +46,17 @@ const Photo = (props) => {
     handleCloseEdit();
   };
 
+  const handlePhotoHover = () => {
+    setSelectedPhoto(props.photo)
+    console.log('hovered photo:', props.photo)
+  }
+
   const displayNotes = () => {
     if (hideEditForm) {
       return (
         <div>
           <Text mt="1.5rem" mb={0} variant="minor">
-            {props.notes}
+            {props.photo.notes}
           </Text>
           <Button
             mr={2}
@@ -96,12 +104,19 @@ const Photo = (props) => {
     }
   };
   return (
-    <Box>
+    <div onMouseEnter={handlePhotoHover}>
+    <Box _hover={{ color: "blue.200" }}>
       <hr className="line-break" />
+
       <Flex justify="space-between" my={3} h="7.5rem">
         <Box position="relative">
-          <Heading mb=".1rem" mr={1} variant="sub">
-            {props.title}
+          <Heading
+            
+            mb=".1rem"
+            mr={1}
+            variant="sub"
+          >
+            {props.photo.title}
           </Heading>
           <Box position="absolute" bottom="0" mb={3}>
             {displayNotes()}
@@ -112,11 +127,12 @@ const Photo = (props) => {
           borderRadius="md"
           objectFit="cover"
           h="75%"
-          src={props.imageSrc}
+          src={props.photo.image}
           mx="10px"
         ></Image>
       </Flex>
     </Box>
+    </div>
   );
 };
 
