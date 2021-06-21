@@ -2,7 +2,7 @@
 import Photo from "./Photo";
 import StyledDropzone from "./StyledDropzone";
 import EditAlbum from "./EditAlbum";
-import DeleteAlbum from "./DeleteAlbum"
+import DeleteAlbum from "./DeleteAlbum";
 //file imports
 import React, { useEffect, useState, useContext } from "react";
 import { Heading, Text, Icon, Button } from "@chakra-ui/react";
@@ -36,6 +36,7 @@ const PhotoList = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
   const setAlbum = AlbumContext((state) => state.setAlbum);
+  const hoverPhoto = PhotoContext((state) => state.hoverPhoto);
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -72,6 +73,10 @@ const PhotoList = (props) => {
     return () => unsubscibeAlbum();
   }, []);
 
+  const handleHover = (photoObj) => {
+    hoverPhoto(photoObj);
+  };
+
   const displayContent = () => {
     return (
       <div>
@@ -86,15 +91,20 @@ const PhotoList = (props) => {
   const displayPhotos = () =>
     photos.map((photo, idx) => {
       return (
-        <Box key={photo.id}>
+        <Box
+          key={photo.id}
+          onMouseEnter={() => {
+            handleHover(photo);
+          }}
+        >
           {
             <Photo
               title={photo.title}
               imageSrc={photo.image}
               notes={photo.notes}
-              albumID = {selectedAlbum.id}
-              photoID = {photo.id}
-              database = {props.database}
+              albumID={selectedAlbum.id}
+              photoID={photo.id}
+              database={props.database}
             />
           }
         </Box>
