@@ -50,15 +50,18 @@ const WelcomePage = (props) => {
       <Flex
         direction="column"
         alignContent="center"
-        py="5%"
+    
+        py="8%"
+        w="100vw"
         h="100vh"
         bg="linear-gradient(90deg, #D8EDDE 0%, rgba(165, 216, 240, 0.98) 100%);"
       >
-        <Center mb={4}>
+        <Center mb={4} mt={{base:"25%", sm:"0"}}>
           <Heading
-            fontSize={{ base: "7xl" }}
+            fontSize={{ base: "6xl", sm:"7xl" }}
             letterSpacing="0.05rem"
-            fontWeight="medium"
+            fontWeight="semibold"
+            textAlign="center"
           >
             Photo Mapper
           </Heading>
@@ -73,7 +76,7 @@ const WelcomePage = (props) => {
             onClick={onOpen}
             variant="ghost"
             colorScheme="blue"
-            fontWeight="medium"
+            fontWeight="semibold"
           >
             Get Started >
           </Button>
