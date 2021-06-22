@@ -5,6 +5,7 @@ import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
 import AlbumContext from "../context/AlbumContext";
 
+
 //file imports
 import { useContext, useEffect } from "react";
 import {
@@ -78,7 +79,11 @@ const DashboardPage = (props) => {
               variant="ghost"
             ></MenuButton>
 
-            <SettingsList auth={props.auth} storage={props.storage} database={props.database}/>
+            <SettingsList
+              auth={props.auth}
+              storage={props.storage}
+              database={props.database}
+            />
           </Menu>
           {selectedAlbum ? (
             <PhotoList database={props.database} storage={props.storage} />
@@ -100,7 +105,11 @@ const DashboardPage = (props) => {
               _focus={{ bg: "blue.100" }}
             ></MenuButton>
 
-            <SettingsList auth={props.auth} storage={props.storage} database={props.database}/>
+            <SettingsList
+              auth={props.auth}
+              storage={props.storage}
+              database={props.database}
+            />
           </Menu>
         </Box>
         {/* Right side with map */}
