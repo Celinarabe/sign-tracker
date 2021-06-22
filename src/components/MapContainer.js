@@ -2,13 +2,9 @@ import React, { Component, useEffect, useState } from "react";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import Geocode from "react-geocode"; //TO DO: use this for photo title
 import PhotoContext from "../context/PhotoContext";
-import SelectedPhotoContext from "../context/SelectedPhotoContext";
 
 //renders
 const MapContainer = (props) => {
-  const selectedPhoto = SelectedPhotoContext((state) => state.selectedPhoto);
-  const [newPhoto, setNewPhoto] = useState({});
-
   const photos = PhotoContext((state) => state.photoList);
   const [markers, setMarkers] = useState();
   const [bounds, setBounds] = useState();
@@ -19,34 +15,9 @@ const MapContainer = (props) => {
 
   const onMarkerClick = (props, marker, e) => {
     setSelectedPlace(props);
-    console.log("actual marker", marker);
     setActiveMarker(marker);
     setShowingInfo(true);
   };
-
-  const showInfoWindow = (photoObj) => {
-    console.log("in info funciton");
-    setNewPhoto(photoObj);
-  };
-
-  //new selected/hovered photo
-  useEffect(() => {
-    console.log("newPhoto state", newPhoto);
-  }, [newPhoto]);
-
-  useEffect(() => {
-    console.log("in map", selectedPhoto);
-    if (markers) {
-      var result = markers.filter((marker) => {
-        return marker.key === selectedPhoto.id;
-      });
-      console.log("marker??", result[0]);
-
-      // setSelectedPlace(result[0].props)
-      // setActiveMarker(result[0])
-      // setShowingInfo(true)
-    }
-  }, [selectedPhoto]);
 
   const createMarkers = () => {
     const photoMarkers = photos.map((photo, idx) => {
@@ -106,31 +77,12 @@ const MapContainer = (props) => {
       >
         {markers}
         {/* TODO: add more to info window */}
-        {newPhoto && (
-          <InfoWindow
-            position={{
-              lat: newPhoto.latitude,
-              lng: newPhoto.longitude,
-            }}
-          >
-            <h1>hello</h1>
-            {/* <div>
-              <h3 style={{ "font-weight": "500", margin: "0.5rem 0 1rem 0" }}>
-                {newPhoto.title}
-              </h3>
-              <img
-                style={{
-                  width: "15rem",
-                  "object-fit": "contain",
-                  "margin-left": "auto",
-                  "margin-right": "auto",
-                }}
-                alt="marker at this location"
-                src={newPhoto.img}
-              />
-            </div> */}
-          </InfoWindow>
-        )}
+        <InfoWindow marker={activeMarker} visible={showingInfo}>
+          <div>
+            <h3 style={{"font-weight": "500",margin:"0.5rem 0 1rem 0"}}>{selectedPlace.title}</h3>
+            <img style={{"width": "15rem","object-fit": "contain", "margin-left":"auto", "margin-right":"auto"}} alt="marker at this location" src={selectedPlace.imgSrc} />
+          </div>
+        </InfoWindow>
       </Map>
     </div>
   );

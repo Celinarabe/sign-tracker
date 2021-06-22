@@ -2,7 +2,7 @@
 import Photo from "./Photo";
 import StyledDropzone from "./StyledDropzone";
 import EditAlbum from "./EditAlbum";
-import DeleteAlbum from "./DeleteAlbum";
+import DeleteAlbum from "./DeleteAlbum"
 //file imports
 import React, { useEffect, useState, useContext } from "react";
 import { Heading, Text, Icon, Button } from "@chakra-ui/react";
@@ -87,15 +87,16 @@ const PhotoList = (props) => {
     photos.map((photo, idx) => {
       return (
         <Box key={photo.id}>
-          <Photo
-            photo={photo}
-            // title={photo.title}
-            // imageSrc={photo.image}
-            // notes={photo.notes}
-            // albumID={selectedAlbum.id}
-            // photoID={photo.id}
-            database={props.database}
-          />
+          {
+            <Photo
+              title={photo.title}
+              imageSrc={photo.image}
+              notes={photo.notes}
+              albumID = {selectedAlbum.id}
+              photoID = {photo.id}
+              database = {props.database}
+            />
+          }
         </Box>
       );
     });

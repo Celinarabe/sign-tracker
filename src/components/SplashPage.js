@@ -17,12 +17,10 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
-import { Link as ReactLink } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import LoginContext from "../context/LoginContext";
-import { DeviceImg } from "../images/";
-import { IphoneImg } from '../images'
+import { IphoneImg } from "../images";
 
 //css imports
 import "../stylesheets/welcomePage.css";
@@ -50,15 +48,14 @@ const WelcomePage = (props) => {
       <Flex
         direction="column"
         alignContent="center"
-    
         py="8%"
         w="100vw"
         h="100vh"
         bg="linear-gradient(90deg, #D8EDDE 0%, rgba(165, 216, 240, 0.98) 100%);"
       >
-        <Center mb={4} mt={{base:"25%", sm:"0"}}>
+        <Center mb={4} mt={{ base: "25%", sm: "0" }}>
           <Heading
-            fontSize={{ base: "6xl", sm:"7xl" }}
+            fontSize={{ base: "6xl", sm: "7xl" }}
             letterSpacing="0.05rem"
             fontWeight="semibold"
             textAlign="center"
