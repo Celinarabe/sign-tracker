@@ -42,7 +42,6 @@ const SettingsList = (props) => {
       history.push("/");
       createToast(successfulLogoutMsg, "success");
     } catch {
-      console.log('error')
       createToast(errorLogoutMsg, "error");
     }
   };
