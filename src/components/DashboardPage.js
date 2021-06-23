@@ -5,7 +5,6 @@ import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
 import AlbumContext from "../context/AlbumContext";
 
-
 //file imports
 import { useContext, useEffect } from "react";
 import {
@@ -58,7 +57,7 @@ const DashboardPage = (props) => {
           pl="2rem"
           pt={4}
           pr="20px"
-          h={{ md: "100vh" }}
+          h={{ base:"50vh", md: "100vh" }}
           w={{ base: "100vw", md: "45%" }}
           bg="white"
           overflowY="scroll"
@@ -113,13 +112,16 @@ const DashboardPage = (props) => {
           </Menu>
         </Box>
         {/* Right side with map */}
+
         <Box
           h={{ base: "50vh", md: "100vh" }}
           w={{ base: "100vw" }}
+          bg="blue.100"
           position="relative"
           zIndex="base"
+          border="0"
         >
-          <MapContainer />
+          {selectedAlbum ? <MapContainer /> : ""}
         </Box>
       </Flex>
     </div>

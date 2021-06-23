@@ -47,7 +47,6 @@ const AlbumList = (props) => {
     return () => unsubscribe();
   }, [user]);
 
-
   //display content after loading
   const displayContent = () => {
     return (
@@ -77,6 +76,7 @@ const AlbumList = (props) => {
       return (
         <div key={album.id}>
           <Button
+            
             h="3rem"
             py={3}
             px={1}

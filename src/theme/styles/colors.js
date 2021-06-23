@@ -1,6 +1,6 @@
 const Colors = {
   blue: {
-    100: "#C4DEFC", //lightest
+    100: "#ebf8ff", //lightest
     200: "#67A9F6", //medium
     300: "#0875F5", //darkest
   },
