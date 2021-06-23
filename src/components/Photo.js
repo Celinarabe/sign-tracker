@@ -97,7 +97,7 @@ const Photo = (props) => {
   };
   return (
     <Box>
-      <hr className="line-break" />
+      
       <Flex justify="space-between" my={3} h="7.5rem">
         <Box position="relative">
           <Heading mb=".1rem" mr={1} variant="sub">

@@ -37,6 +37,8 @@ const PhotoList = (props) => {
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
   const setAlbum = AlbumContext((state) => state.setAlbum);
   const hoverPhoto = PhotoContext((state) => state.hoverPhoto);
+  const selectedPhoto = PhotoContext((state) => state.selectedPhoto);
+
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -93,10 +95,17 @@ const PhotoList = (props) => {
       return (
         <Box
           key={photo.id}
+          rounded="lg"
+          px={2}
+          bg={selectedPhoto.id === photo.id ? "blue.100" : "white"}
           onMouseEnter={() => {
             handleHover(photo);
           }}
+          onClick={() => {
+            handleHover(photo);
+          }}
         >
+          <hr className="line-break" />
           {
             <Photo
               title={photo.title}

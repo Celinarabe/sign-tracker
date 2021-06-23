@@ -10,26 +10,22 @@ const MapContainer = (props) => {
   const [markers, setMarkers] = useState();
   const [bounds, setBounds] = useState();
 
-  const [activeMarker, setActiveMarker] = useState();
   const selectedPhoto = PhotoContext((state) => state.selectedPhoto);
   const setSelectedPhoto = PhotoContext((state) => state.hoverPhoto);
   const [showingInfoWindow, setShowingInfoWindow] = useState(false);
 
   const mapStyles = {};
 
-  const onMarkerClick = (props, marker, e) => {
-    console.log('actual marker',marker)
-    setActiveMarker(marker);
-    setSelectedPhoto(props);
+  const onMarkerClick = (photo, props, marker, e) => {
+    setSelectedPhoto(photo);
     setShowingInfoWindow(true);
   };
 
   useEffect(() => {
-    if (markers) {
-      var results = markers.filter((marker) => {
-        return selectedPhoto.id === marker.key;
-      });
-      console.log("filtered results", results[0]);
+    if (selectedPhoto) {
+      setShowingInfoWindow(true);
+    } else {
+      setShowingInfoWindow(false);
     }
   }, [selectedPhoto]);
 
@@ -37,7 +33,7 @@ const MapContainer = (props) => {
     const photoMarkers = photos.map((photo, idx) => {
       return (
         <Marker
-          onClick={(props, marker, e) => onMarkerClick(photo, marker, e)}
+          onClick={(props, marker, e) => onMarkerClick(photo, props, marker, e)}
           key={photo.id}
           title={photo.title}
           image={photo.image}
@@ -80,11 +76,6 @@ const MapContainer = (props) => {
     }
   }, [photos]);
 
-  // useEffect(() => {
-  //   console.log("change in selected photo", selectedPhoto);
-  // }, [selectedPhoto]);
-
-  // position={{lat:selectedPhoto.latitude, lng:selectedPhoto.longitude }}
   return (
     <div>
       <Map
@@ -95,44 +86,45 @@ const MapContainer = (props) => {
         initialCenter={{ lat: 0, lng: 0 }}
       >
         {markers}
-        {selectedPhoto && (
-          <InfoWindow
-            marker={activeMarker}
-            style={{ width: "50px" }}
-            visible={showingInfoWindow}
-            onClose={() => {
-              setShowingInfoWindow(false);
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  width: "75%",
-                  fontWeight: "500",
-                  margin: "0.5rem 0 1rem 0",
-                }}
-              >
-                {selectedPhoto.title}
-              </h3>
-              <img
-                style={{
-                  width: "10rem",
-                  objectFit: "contain",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-                alt="marker at this location"
-                src={selectedPhoto.image}
-              />
-            </div>
-          </InfoWindow>
-        )}
+        <InfoWindow
+          position={{
+            lat: selectedPhoto.latitude,
+            lng: selectedPhoto.longitude,
+          }}
+          style={{ width: "50px" }}
+          visible={showingInfoWindow}
+          onClose={() => {
+            setShowingInfoWindow(false);
+          }}
+        >
+          <div>
+            <h3
+              style={{
+                width: "75%",
+                fontWeight: "500",
+                margin: "0.5rem 0 1rem 0",
+              }}
+            >
+              {selectedPhoto.title}
+            </h3>
+            <img
+              style={{
+                width: "10rem",
+                objectFit: "contain",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+              alt="marker at this location"
+              src={selectedPhoto.image}
+            />
+          </div>
+        </InfoWindow>
+        
       </Map>
     </div>
   );
 };
 
-//TODO: store this securely
 export default GoogleApiWrapper({
   apiKey: "AIzaSyBSpE08gglOIu8keG0gZO0B9rDEt9Q3npo",
 })(MapContainer);
