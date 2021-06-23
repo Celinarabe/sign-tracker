@@ -6,7 +6,7 @@ import SettingsList from "./SettingsList";
 import AlbumContext from "../context/AlbumContext";
 
 //file imports
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   Box,
   Menu,
@@ -15,7 +15,9 @@ import {
   IconButton,
   Icon,
   Heading,
+  useToast,
 } from "@chakra-ui/react";
+import { SettingsIcon } from "@chakra-ui/icons";
 import { withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { ImExit } from "react-icons/im";
@@ -27,10 +29,23 @@ const DashboardPage = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const user = useContext(AuthContext);
   const history = useHistory();
+  const toast = useToast();
+  useEffect(() => {
+    if (user.email) {
+      console.log(user);
+      toast({
+        title: `Welcome, ${user.email}`,
+        position: "top",
+        duration: 2000,
+      });
+    }
+  }, [user]);
+
   if (!user) {
     history.push("/");
     return null;
   }
+
   return (
     <div>
       {/* Left side with album/signs list */}
@@ -45,16 +60,16 @@ const DashboardPage = (props) => {
           pl="2rem"
           pt={4}
           pr="20px"
-          h={{ md: "100vh" }}
+          h={{ base:"50vh", md: "100vh" }}
           w={{ base: "100vw", md: "45%" }}
           bg="white"
           overflowY="scroll"
         >
 
           {selectedAlbum ? (
-            <PhotoList database={props.database} storage={props.storage} />
+            <PhotoList database={props.database} storage={props.storage} auth={props.auth} />
           ) : (
-            <AlbumList database={props.database} />
+            <AlbumList database={props.database} storage={props.storage} auth={props.auth}/>
           )}
           {/* settings button */}
           <Menu colorScheme="blue">
@@ -71,17 +86,24 @@ const DashboardPage = (props) => {
               _focus={{ bg: "blue.100" }}
             ></MenuButton>
 
-            <SettingsList auth={props.auth} />
+            <SettingsList
+              auth={props.auth}
+              storage={props.storage}
+              database={props.database}
+            />
           </Menu>
         </Box>
         {/* Right side with map */}
+
         <Box
           h={{ base: "50vh", md: "100vh" }}
           w={{ base: "100vw" }}
+          bg="blue.100"
           position="relative"
           zIndex="base"
+          border="0"
         >
-          <MapContainer />
+          {selectedAlbum ? <MapContainer /> : ""}
         </Box>
       </Flex>
     </div>

@@ -1,3 +1,4 @@
+import DeleteAlbum from "../components/DeleteAlbum";
 import { albumConverter } from "../models/album";
 import { photoConverter } from "../models/photo";
 
@@ -54,9 +55,35 @@ class FirebaseDb {
   };
 
   //deletes album
-  deleteAlbum = async (albumID) => {
-    return await this.db.collection("album").doc(albumID);
+  deleteAlbum = async (albumID, photoList) => {
+    await this.deleteAlbumPhotos(albumID, photoList)
+    return await this.db.collection("album").doc(albumID).delete();
   };
+
+  //deletes all albums
+  deleteUserAlbums = async (albumList) => {
+    for (const albumItem of albumList) {
+      const photoList = await this.getPhotos(albumItem.id)
+      await this.deleteAlbum(albumItem.id, photoList)
+    }
+  }
+
+  //deletes photo
+  deletePhoto = async (albumID, photoID) => {
+    return await this.db
+      .collection("album")
+      .doc(albumID)
+      .collection("photos")
+      .doc(photoID)
+      .delete();
+  };
+
+  //delete all photos under an album given photolist context
+  deleteAlbumPhotos = async (albumID, photoList) => {
+    for (const photoItem of photoList) {
+      await this.deletePhoto(albumID, photoItem.id)
+    }
+  }
 
   //get photo subcollection based on albumID
   getPhotos = async (albumID) => {
@@ -79,6 +106,15 @@ class FirebaseDb {
       .add(photoObj);
   };
 
+  //update the photo
+  updatePhoto = async (albumID, photoID, updateObj) => {
+    return await this.db
+      .collection("album")
+      .doc(albumID)
+      .collection("photos")
+      .doc(photoID)
+      .update({ ...updateObj });
+  };
   /**
    * Returns a listener to a list of albums that a particular user owns.
    * The callback is executed when an album is updated.

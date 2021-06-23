@@ -1,6 +1,7 @@
 //component imports
 import WelcomePage from "./components/WelcomePage";
 import DashboardPage from "./components/DashboardPage";
+import SplashPage from "./components/SplashPage";
 
 //file imports
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
@@ -46,7 +47,7 @@ function App() {
               <Route
                 exact
                 path={["/", "/welcome"]}
-                render={() => <WelcomePage auth={auth} />}
+                render={() => <SplashPage auth={auth} />}
               />
             </Switch>
           </BrowserRouter>

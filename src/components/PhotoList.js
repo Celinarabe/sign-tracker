@@ -4,13 +4,14 @@ import StyledDropzone from "./StyledDropzone";
 import EditAlbum from "./EditAlbum";
 import SettingsList from "./SettingsList";
 
+import DeleteAlbum from "./DeleteAlbum";
 //file imports
 import React, { useEffect, useState, useContext } from "react";
 import { Heading, Text, Icon, Button } from "@chakra-ui/react";
 import { AuthContext } from "../context/AuthContext";
 
 import { FaAngleLeft, FaEllipsisV } from "react-icons/fa";
-import { ImExit} from "react-icons/im"
+import { ImExit } from "react-icons/im";
 import {
   useDisclosure,
   Spinner,
@@ -23,6 +24,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, SettingsIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 import PhotoContext from "../context/PhotoContext";
 import AlbumContext from "../context/AlbumContext";
@@ -38,6 +40,8 @@ const PhotoList = (props) => {
   const selectedAlbum = AlbumContext((state) => state.selectedAlbum);
   const removeAlbum = AlbumContext((state) => state.removeAlbum);
   const setAlbum = AlbumContext((state) => state.setAlbum);
+  const hoverPhoto = PhotoContext((state) => state.hoverPhoto);
+  const selectedPhoto = PhotoContext((state) => state.selectedPhoto);
 
   //fetching photos on selected album change
   useEffect(() => {
@@ -74,6 +78,10 @@ const PhotoList = (props) => {
     return () => unsubscibeAlbum();
   }, []);
 
+  const handleHover = (photoObj) => {
+    hoverPhoto(photoObj);
+  };
+
   const displayContent = () => {
     return (
       <div>
@@ -88,12 +96,27 @@ const PhotoList = (props) => {
   const displayPhotos = () =>
     photos.map((photo, idx) => {
       return (
-        <Box key={photo.id}>
+        <Box
+          key={photo.id}
+          rounded="lg"
+          px={2}
+          bg={selectedPhoto.id === photo.id ? "blue.100" : "white"}
+          onMouseEnter={() => {
+            handleHover(photo);
+          }}
+          onClick={() => {
+            handleHover(photo);
+          }}
+        >
+          <hr className="line-break" />
           {
             <Photo
               title={photo.title}
               imageSrc={photo.image}
               notes={photo.notes}
+              albumID={selectedAlbum.id}
+              photoID={photo.id}
+              database={props.database}
             />
           }
         </Box>
@@ -141,7 +164,11 @@ const PhotoList = (props) => {
               variant="ghost"
             ></MenuButton>
 
-            <SettingsList auth={props.auth} />
+            <SettingsList
+              auth={props.auth}
+              storage={props.storage}
+              database={props.database}
+            />
           </Menu>
         </Box>
       </Flex>
@@ -174,6 +201,15 @@ const PhotoList = (props) => {
             >
               Edit Album
             </MenuItem>
+            <MenuItem
+              icon={<DeleteIcon />}
+              _hover={{ bg: "blue.100" }}
+              _focus={{ bg: "blue.100" }}
+              onClick={() => handleMenuSelection("Delete Album")}
+              color="red.600"
+            >
+              Delete Album
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>
@@ -196,6 +232,13 @@ const PhotoList = (props) => {
         database={props.database}
         selectedMenuItem={selectedMenuItem}
       ></EditAlbum>
+      <DeleteAlbum
+        isOpen={isOpen}
+        onClose={onClose}
+        database={props.database}
+        selectedMenuItem={selectedMenuItem}
+        storage={props.storage}
+      ></DeleteAlbum>
     </div>
   );
 };
