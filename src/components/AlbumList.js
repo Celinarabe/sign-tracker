@@ -83,7 +83,6 @@ const AlbumList = (props) => {
             my={2}
             isFullWidth
             colorScheme="blue"
-            isSel
             variant="ghost"
             onClick={() => handleSelectAlbum(album)}
           >
