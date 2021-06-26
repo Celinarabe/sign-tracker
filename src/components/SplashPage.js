@@ -49,8 +49,6 @@ const WelcomePage = (props) => {
     <div>
       <Flex direction="column" alignContent="center" w="100vw">
         <Box
-          overflowX="hidden"
-          overflowY="scroll"
           py="3rem"
           h={{ base: "100vh", md: "80vh" }}
           bg="linear-gradient(90deg, #D8EDDE 0%, rgba(165, 216, 240, 0.98) 100%);"
