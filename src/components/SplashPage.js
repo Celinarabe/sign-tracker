@@ -102,7 +102,7 @@ const WelcomePage = (props) => {
           >
             How it Works
           </Heading>
-          <AspectRatio mb={5}mx="auto" maxW="560px" ratio={4 / 3}>
+          <AspectRatio mb={5} mx="auto" maxW="560px" ratio={4 / 3}>
             <video controls>
               <source src={HowToVideo} type="video/mp4"></source>
             </video>
