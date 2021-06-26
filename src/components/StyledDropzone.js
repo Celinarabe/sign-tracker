@@ -232,6 +232,7 @@ function StyledDropzone(props) {
       closeOnOverlayClick={false}
       isOpen={props.isOpen}
       onClose={handleExit}
+
     >
       <ModalOverlay />
       <ModalContent>
@@ -243,6 +244,8 @@ function StyledDropzone(props) {
               <input {...getInputProps()} />
               <p>Drag 'n' drop some files here, or click to select files</p>
             </div>
+            <Text hidden={saveSuccessful} mt={5}variant="minor">Due to Apple Privacy Policy, the web version of Photo Mapper is unable to receive photo data from iPhones at this time. </Text>
+
 
             <Text fontWeight="medium" color="tomato" mt={2}>
               {errorMessage}
@@ -253,6 +256,7 @@ function StyledDropzone(props) {
 
         <ModalFooter>
           <Button
+          d="block"
             mx={1}
             variant="ghost"
             hidden={saveSuccessful}

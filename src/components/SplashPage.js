@@ -100,10 +100,14 @@ const WelcomePage = (props) => {
           >
             How it Works
           </Heading>
-          <AspectRatio mb={5} mx="auto" maxW="560px" ratio={4 / 3}>
-            <video controls>
-              <source src={HowToVideo} type="video/mp4"></source>
-            </video>
+          <AspectRatio mb={5} mx="auto" maxW="800px" ratio={4 / 3}>
+            <iframe
+              src="https://www.youtube.com/embed/FsGyupSNEWE"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
           </AspectRatio>
         </Box>
         <Drawer
