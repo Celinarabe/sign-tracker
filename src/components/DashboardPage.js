@@ -5,7 +5,6 @@ import MapContainer from "./MapContainer";
 import SettingsList from "./SettingsList";
 import AlbumContext from "../context/AlbumContext";
 
-
 //file imports
 import { useContext, useEffect } from "react";
 import {
@@ -14,11 +13,14 @@ import {
   MenuButton,
   Flex,
   IconButton,
+  Icon,
+  Heading,
   useToast,
 } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import { withRouter, useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ImExit } from "react-icons/im";
 
 //css imports
 import "../stylesheets/dashboard.css";
@@ -58,37 +60,16 @@ const DashboardPage = (props) => {
           pl="2rem"
           pt={4}
           pr="20px"
-          h={{ md: "100vh" }}
+          h={{ base:"50vh", md: "100vh" }}
           w={{ base: "100vw", md: "45%" }}
           bg="white"
           overflowY="scroll"
         >
-          {/* Settings button */}
-          <Menu>
-            <MenuButton
-              display={{ md: "none" }}
-              position="absolute"
-              mt={2}
-              right={3}
-              as={IconButton}
-              size="lg"
-              aria-label="Options"
-              _hover={{ bg: "blue.100" }}
-              _focus={{ bg: "blue.100" }}
-              icon={<SettingsIcon boxSize={5} color="gray.300" />}
-              variant="ghost"
-            ></MenuButton>
 
-            <SettingsList
-              auth={props.auth}
-              storage={props.storage}
-              database={props.database}
-            />
-          </Menu>
           {selectedAlbum ? (
-            <PhotoList database={props.database} storage={props.storage} />
+            <PhotoList database={props.database} storage={props.storage} auth={props.auth} />
           ) : (
-            <AlbumList database={props.database} />
+            <AlbumList database={props.database} storage={props.storage} auth={props.auth}/>
           )}
           {/* settings button */}
           <Menu colorScheme="blue">
@@ -99,7 +80,7 @@ const DashboardPage = (props) => {
               as={IconButton}
               size="lg"
               aria-label="Options"
-              icon={<SettingsIcon boxSize={6} color="gray.300" />}
+              icon={<Icon as={ImExit} boxSize={6} color="gray.300" />}
               variant="ghost"
               _hover={{ bg: "blue.100" }}
               _focus={{ bg: "blue.100" }}
@@ -113,13 +94,16 @@ const DashboardPage = (props) => {
           </Menu>
         </Box>
         {/* Right side with map */}
+
         <Box
           h={{ base: "50vh", md: "100vh" }}
           w={{ base: "100vw" }}
+          bg="blue.100"
           position="relative"
           zIndex="base"
+          border="0"
         >
-          <MapContainer />
+          {selectedAlbum ? <MapContainer /> : ""}
         </Box>
       </Flex>
     </div>
