@@ -50,10 +50,10 @@ const WelcomePage = (props) => {
       <Flex direction="column" alignContent="center" w="100vw">
         <Box
           py="3rem"
-          h={{ base: "100vh", md: "80vh" }}
+          h="80vh"
           bg="linear-gradient(90deg, #D8EDDE 0%, rgba(165, 216, 240, 0.98) 100%);"
         >
-          <Center mb={4} mt={{ base: "25%", md: "0" }}>
+          <Center mb={4}>
             <Heading
               fontSize={{ base: "6xl", sm: "7xl" }}
               letterSpacing="0.05rem"
@@ -78,7 +78,7 @@ const WelcomePage = (props) => {
               Get Started >
             </Button>
           </Center>
-          <Center w="100vw" h="50%" mt="5%">
+          <Center w="100vw" h="50%" mt={3}>
             <Image
               w="50%"
               h="100%"
@@ -86,11 +86,10 @@ const WelcomePage = (props) => {
               src={IphoneImg}
               alt="map demo"
             />
-            {/* // This video will have equal sides */}
           </Center>
         </Box>
 
-        <Box bg="white" py="3rem" h="70vh" px="1rem">
+        <Box bg="white" py="3rem" h="80vh" px="1rem">
           <Heading
             fontSize={{ base: "4xl", sm: "5xl" }}
             mb="6%"
@@ -100,7 +99,7 @@ const WelcomePage = (props) => {
           >
             How it Works
           </Heading>
-          <AspectRatio mb={5} mx="auto" maxW="800px" ratio={4 / 3}>
+          <AspectRatio pb={5} mx="auto" maxW="60%" maxH="80%" ratio={4 / 3}>
             <iframe
               src="https://www.youtube.com/embed/FsGyupSNEWE"
               title="YouTube video player"
@@ -109,6 +108,22 @@ const WelcomePage = (props) => {
               allowfullscreen
             ></iframe>
           </AspectRatio>
+        </Box>
+        <Box
+          bg="linear-gradient(90deg, #D8EDDE 0%, rgba(165, 216, 240, 0.98) 100%);"
+          py="3rem"
+          h="70vh"
+          px="1rem"
+        >
+          <Heading
+            fontSize={{ base: "4xl", sm: "5xl" }}
+            mb="6%"
+            letterSpacing="0.05rem"
+            fontWeight="semibold"
+            textAlign="center"
+          >
+            How it Started
+          </Heading>
         </Box>
         <Drawer
           isOpen={isOpen}
