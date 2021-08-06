@@ -1,10 +1,11 @@
+[Live Website](https://sign-tracker-a5630.web.app/)
+<br><br>
 
 <p align="center">
 <img src="https://github.com/Celinarabe/Celinarabe/blob/main/images/splash.png" width=100% >
 </p>
 
-[Live Website](https://sign-tracker-a5630.web.app/)
-<br><br>
+
 ## Tech Stack
 
 ReactJS, Google Firebase (Auth, Firestore, Storage), and Google Maps API
