@@ -28,6 +28,15 @@ Any well intentioned project should have a thorough planning phase. Arguably, pl
 
 That's it for now! I'm off working on other things, but this project will always have a special place in my heart as my first full stack web app
 💖
+<br>
+<br>
+## Documents
+*Planning docs for features, database schema, and design inspo*<br>
+<img src="https://github.com/Celinarabe/sign-tracker/blob/main/readImages/all_files.png" height=50% >
 
+*Figma*<br>
+<img src="https://github.com/Celinarabe/sign-tracker/blob/main/readImages/figma_files.png" height=50% >
 
+*Project overview*<br>
+<img src="https://github.com/Celinarabe/sign-tracker/blob/main/readImages/planning.png" height=50% >
 
