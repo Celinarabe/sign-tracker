@@ -1,70 +1,32 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+<img src="https://github.com/Celinarabe/Celinarabe/blob/main/images/splash.png" width=50% >
+</p>
 
-## Available Scripts
+[Live Website](https://sign-tracker-a5630.web.app/)
+<br><br>
+## Tech Stack
 
-In the project directory, you can run:
+ReactJS, Google Firebase (Auth, Firestore, Storage), and Google Maps API
+## Background
+I was inspired to create Photo Mapper while volunteering for a political campaign. One of our biggest pain points was managing and storing the location of all of the yard signs and marketing materials. My solution, Photo Mapper, removes the need for manual entries, and allows for easy collaboration in the cloud. 
 
-### `npm start`
+Even though this app was inspired by my personal volunteer experience, I decided to make the app more generic in order to reach a wider audience, hence the name change from "Sign Tracker" to "Photo Mapper". Overall, I enjoyed solving a problem that was close to me as this gave me a better idea of the problem I was trying to solve and it was super easy to get immediate feedback!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+I encourage anyone who is looking to create personal projects to solve a problem that is close to them. Inspiration may be closer than you think!
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Project Planning
+Any well intentioned project should have a thorough planning phase. Arguably, planning takes longer than the actual building of the tool. Planning Photo Mapper involved:
+* Fleshing out the idea and motivation - What exact problem are we trying to solve? The answer to this question helped guide everything else to follow.
+* Outlining requirements and MVP - What features do we absolutely need to make this work?
+* Creating Database Schema - What tables do we need? How will security be built in?
 
-### `npm test`
+## Project Design
+* Find inspiration - A site I love is [Dribbble](https://dribbble.com/) where you can search for any kind of app you can think of.
+* Mock ups - Everyone knows and loves Figma for a reason. I watched a 1-hour long Youtube video covering Figma basics and the investment has paid off big time. I recommend [Kevin Powell's video](https://www.youtube.com/watch?v=eZJOSK4gXl4).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+That's it for now! I'm off working on other things, but this project will always have a special place in my heart as my first full stack web app
+💖
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
