@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="https://github.com/Celinarabe/Celinarabe/blob/main/images/splash.png" width=50% >
+<img src="https://github.com/Celinarabe/Celinarabe/blob/main/images/splash.png" width=100% >
 </p>
 
 [Live Website](https://sign-tracker-a5630.web.app/)
