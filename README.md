@@ -10,7 +10,7 @@
 
 ReactJS, Google Firebase (Auth, Firestore, Storage), and Google Maps API
 ## Background
-I was inspired to create Photo Mapper while volunteering for a political campaign. One of our biggest pain points was managing and storing the location of all of the yard signs and marketing materials. My solution, Photo Mapper, removes the need for manual entries, and allows for easy collaboration in the cloud. 
+I was inspired to create Photo Mapper while volunteering for a political campaign. One of our biggest pain points was managing and storing the location of all of the yard signs and marketing materials. My solution, Photo Mapper, removes the need for manual entries, and allows for bulk upload to the cloud. 
 
 Even though this app was inspired by my personal volunteer experience, I decided to make the app more generic in order to reach a wider audience, hence the name change from "Sign Tracker" to "Photo Mapper". Overall, I enjoyed solving a problem that was close to me as this gave me a better idea of the problem I was trying to solve and it was super easy to get immediate feedback!
 
