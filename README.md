@@ -2,7 +2,7 @@
 <br><br>
 
 <p align="center">
-<img src="https://github.com/Celinarabe/sign-tracker/blob/main/readImages/signgif.gif" width=50% >
+<img src="https://github.com/Celinarabe/sign-tracker/blob/main/readImages/signgif.gif" width=75% >
 </p>
 
 
